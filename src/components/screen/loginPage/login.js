@@ -74,8 +74,10 @@ function LoginPage(props) {
     
     const onSuccess = async (response) => {
         try {
-            console.log(response)
-            const dataResponseFromNode = await axios.post(BASE_URL+OAUTH2_URL, { tokenId: response })
+            console.log(response, { "client_id": response['clientId'], "credential": response['credential']})
+            
+            const dataResponseFromNode = await axios.post(BASE_URL+OAUTH2_URL,  { "client_id": response['clientId'], "credential": response['credential']})
+            console.log(dataResponseFromNode)
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000)) // hết hạn sau 4h 
             setCookieToken(dataResponseFromNode.data.token, expires);
