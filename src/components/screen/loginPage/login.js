@@ -1,5 +1,5 @@
 import axios  from 'axios';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { BASE_URL, LOGIN_URL, OAUTH2_URL} from "../../../common/constant";
 import {getLocalUsername, setCookieToken, setLocalUsername, removeLocalUsername } from "../../../common/functions"
@@ -9,6 +9,9 @@ import { faUser as farUser } from '@fortawesome/free-regular-svg-icons'
 import { useGoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { GoogleLogin } from '@react-oauth/google';
+import { SocketContext } from '../../../thirdparty/socket';
+
+
 // example: username.value = 'hello react'; console.log(username.value); 
 const useFormInput = initialValue => {
     const [value, setValue] = useState(initialValue);
@@ -30,6 +33,7 @@ function LoginPage(props) {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const socket = useContext(SocketContext);
     const redirectPath = location.state?.path || '/';
 
     // check local storage
@@ -55,7 +59,7 @@ function LoginPage(props) {
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000))
 
-            setCookieToken(response?.data?.token, expires);
+            // setCookieToken(response?.data?.token, expires);
             if (checkbox) {
                 setLocalUsername(username);
             } else {
@@ -80,8 +84,11 @@ function LoginPage(props) {
             console.log(dataResponseFromNode)
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000)) // hết hạn sau 4h 
-            setCookieToken(dataResponseFromNode.data.token, expires);
-            navigate(redirectPath, { replace: true });
+            // setCookieToken(dataResponseFromNode.data.token, expires);
+            // navigate(redirectPath, { replace: true });
+            console.log(socket.id)
+            socket.emit("new_user_connect", "123");
+     
         } catch (err) {
             if (err.response.status === 400 || err.response.status === 401)
                 setErrMsg(err.response.data.description);
