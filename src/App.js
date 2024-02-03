@@ -8,6 +8,7 @@ import LoginPage from './components/screen/loginPage/login.js'
 import HomePage from './components/screen/home/home.js';
 import ErrorPage from './components/screen/error/error.js';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext, socket } from './thirdparty/socket';
 
 function App() {

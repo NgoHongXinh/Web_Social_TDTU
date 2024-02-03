@@ -2,7 +2,7 @@ import axios  from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { BASE_URL, LOGIN_URL, OAUTH2_URL} from "../../../common/constant";
-import {getLocalUsername, setCookieToken, setLocalUsername, removeLocalUsername } from "../../../common/functions"
+import {getLocalUsername, setCookieToken, setLocalUsername, removeLocalUsername, getCookieToken } from "../../../common/functions"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKey } from '@fortawesome/free-solid-svg-icons'
 import { faUser as farUser } from '@fortawesome/free-regular-svg-icons'
@@ -47,25 +47,27 @@ function LoginPage(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        var formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password.value);
+
         try {
-            const response = await axios.post(BASE_URL+LOGIN_URL,
-                JSON.stringify({ username: username, password: password.value }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
+            const response = await axios.post(BASE_URL+"get-token", formData);
             console.log("da vao ", response)
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000))
 
-            // setCookieToken(response?.data?.token, expires);
+            setCookieToken(response.data.access_token, expires);
+            // lưu phiện đăng nhập
             if (checkbox) {
                 setLocalUsername(username);
             } else {
                 removeLocalUsername();
             }
-            navigate(redirectPath, { replace: true });
+            if (getCookieToken() !== null){
+                navigate(redirectPath, { replace: true });
+            }
+           
 
         } catch (err) {
             if (err.response.status === 400 || err.response.status === 401)
@@ -84,8 +86,8 @@ function LoginPage(props) {
             console.log(dataResponseFromNode)
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000)) // hết hạn sau 4h 
-            // setCookieToken(dataResponseFromNode.data.token, expires);
-            // navigate(redirectPath, { replace: true });
+            setCookieToken(dataResponseFromNode.data.token, expires);
+            navigate(redirectPath, { replace: true });
             console.log(socket.id)
             socket.emit("new_user_connect", "123");
      

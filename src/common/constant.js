@@ -1,7 +1,7 @@
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 console.log("123123", BASE_URL)
-const LOGIN_URL = 'api/account/login'
+const LOGIN_URL = 'get-token'
 const OAUTH2_URL = 'oauthen-google'
 const POST_URL = 'api/post'
 const CHAT_URL = 'api/conversation'
