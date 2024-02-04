@@ -18,6 +18,7 @@ function NavBar() {
             try {
                 const result = await getDataApiDetailUserLogin(token);
                 console.log(result)
+                setUserLogin(result)
               } catch (error) {
                 console.error(error)
               }
@@ -42,7 +43,7 @@ function NavBar() {
                         <Popup
                             trigger={
                                 <div>
-                                    <img src={""} className='rounded-circle nav-avatar' alt='avatar'></img>
+                                    <img src={userLogin?.data['picture']} className='rounded-circle nav-avatar' alt='avatar'></img>
                                 </div>
                             }
                             position='bottom center'
@@ -52,7 +53,7 @@ function NavBar() {
                                 <button type='button' className='btn btn-light' onClick={""}>Đăng xuất</button>
                             </div>
                         </Popup>
-                        <Link className='ms-2 text-dark fw-bold text-decoration-none' to={`/personal/${""}/post/`} state={{ "id": "" }}> {""}</Link>
+                        <Link className='ms-2 text-dark fw-bold text-decoration-none' to={`/profile/${userLogin?.data.user_code}/post/`} state={{ "usercode":userLogin?.data.user_code }}> {userLogin?.data.fullname}</Link>
                     </div>
                 </div>
 

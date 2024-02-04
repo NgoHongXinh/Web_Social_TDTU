@@ -10,9 +10,12 @@ import ErrorPage from './components/screen/error/error.js';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext, socket } from './thirdparty/socket';
-
+import UserProfile from './components/screen/profile/UserProfile';
 function App() {
   const [currUserInfo, setCurrUserInfo] = useState()
+  useEffect(()=> {
+    console.log(currUserInfo)
+  }, [currUserInfo])
   return (
     <SocketContext.Provider value={socket}>
     <div className='App'>
@@ -27,13 +30,13 @@ function App() {
               <Routes>
 
                 <Route element={<PublicRoute />}>
-                  <Route path='/login' element={<LoginPage setCurrUserInfo={setCurrUserInfo} />} />
+                  <Route path='/login' element={<LoginPage/>} />
                 </Route>
 
                 <Route element={<PrivateRoute currUserInfo={currUserInfo} setCurrUserInfo={setCurrUserInfo} />}>
                   <Route path='/' element={<HomePage currUserInfo={currUserInfo} />} />
-                  {/* <Route path='/personal/:id/*' element={<PersonalPage currUserInfo={currUserInfo} />}></Route>
-                  <Route path='/account/:id/setting' element={<SettingPage currUserInfo={currUserInfo} setCurrUserInfo={setCurrUserInfo}/>}> </Route>
+                  <Route path='/profile/:usercode/*' element={<UserProfile/>}></Route>
+                   {/*<Route path='/account/:id/setting' element={<SettingPage currUserInfo={currUserInfo} setCurrUserInfo={setCurrUserInfo}/>}> </Route>
                   <Route path='/search/' element={<FindFriend />}> </Route>
                   <Route path='/chat' element={<ChatPage currUserInfo={currUserInfo} />}> </Route> */}
                 </Route>
