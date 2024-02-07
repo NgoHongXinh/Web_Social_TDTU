@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import {acceptFriendRequest, getDataApiProfileUser, createNewFriendRequest} from "../../../common/callApi"
 import PostInProfile from "./PostInProfile"
+import ListFriend from "../friend/Listfriend"
 import { getCookieToken } from '../../../common/functions';
 import "../../../css/userProfile.css"
 function UserProfile(props) {
@@ -151,16 +152,17 @@ function UserProfile(props) {
 
                 </div>
 
-                <Routes>
+            
+            </div>
+            <Routes>
                     <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
 
                     {/* <Route path='/post'     component={() =><PostCard id={idUser} />}></Route> */}
-                    {/* <Route path='/friend' element={<Friend />}></Route>
+                    { /* 
                     <Route path='/infomation' element={<Infor />}></Route> */}
+                   <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
                 </Routes>
-            </div>
         </div>
-
 
     )
 
