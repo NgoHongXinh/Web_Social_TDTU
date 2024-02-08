@@ -1,6 +1,6 @@
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import React, { useEffect, useState, useContext, useRef } from 'react';
-import {getDataApiDetailUserLogin} from "../../../common/callApi"
+import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {getCookieToken} from '../../../common/functions'

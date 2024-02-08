@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
-import {acceptFriendRequest, getDataApiProfileUser, createNewFriendRequest} from "../../../common/callApi"
+import {getDataApiProfileUser} from "../../../common/callapi/user"
+import {acceptFriendRequest, createNewFriendRequest} from "../../../common/callapi/friend"
 import PostInProfile from "./PostInProfile"
 import ListFriend from "../friend/Listfriend"
 import { getCookieToken } from '../../../common/functions';
