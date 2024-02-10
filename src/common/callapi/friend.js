@@ -99,6 +99,30 @@ async function deleteFriend(token, usercode){
       throw error;
     }
   }
-export {acceptFriendRequest, createNewFriendRequest, getAllFriendOfUser, deleteFriend};
+
+  async function denyFriendRequest(token, usercode){
+    try {
+        const response = await fetch(`${BASE_URL}deny-friend-request/${usercode}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+      }
+    }
+export {acceptFriendRequest, createNewFriendRequest, getAllFriendOfUser, deleteFriend, denyFriendRequest};
 
 
