@@ -8,8 +8,9 @@ import Popup from 'reactjs-popup';
 import "../../../css/Nav.css"
 
 function NavBar() {
-    const [nameUser, setNameUser] =  useState()
+    const navigate = useNavigate();
     const [userLogin, setUserLogin] = useState()
+    const [nameOfUserWantToFind, setNameUserWantToFind] = useState()
     var token = getCookieToken()
     console.log(token)
     useEffect(()=>{
@@ -25,6 +26,11 @@ function NavBar() {
         }
         dataProfileUser() 
     }, [])
+    function finUserByName(event){
+        event.preventDefault();
+        if (nameOfUserWantToFind?.length > 0)
+            navigate(`/find-user/?name=${nameOfUserWantToFind}`,{ replace: true });
+    }
     return (
         <>
             <div className='bg-top-color'></div>
@@ -34,8 +40,8 @@ function NavBar() {
                         <img src={""} alt='TDTU logo' width='52px' height='26px'></img>
                     </NavLink>
 
-                    <form className='d-flex rounded-pill px-3 search-bar' onSubmit={""}>
-                        <input type='text' className='search-input py-2' placeholder='Tìm kiếm bạn bè...' onChange={(e) => { setNameUser(e.target.value) }}></input>
+                    <form className='d-flex rounded-pill px-3 search-bar' onSubmit={finUserByName}>
+                        <input type='text' className='search-input py-2' placeholder='Tìm kiếm bạn bè...' onChange={(event) => {setNameUserWantToFind(event.target.value)}}></input>
                         <button type="submit" className="btn"><FontAwesomeIcon icon={faSearch} className='my-auto' /></button>
                     </form>
 

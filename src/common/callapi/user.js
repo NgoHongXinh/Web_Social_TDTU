@@ -49,4 +49,27 @@ async function getDataApiDetailUserLogin(token){
       }
     }
 
-export {getDataApiDetailUserLogin, getDataApiProfileUser};
+    async function getDataApiFindUser(token, name_or_email){
+      try {
+          const response = await fetch(`${BASE_URL}user/find-user?name_or_email=${name_or_email}`,
+              {
+                  method: 'GET',
+                  headers: {
+                      'Content-type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                  }
+              }
+          )
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+          throw error;
+        }
+      }
+export {getDataApiDetailUserLogin, getDataApiProfileUser, getDataApiFindUser};
