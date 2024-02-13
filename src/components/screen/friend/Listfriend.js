@@ -67,7 +67,6 @@ function ListFriend(props) {
 
 
     useEffect(() => {
-        console.log("vaof ")
         callGetAllFriendOfUser()
 
 
