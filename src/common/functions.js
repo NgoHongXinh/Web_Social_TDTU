@@ -65,3 +65,32 @@ export const getLocalUsername = () => {
 export const removeLocalUsername = () => {
     return localStorage.removeItem('Username');
 }
+
+
+export const TimeFromCreateToNow = (created_time) =>{
+    var timestamp = created_time
+    const current = new Date().getTime();
+    var created_time = new Date(timestamp).getTime();
+    const timeDBetween2datetime = current - created_time;
+    // Extract hours, minutes, and seconds from the Date object
+    
+    const oneDayMs = 24 * 60 * 60 * 1000; // Số milliseconds trong một ngày
+    const numberOfDays = Math.floor(timeDBetween2datetime / oneDayMs);
+    
+    const seconds = Math.floor(timeDBetween2datetime / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    if(numberOfDays >=1 && numberOfDays <=3){
+        return `${numberOfDays} ngày trước`
+    }
+    else if (hours >= 1 && hours <= 24){
+        return ` ${hours} giờ trước`
+    }
+    else if((minutes % 60) >=1 && (minutes % 60)<=60){
+        return `${minutes % 60} phút trước`
+    }
+}
+
+
+// console.log(`Khoảng thời gian giữa hai thời điểm là ${hours} giờ ${minutes % 60} phút ${seconds % 60} giây.`);
+// console.log(numberOfDays, seconds, minutes, hours)

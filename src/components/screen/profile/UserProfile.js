@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
-import {getDataApiProfileUser, createNewFriendRequest} from "../../../common/callApi"
+import {getDataApiProfileUser} from "../../../common/callapi/user"
+import {acceptFriendRequest, createNewFriendRequest, denyFriendRequest} from "../../../common/callapi/friend"
 import PostInProfile from "./PostInProfile"
+import ListFriend from "../friend/Listfriend"
 import { getCookieToken } from '../../../common/functions';
 import "../../../css/userProfile.css"
-function UserProfile(props) {
+function UserProfile() {
     const {usercode} = useParams()
     const [chooseMenu, setChooseMenu] = useState("post") // đang chọn tab menu nào post, user, fiend, mặc định là post
     const [inforUserInCurrentPage, setUserInfoCurrentPage] = useState() // thông tin của user ở trang cá nhân hiện tại theo usercode
@@ -15,7 +17,7 @@ function UserProfile(props) {
         try {
             const result = await createNewFriendRequest(token, usercode);
             console.log(result?.response_status)
-            if(result?.response_status.code == "00"){
+            if(result?.response_status.code === "00"){
                 setBtnFriendStatus(
                     <div className='btn btn-success d-block d-md-inline-block lift send-friend-request'>Đã gửi lời mời</div>)
             }
@@ -23,11 +25,45 @@ function UserProfile(props) {
             console.error(error)
           }
     }
+    const callApiAcceptFriendRequest = async (usercode) =>{
+        try {
+            const result = await acceptFriendRequest(token, usercode);
+            console.log(result?.response_status)
+            if(result?.response_status.code === "00"){
+                setBtnFriendStatus(
+                    <div className='btn btn-success d-block d-md-inline-block lift send-friend-request'>Bạn bè</div>)
+            }
+          } catch (error) {
+            console.error(error)
+          }
+    }
+     const callApiDenyFriendRequest = async (usercode) => {
+        try {
+            const result = await denyFriendRequest(token, usercode);
+            console.log(result?.response_status)
+            if(result?.response_status.code === "00"){
+                setBtnFriendStatus(
+                    <div usercode={inforUserInCurrentPage?.data.user_code} onClick={RequestNewFriend} className='btn btn-success d-block d-md-inline-block lift send-friend-request'>Thêm bạn bè</div>)
+            }
+          } catch (error) {
+            console.error(error)
+          }
+     }
+
+    function DenyFriendRequest(e){
+        var usercodeWantToRequest = e.target.attributes.getNamedItem('usercode').value;
+        callApiDenyFriendRequest(usercodeWantToRequest)
+    }
+
     function RequestNewFriend(e){
         var usercodeWantToRequest = e.target.attributes.getNamedItem('usercode').value;
-        console.log(usercodeWantToRequest)
         callApiRequestNewFriend(usercodeWantToRequest)
 
+    }
+
+    function AcceptFriendRequest(e){
+        var usercodeWaitForAccept = e.target.attributes.getNamedItem('usercode').value;
+        callApiAcceptFriendRequest(usercodeWaitForAccept)
     }
     useEffect(()=>{
 
@@ -44,7 +80,7 @@ function UserProfile(props) {
     }, [])
 
     // phần hiển thị nút bạn bè/ thêm bạn/ đã gửi lời mời
-
+    
     useEffect(()=> {
         if(inforUserInCurrentPage?.data.is_current_login_user === false){
             if(inforUserInCurrentPage?.data.friend_status === "friend"){
@@ -58,6 +94,11 @@ function UserProfile(props) {
             if(inforUserInCurrentPage?.data.friend_status === "pendding"){
                 setBtnFriendStatus(
                     <div className='btn btn-success d-block d-md-inline-block lift send-friend-request'> Đã gửi lời mời</div>)
+            }
+            if(inforUserInCurrentPage?.data.friend_status === "wait_accept"){
+                setBtnFriendStatus(
+                    <><div usercode={inforUserInCurrentPage?.data.user_code} onClick={AcceptFriendRequest} className='btn btn-warning d-block d-md-inline-block lift send-friend-request'>Chấp nhận lời mời</div>
+                    <div usercode={inforUserInCurrentPage?.data.user_code} onClick={DenyFriendRequest} className='btn btn-danger d-block d-md-inline-block lift send-friend-request'>Từ chối</div></>)
             }
         }
 
@@ -129,16 +170,17 @@ function UserProfile(props) {
 
                 </div>
 
-                <Routes>
+            
+            </div>
+            <Routes>
                     <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
 
                     {/* <Route path='/post'     component={() =><PostCard id={idUser} />}></Route> */}
-                    {/* <Route path='/friend' element={<Friend />}></Route>
+                    { /* 
                     <Route path='/infomation' element={<Infor />}></Route> */}
+                   <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
                 </Routes>
-            </div>
         </div>
-
 
     )
 

@@ -1,6 +1,4 @@
-import {BASE_URL} from "./constant"
-
-// USER API
+import {BASE_URL} from "../constant"
 async function getDataApiProfileUser(token, user_code){
     try {
         const response = await fetch(`${BASE_URL}user/profile/${user_code}`,
@@ -51,32 +49,27 @@ async function getDataApiDetailUserLogin(token){
       }
     }
 
-
-// friend request
-async function createNewFriendRequest(token, usercode){
-  try {
-      const response = await fetch(`${BASE_URL}friend-request/${usercode}`,
-          {
-              method: 'POST',
-              headers: {
-                  'Content-type': 'application/json',
-                  'Authorization': `Bearer ${token}`
+    async function getDataApiFindUser(token, name_or_email){
+      try {
+          const response = await fetch(`${BASE_URL}user/find-user?name_or_email=${name_or_email}`,
+              {
+                  method: 'GET',
+                  headers: {
+                      'Content-type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                  }
               }
+          )
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
-      )
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+          throw error;
+        }
       }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-      throw error;
-    }
-  }
-  
-export {getDataApiDetailUserLogin, getDataApiProfileUser, createNewFriendRequest};
-
-
+export {getDataApiDetailUserLogin, getDataApiProfileUser, getDataApiFindUser};

@@ -11,6 +11,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext, socket } from './thirdparty/socket';
 import UserProfile from './components/screen/profile/UserProfile';
+import FindUser from './components/screen/search/FindUser';
 function App() {
   const [currUserInfo, setCurrUserInfo] = useState()
   useEffect(()=> {
@@ -36,8 +37,9 @@ function App() {
                 <Route element={<PrivateRoute currUserInfo={currUserInfo} setCurrUserInfo={setCurrUserInfo} />}>
                   <Route path='/' element={<HomePage currUserInfo={currUserInfo} />} />
                   <Route path='/profile/:usercode/*' element={<UserProfile/>}></Route>
+                  <Route path='/find-user' element={<FindUser />}> </Route>
                    {/*<Route path='/account/:id/setting' element={<SettingPage currUserInfo={currUserInfo} setCurrUserInfo={setCurrUserInfo}/>}> </Route>
-                  <Route path='/search/' element={<FindFriend />}> </Route>
+       
                   <Route path='/chat' element={<ChatPage currUserInfo={currUserInfo} />}> </Route> */}
                 </Route>
 
