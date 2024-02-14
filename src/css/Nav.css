@@ -59,3 +59,13 @@
     border-radius: 5px;
     border: #e0e0e0 solid 1px;
 }
+
+.noti-user-avata img{
+    margin: 10px;
+    width: 70%;
+}
+/* a{
+    text-decoration: None;
+    color: black;
+
+} */

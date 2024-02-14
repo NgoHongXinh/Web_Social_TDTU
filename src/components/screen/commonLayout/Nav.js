@@ -4,6 +4,7 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {getCookieToken} from '../../../common/functions'
+import { getDataApiAllnotification } from "../../../common/callapi/notification"
 import Popup from 'reactjs-popup';
 import Notification from '../notification/Notification';
 import "../../../css/Nav.css"
@@ -13,6 +14,7 @@ function NavBar() {
     const [userLogin, setUserLogin] = useState()
     const [nameOfUserWantToFind, setNameUserWantToFind] = useState()
     var token = getCookieToken()
+    const [numberNotiNotRead, setNumberNotiNotRead] = useState()
     console.log(token)
     useEffect(()=>{
 
@@ -26,6 +28,18 @@ function NavBar() {
               }
         }
         dataProfileUser() 
+        const listNotification = async () => {
+            try {
+            const result = await getDataApiAllnotification(token);
+            console.log(result)
+            if (result?.data.list_noti_info.length > 0) {
+                setNumberNotiNotRead( result?.data.number_noti_not_read)
+            }
+        }catch (error) {
+            console.error(error)
+          }
+        }
+        listNotification()
     }, [])
     function finUserByName(event){
         event.preventDefault();
@@ -51,7 +65,7 @@ function NavBar() {
                         trigger={
                             <div>
                             <div className='noti-style'>
-                           <div className='style-number-noti'>10</div> 
+                           <div className='style-number-noti'>{numberNotiNotRead}</div> 
                       
                               <svg
                                 viewBox="0 0 24 24"
@@ -70,6 +84,7 @@ function NavBar() {
                         position='bottom right'
                     >
                         <Notification
+                        setNumberNotiNotRead= {setNumberNotiNotRead}
                             // loadingNotiList={loadingNotiList}
                             // setNotificationInfo={setNotificationInfo}
                             // lenNotification={lenNotification}
