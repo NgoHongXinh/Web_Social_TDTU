@@ -89,8 +89,7 @@ function LoginPage(props) {
             setCookieToken(dataResponseFromNode.data.token, expires);
             navigate(redirectPath, { replace: true });
             console.log(socket.id)
-            socket.emit("new_user_connect", "123");
-     
+      
         } catch (err) {
             if (err.response.status === 400 || err.response.status === 401)
                 setErrMsg(err.response.data.description);

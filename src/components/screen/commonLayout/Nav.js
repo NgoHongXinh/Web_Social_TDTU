@@ -4,9 +4,10 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {getCookieToken} from '../../../common/functions'
-import { getDataApiAllnotification } from "../../../common/callapi/notification"
+import { getDataApiAllnotification, getDataApiNumberNotification } from "../../../common/callapi/notification"
 import Popup from 'reactjs-popup';
 import Notification from '../notification/Notification';
+import { SocketContext } from '../../../thirdparty/socket';
 import "../../../css/Nav.css"
 
 function NavBar() {
@@ -14,38 +15,45 @@ function NavBar() {
     const [userLogin, setUserLogin] = useState()
     const [nameOfUserWantToFind, setNameUserWantToFind] = useState()
     var token = getCookieToken()
-    const [numberNotiNotRead, setNumberNotiNotRead] = useState()
-    console.log(token)
+    const [numberNotiNotRead, setNumberNotiNotRead] = useState(0)
+    const socket = useContext(SocketContext);
+    const numberNoti = async () =>{
+        try {
+            const userInfo = await getDataApiNumberNotification(token);
+            setNumberNotiNotRead(userInfo?.data.number_noti_not_read)
+          } catch (error) {
+            console.error(error)
+          }
+    }
     useEffect(()=>{
-
         const dataProfileUser = async () =>{
             try {
-                const result = await getDataApiDetailUserLogin(token);
-                console.log(result)
-                setUserLogin(result)
+                const userInfo = await getDataApiDetailUserLogin(token);
+
+                setUserLogin(userInfo)
+                console.log("111111111", userLogin, socket.id)
+                socket.emit("new_user_connect", userInfo?.data.user_code);
+     
               } catch (error) {
                 console.error(error)
               }
         }
         dataProfileUser() 
-        const listNotification = async () => {
-            try {
-            const result = await getDataApiAllnotification(token);
-            console.log(result)
-            if (result?.data.list_noti_info.length > 0) {
-                setNumberNotiNotRead( result?.data.number_noti_not_read)
-            }
-        }catch (error) {
-            console.error(error)
-          }
-        }
-        listNotification()
+        numberNoti()
     }, [])
+    useEffect(()=>{
+        socket.on("send_noti", (data) => {
+            console.log("fffffffffffffffffff", data, numberNotiNotRead)
+            numberNoti()
+        });
+    }, [socket])
+    
     function finUserByName(event){
         event.preventDefault();
         if (nameOfUserWantToFind?.length > 0)
             navigate(`/find-user/?name=${nameOfUserWantToFind}`,{ replace: true });
     }
+    console.log(numberNotiNotRead)
     return (
         <>
             <div className='bg-top-color'></div>

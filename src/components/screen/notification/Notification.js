@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { getDataApiAllnotification, getDataApiUpdateNoti } from "../../../common/callapi/notification"
+import { getDataApiAllnotification, getDataApiUpdateNoti, getDataApiNumberNotification } from "../../../common/callapi/notification"
 import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
 import { Link, Redirect } from 'react-router-dom';
 function Notification(props) {
@@ -26,12 +26,19 @@ function Notification(props) {
             console.error(error)
           }
     }
+    const numberNoti = async () =>{
+        try {
+            const userInfo = await getDataApiNumberNotification(token);
+            setNumberNotiNotRead(userInfo?.data.number_noti_not_read)
+          } catch (error) {
+            console.error(error)
+          }
+    }
     const listNotification = async () => {
         try {
             const result = await getDataApiAllnotification(token);
-            console.log(result)
+            numberNoti() // gọi để lấy số lượng thông báo chưa đọc để truyền lại vào state cho nav hiển thị
             if (result?.data.list_noti_info.length > 0) {
-                setNumberNotiNotRead( result?.data.number_noti_not_read)
                 result?.data.list_noti_info.forEach(noti => {
                     notis.push(
                         <div className='d-flex mb-2' style={{ background: noti.is_checked ? "white": "azure" }} key={noti.notification_code} >
