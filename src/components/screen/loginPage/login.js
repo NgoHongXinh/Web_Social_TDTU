@@ -25,7 +25,7 @@ const useFormInput = initialValue => {
     }
 }
 
-function LoginPage(props) {
+function LoginPage() {
     const [username, setUsername]= useState('');
     const password = useFormInput('');
     const [errMsg, setErrMsg] = useState(null);
@@ -71,7 +71,7 @@ function LoginPage(props) {
 
         } catch (err) {
             if (err.response.status === 400 || err.response.status === 401)
-                setErrMsg(err.response.data.description);
+                setErrMsg("Tài khoản google khong phải do trường TDT cấp");
             else
                 setErrMsg('Đã xảy ra lỗi. Thử lại sau!');
         }
@@ -82,25 +82,23 @@ function LoginPage(props) {
         try {
             console.log(response, { "client_id": response['clientId'], "credential": response['credential']})
             
-            const dataResponseFromNode = await axios.post(BASE_URL+OAUTH2_URL,  { "client_id": response['clientId'], "credential": response['credential']})
-            console.log(dataResponseFromNode)
+            const dataLoginResponse = await axios.post(BASE_URL+OAUTH2_URL,  { "client_id": response['clientId'], "credential": response['credential']})
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000)) // hết hạn sau 4h 
-            setCookieToken(dataResponseFromNode.data.token, expires);
+            setCookieToken(dataLoginResponse.data.token, expires);
             navigate(redirectPath, { replace: true });
-            console.log(socket.id)
+
       
         } catch (err) {
-            if (err.response.status === 400 || err.response.status === 401)
-                setErrMsg(err.response.data.description);
+            if (err.response.status === 400 || err.response.status === 401){
+
+                setErrMsg("Tài khoản google khong phải do trường TDT cấp");
+            }
+       
             else
                 setErrMsg('Đã xảy ra lỗi. Thử lại sau!');
         }
     }
-
-    // const responseFailGoogle = (response) => {
-    //     console.log(response)
-    // }
 
     return (
             <section className="vh-100  d-flex justify-content-center align-items-center">
@@ -148,6 +146,8 @@ function LoginPage(props) {
 
                             <div className='form-group mt-4 w-100'>
                                 <div className='div-class-login-gg border border-dark'>
+<<<<<<< HEAD
+=======
                                     {/* <GoogleLogin
                                         className='w-100 text-dark'
                                         clientId='100847206415-rbdoqmgsbdvlik3s3nmukildi3mbpivg.apps.googleusercontent.com'
@@ -158,6 +158,7 @@ function LoginPage(props) {
                                         cookiePolicy={'single_host_origin'}
                                     /> */}
                                 
+>>>>>>> main
                                         <GoogleLogin
                                             size="50px"
                                             width="100px"

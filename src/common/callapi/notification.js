@@ -1,8 +1,12 @@
 import {BASE_URL} from "../constant"
 
-async function getDataApiAllnotification(token){
+async function getDataApiAllnotification(token, last_id){
     try {
-        const response = await fetch(`${BASE_URL}notification`,
+      var url = `${BASE_URL}notification`
+        if(last_id){
+          url = `${BASE_URL}notification?last_notification_id=${last_id}`
+        }
+        const response = await fetch(url,
             {
                 method: 'GET',
                 headers: {
