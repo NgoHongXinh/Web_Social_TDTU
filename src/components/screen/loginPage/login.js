@@ -83,9 +83,10 @@ function LoginPage() {
             console.log(response, { "client_id": response['clientId'], "credential": response['credential']})
             
             const dataLoginResponse = await axios.post(BASE_URL+OAUTH2_URL,  { "client_id": response['clientId'], "credential": response['credential']})
+            console.log(dataLoginResponse)
             let expires = new Date()
             expires.setTime(expires.getTime() + (60 * 60 * 4 * 1000)) // hết hạn sau 4h 
-            setCookieToken(dataLoginResponse.data.token, expires);
+            setCookieToken(dataLoginResponse.data.access_token, expires);
             navigate(redirectPath, { replace: true });
 
       
@@ -146,19 +147,6 @@ function LoginPage() {
 
                             <div className='form-group mt-4 w-100'>
                                 <div className='div-class-login-gg border border-dark'>
-<<<<<<< HEAD
-=======
-                                    {/* <GoogleLogin
-                                        className='w-100 text-dark'
-                                        clientId='100847206415-rbdoqmgsbdvlik3s3nmukildi3mbpivg.apps.googleusercontent.com'
-                                        // clientId='706949691658-91aibid2urfkvl4vetckpgol4b6ina2k.apps.googleusercontent.com'
-                                        buttonText='Đăng nhập với Google'
-                                        onSuccess={responseSuccessGoogle}
-                                        onFailure={responseFailGoogle}
-                                        cookiePolicy={'single_host_origin'}
-                                    /> */}
-                                
->>>>>>> main
                                         <GoogleLogin
                                             size="50px"
                                             width="100px"
