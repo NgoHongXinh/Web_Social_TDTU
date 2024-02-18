@@ -103,19 +103,17 @@ function LoginPage(props) {
     // }
 
     return (
-        <GoogleOAuthProvider clientId='426416274883-i5379veh6gfj8oir6j0m6tnkmco705n0.apps.googleusercontent.com'>
-        <div className='login row justify-content-center mt-5'>
-            <div className='col-sm-8 col-md-6 col-xl-3'>
-                <div className='login-form login-border1 border rounded'>
-                    <div className='login-border2 border rounded bg-light p-3'>
-                        <form className='form' onSubmit={handleSubmit}>
-                            <div className='logo-network text-center w-100'>
-                                <img src={""} alt='TDTU LOGO' width='128px' height='64px'></img>
-                            </div>
-                            <h2 className='text-center my-3 login-header'>Đăng nhập</h2>
-
-
-                            <div className='form-group d-flex login-input-bar'>
+            <section className="vh-100  d-flex justify-content-center align-items-center">
+                <div className='container-fluid'>
+                    <div className='row d-flex justify-content-center align-items-center'>
+                    <div class="col-md-9 col-lg-6 col-xl-5">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                        className="img-fluid" alt='TDTU LOGO'></img>
+                    </div>
+                    <div className='col-md-8 col-lg-6 col-xl-4 offset-xl-'>
+                        <GoogleOAuthProvider clientId='426416274883-i5379veh6gfj8oir6j0m6tnkmco705n0.apps.googleusercontent.com'>
+                        <form className='form ' onSubmit={handleSubmit}>
+                            <div className='form-outline mb-4 d-flex login-input-bar'>
                                 <FontAwesomeIcon icon={farUser} className='my-auto me-2' />
                                 <input type='text'
                                     name='username'
@@ -123,29 +121,32 @@ function LoginPage(props) {
                                     onChange={(e) => setUsername(e.target.value)}
                                     autoComplete='off'
                                     placeholder='Tài khoản'
+                                    className='form-control form-control-lg'
                                 />
                             </div>
-                            <div className='form-group d-flex mt-2 mb-4 login-input-bar'>
+                            <div className='form-group d-flex mt-2 mb-4 login-input-bar w-100'>
                                 <FontAwesomeIcon icon={faKey} className='my-auto me-2' />
                                 <input type='password'
                                     name='password' {...password}
                                     placeholder='Mật khẩu'
+                                    className='form-control form-control-lg'
                                 />
                             </div>
                             <div className='text-center form-group'>
-                                <button type='submit' className='login-button-submit'>ĐĂNG NHẬP</button>
+                                <button type='submit' className='btn btn-primary btn-lg'>ĐĂNG NHẬP</button>
                             </div>
-
-
-                            <div className='form-group mt-2 me-2 d-flex justify-content-between fs-smaller'>
-                                <div className='d-flex flex-row align-items-center text-secondary'>
-                                    <input className='login-checkbox me-1' id='rememberCheckbox' type='checkbox' checked={checkbox} onChange={() => setCheckbox(!checkbox)} />
-                                    <label htmlFor='rememberCheckbox'>Nhớ tài khoản</label>
+                            <div className="d-flex justify-content-between align-items-center">
+                            {/* Checkbox */}
+                                <div className="form-check checkbox-lg">
+                                    <input className='form-check-input me-1' id='rememberCheckbox' type='checkbox' checked={checkbox} onChange={() => setCheckbox(!checkbox)} />
+                                    <label className="form-check-label" htmlFor="rememberCheckbox">
+                                        Remember me
+                                    </label>
                                 </div>
-                                <Link to='/forgot'>Quên mật khẩu?</Link>
+                                <Link to='/forgot' className='text-body'>Quên mật khẩu?</Link>
                             </div>
 
-                            <div className='form-group mt-4'>
+                            <div className='form-group mt-4 w-100'>
                                 <div className='div-class-login-gg border border-dark'>
                                     {/* <GoogleLogin
                                         className='w-100 text-dark'
@@ -156,7 +157,7 @@ function LoginPage(props) {
                                         onFailure={responseFailGoogle}
                                         cookiePolicy={'single_host_origin'}
                                     /> */}
-                                   
+                                
                                         <GoogleLogin
                                             size="50px"
                                             width="100px"
@@ -168,8 +169,9 @@ function LoginPage(props) {
                                             onError={() => {
                                                 console.log('Login Failed');
                                             }}
+                                            
                                             />
-                     
+                    
                                 </div>
                             </div>
 
@@ -177,12 +179,12 @@ function LoginPage(props) {
                                 <div className={errMsg ? 'p-2 mt-2 bg-danger text-white rounded' : 'offscreen'} aria-live='assertive'>{errMsg}</div>
                             </div>
                         </form>
+                        </GoogleOAuthProvider>
+                    </div>
                     </div>
                 </div>
-            </div>
-
-        </div>
-        </GoogleOAuthProvider>
+            </section>
+        
     );
 
 
