@@ -4,7 +4,7 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {getCookieToken} from '../../../common/functions'
-import { getDataApiAllnotification, getDataApiNumberNotification } from "../../../common/callapi/notification"
+import { getDataApiNumberNotification } from "../../../common/callapi/notification"
 import Popup from 'reactjs-popup';
 import Notification from '../notification/Notification';
 import { SocketContext } from '../../../thirdparty/socket';
@@ -111,7 +111,7 @@ function NavBar() {
                             position='bottom center'
                         >
                             <div className='menu-popup d-flex flex-column'>
-                                <button type='button' className='btn btn-light mb-2'><Link className='btn-link-text' to={`/account/${""}/setting`}>Sửa thông tin cá nhân</Link></button>
+                                <button type='button' className='btn btn-light mb-2'><Link className='btn-link-text' to={`'/user/${""}/update-info`}>Sửa thông tin cá nhân</Link></button>
                                 <button type='button' className='btn btn-light' onClick={""}>Đăng xuất</button>
                             </div>
                         </Popup>
