@@ -146,8 +146,10 @@ function LoginPage() {
                             </div>
 
                             <div className='form-group mt-4 w-100'>
-                                <div className='div-class-login-gg border border-dark'>
+                                {/* <div className='div-class-login-gg border border-dark'> */}
                                         <GoogleLogin
+                                            type="icon"
+                                        // theme="filled_blue"
                                             size="50px"
                                             width="100px"
                                             text="Đăng nhập với Google"
@@ -161,7 +163,7 @@ function LoginPage() {
                                             
                                             />
                     
-                                </div>
+                                {/* </div> */}
                             </div>
 
                             <div className='form-group text-center'>

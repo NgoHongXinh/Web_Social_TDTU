@@ -5,7 +5,7 @@ function HomePage(props){
     return(
         <div>
             {/*main*/}
-            <main role="main" className="container">
+            <div role="main" className="container">
                 {/* The Modal */}
                 <div className="modal" id="myModal">
                     <div className="modal-dialog">
@@ -207,7 +207,7 @@ function HomePage(props){
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }
