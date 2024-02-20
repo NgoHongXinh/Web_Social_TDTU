@@ -35,3 +35,45 @@
 .form-change-password>form>input:focus {
     outline: none;
 }
+.profile-header{
+    width: 100%;
+    border: none;
+    padding-top: 30px;
+}
+.image-background-profile{
+    width: 80vw;
+    height: 50vh;
+    
+}
+.background-profile--position{
+    width: 100%;
+}
+.avatar-img{
+    width: 200px;
+    top: 10;
+}
+.avatar-content-profile{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@media only screen and (max-width: 1080px){
+    .avatar-content-profile{
+        display: block;
+        align-items: center;
+    }
+    .image-background-profile{
+        width: 100vw;
+        height: 30vh;
+        
+    }
+}
+
+/* .background-profile--position{
+    position: absolute;
+}
+.image-avatar--position{
+    position: relative;
+    top: 30;
+    left: 10;
+} */
