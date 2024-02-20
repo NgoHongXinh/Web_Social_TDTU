@@ -10,7 +10,8 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { GoogleLogin } from '@react-oauth/google';
 import { SocketContext } from '../../../thirdparty/socket';
-
+import "../../../css/login.css";
+import logoTDTU from "../../../image/TDT logo.png";
 
 // example: username.value = 'hello react'; console.log(username.value); 
 const useFormInput = initialValue => {
@@ -23,6 +24,17 @@ const useFormInput = initialValue => {
         value,
         onChange: handleChange
     }
+}
+const Divider = ({ children }) => {
+    return (
+      <div className="container">
+        <div className="border" />
+        <span className="content">
+          {children}
+        </span>
+        <div className="border" />
+      </div>
+    );
 }
 
 function LoginPage() {
@@ -107,11 +119,13 @@ function LoginPage() {
                     <div className='row d-flex justify-content-center align-items-center'>
                     <div class="col-md-9 col-lg-6 col-xl-5">
                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                        className="img-fluid" alt='TDTU LOGO'></img>
+                        className="img-fluid" alt='BACKGROUND LOGO'></img>
                     </div>
                     <div className='col-md-8 col-lg-6 col-xl-4 offset-xl-'>
                         <GoogleOAuthProvider clientId='426416274883-i5379veh6gfj8oir6j0m6tnkmco705n0.apps.googleusercontent.com'>
                         <form className='form ' onSubmit={handleSubmit}>
+                            <img src={logoTDTU}
+                            className="img-logo-tdtu" alt='TDTU LOGO' />
                             <div className='form-outline mb-4 d-flex login-input-bar'>
                                 <FontAwesomeIcon icon={farUser} className='my-auto me-2' />
                                 <input type='text'
@@ -144,26 +158,28 @@ function LoginPage() {
                                 </div>
                                 <Link to='/forgot' className='text-body'>Quên mật khẩu?</Link>
                             </div>
-
+                            <Divider>Or</Divider>
                             <div className='form-group mt-4 w-100'>
-                                {/* <div className='div-class-login-gg border border-dark'> */}
-                                        <GoogleLogin
-                                            type="icon"
-                                        // theme="filled_blue"
-                                            size="50px"
-                                            width="100px"
-                                            text="Đăng nhập với Google"
-                                            onSuccess={(credentialResponse) => {
-                                                onSuccess(credentialResponse)
-                                                // console.log(credentialResponse);
-                                            }}
-                                            onError={() => {
-                                                console.log('Login Failed');
-                                            }}
+                                <div className='col d-flex justify-content-center'>
+                                        <div className=''>
+                                            <GoogleLogin
+                                                type="icon"
+                                            // theme="filled_blue"
+                                                size="200px"
+                                                width="100px"
+                                                text="Đăng nhập với Google"
+                                                onSuccess={(credentialResponse) => {
+                                                    onSuccess(credentialResponse)
+                                                    // console.log(credentialResponse);
+                                                }}
+                                                onError={() => {
+                                                    console.log('Login Failed');
+                                                }}
                                             
                                             />
+                                        </div>
                     
-                                {/* </div> */}
+                                </div>
                             </div>
 
                             <div className='form-group text-center'>

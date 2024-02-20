@@ -108,20 +108,23 @@ function UserProfile() {
 
 
     return (
-        <div className='container'>
-
-            <div className='card bg-light listcard'>
-                <div className='card-body h-100'>
+            <div className='bg-light profile-header'>
+                <div className='h-100'>
                     <div className='header'>
-                        <img src={inforUserInCurrentPage?.data.background_picture} alt='Blog img' className='header-img-top' width='100%' height='256px'></img>
+                        <div className='background-profile--position image-fluid'>
+                            <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp' alt='Blog img' 
+                            className='image-background-profile'></img>
+                           
+                        </div>
 
                         <div className='container-fluid'>
                             <div className='header-body mt-n5 mt-md-n6'>
-                                <div className='row align-items-end'>
+                                <div className='avatar-content-profile align-items-end'>
 
                                     <div className='col-auto'>
                                         <div className='avatar avatar-xxl header-avatar-top'>
-                                            <img alt='user logo' src={inforUserInCurrentPage?.data.picture} width='128px' hight='128px' className='avatar-img rounded-circle border border-4 border-body'></img>
+                                            <img alt='user logo' src={inforUserInCurrentPage?.data.picture} 
+                                            className='avatar-img rounded-circle border border-4 border-body'></img>
                                         </div>
 
                                     </div>
@@ -140,7 +143,7 @@ function UserProfile() {
                                     <div className='col-12 col-md-auto mt-2 mt-md-0 mb-md-3'>
 
                                         {btnFriendStatus}
-                                        <button type='button' onClick={""} className='btn btn-primary d-block d-md-inline-block lift'>
+                                        <button type='button' onClick={""} className='btn btn-primary  d-md-inline-block lift'>
                                             <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-chat-square-dots-fill' viewBox='0 0 16 16'>
                                                 <path d='M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z' />
                                             </svg> {inforUserInCurrentPage?.data.is_current_login_user !== false ? 'Xem tin nhắn' : 'Nhắn tin'}
@@ -150,6 +153,8 @@ function UserProfile() {
                                 
 
                                 </div>
+                                <hr></hr>
+
                                 <div className='row align-items-center'>
                                     <ul className='nav nav-tabs nav-overflow header-tabs'>
                                         <li className='nav-item'>
@@ -165,6 +170,17 @@ function UserProfile() {
                                     </ul>
                                 </div>
                             </div>
+                            <div>
+                                <Routes>
+                                    <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
+
+                                    {/* <Route path='/post'     component={() =><PostCard id={idUser} />}></Route> */}
+                                    { /* 
+                                    */}
+                                    <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
+                                    <Route path='/infomation' element={<InfoUserInUserProfile />}></Route>
+                                </Routes>
+                            </div>
 
                         </div>
                     </div>
@@ -173,17 +189,7 @@ function UserProfile() {
 
             
             </div>
-            <Routes>
-                    <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
-
-                    {/* <Route path='/post'     component={() =><PostCard id={idUser} />}></Route> */}
-                    { /* 
-                     */}
-                   <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
-                   <Route path='/infomation' element={<InfoUserInUserProfile />}></Route>
-                </Routes>
-        </div>
-
+            
     )
 
 }

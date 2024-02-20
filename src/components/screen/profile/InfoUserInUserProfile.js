@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getCookieToken } from '../../../common/functions'
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import Card from 'react-bootstrap/Card';
+import "../../../css/post_profile.css";
 function InfoUserInUserProfile() {
     const token = getCookieToken()
     const [currentUser, setcurrentUser] = useState()
@@ -36,16 +37,13 @@ function InfoUserInUserProfile() {
 
     }
     return (
-        <>
-        <br></br>
-        <div className='container'>
-            <div className='row'>
-                <Card className="mb-4">
+            <div className='row d-flex justify-content-center infor-profile-body'>
+                <div className="col-4 d-flex align-items-center justify-content-center infor-profile-content">
+                    <h4>THÔNG TIN CÁ NHÂN</h4>
+                </div>
+                <Card className=" mb-4">
                     <div className="row">
-                        <div className="col-4 md-4  d-flex align-items-center justify-content-center ">
-                            <h4>THÔNG TIN CÁ NHÂN</h4>
-                        </div>
-                        <div className="col-5 md-6 justify-content-center " >
+                        <div className="col-9 md-6 justify-content-center " >
                             <Card.Body>
                                 <ul style ={{margin:"10px"}} className="list-group list-group-flush">
                                     <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-user" />{currentUser?.data.fullname}</li>
@@ -66,8 +64,6 @@ function InfoUserInUserProfile() {
                     </div>
                 </Card>
             </div>
-        </div>
-        </>
     );
 }
 
