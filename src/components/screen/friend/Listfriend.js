@@ -6,6 +6,9 @@ import Card from 'react-bootstrap/Card';
 import { getAllFriendOfUser, deleteFriend } from "../../../common/callapi/friend"
 import { useEffect, useState } from 'react';
 import { getCookieToken } from '../../../common/functions';
+import "../../../css/listfriend.css";
+import "../../../css/style.css";
+import { CardHeader } from 'react-bootstrap';
 function ListFriend(props) {
     const { usercode } = props
     const token = getCookieToken()
@@ -19,10 +22,10 @@ function ListFriend(props) {
                 for (var i = 0; i < result.data.length; i++) {
                     cardRow.push(
                         <div className='row d-flex justify-content-center align-items-center'>
-                            <Card className='personal-friend' style={{ borderTop: "none", borderRadius: "none", width: '80%' }}>
-                                <div className='row no-gutters'>
-                                    <div className='col-4 md-4'>
-                                        <img src={result.data[i].picture} className='card-img ms-2' alt='...' style={{ height: '100%', width: '50%' }}></img>
+                            <div className='friend_card'>
+                                <div className='friend_card_avatar'>
+                                    <div className='avatar_img'>
+                                        <img src={result.data[i].picture} className='card-img ms-2'></img>
                                     </div>
                                     <div className='col-6 md-6 d-flex align-items-center'>
                                         <Card.Body>
@@ -32,7 +35,7 @@ function ListFriend(props) {
                                     <div className='col-2 md-2'>
                                         <div>
                                             <Popup
-                                                trigger={<div className='three-dot-icon position-absolute top-50 end-0 translate-middle-y'><FontAwesomeIcon icon={faEllipsisH} /> </div>}
+                                                trigger={<div className='three-dot-icon '><FontAwesomeIcon icon={faEllipsisH} /> </div>}
                                                 position='right top'
                                                 on='hover'
                                                 closeOnDocumentClick
@@ -46,7 +49,7 @@ function ListFriend(props) {
                                         </div>
                                     </div>
                                 </div>
-                            </Card>
+                            </div>
                         </div>
                     )
                 }
@@ -91,22 +94,22 @@ function ListFriend(props) {
 
 
     return (
-        <>
-            <br></br>
-            <div className='container'>
-                <div className='row d-flex justify-content-center align-items-center'>
-                    <Card className='personal-friend' style={{ borderRadius: "none", width: '80%' }}>
-                        <div className='col-6 md-6 d-flex align-items-center'>
-                            <Card.Body>
-                                <h4><Card.Text className='tag-name text-info'>Bạn bè</Card.Text></h4>
-                            </Card.Body>
-                        </div>
+            <div className='container friend_profile_container'>
+                <div className='row d-flex justify-content-center align-items-center w-100'>
+                    <Card className='listfriend_title'>
+                        <Card.Header className='front_text_title'>Friends</Card.Header>
+                        
+                        <Card.Body>
+                            <div className='listfriend_content'>
+                                {elementFriend}
+                            </div>
+
+                        </Card.Body>
                     </Card>
+
                 </div>
-                {elementFriend}
 
             </div>
-        </>
     )
 }
 
