@@ -9,6 +9,7 @@ function HomePage(props) {
     function getComments(e){
         var getPostcode =  e.target.attributes.getNamedItem('postcode').value
         setPostCode(getPostcode)
+        setShowComment(true)
         console.log("vao fnef",getPostcode, postcodeState)
     }
     console.log("vao fnef222", postcodeState)
@@ -106,8 +107,8 @@ function HomePage(props) {
                                             {/*nút bình luận*/}
                                             <div onClick={getComments} postcode = "18b5863c-5390-4e26-9e32-2b37fd58b7f8" className="btn btn-sm btn-danger mt-1"> comment</div>
                                             {/*dòng bình luận*/}
-                                            <Comment postcode={postcodeState} />
-                                            {/* {showComment &&  } */}
+                                         
+                                            {showComment &&    <Comment postcode={postcodeState} /> }
                                             {/* */}
                                         </div>
                                     </div>
