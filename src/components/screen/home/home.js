@@ -51,12 +51,12 @@ function HomePage(props) {
                             {/*Đăng tin*/}
                             <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-primary rounded box-shadow">
                                 <div className="p-3">
-                                    <img className="mr-3" src={userLogin?.data['picture']} alt="" width={50} height={50} />
-                                    <p className="mb-0 text-center"><strong>{userLogin?.data.fullname}</strong></p>
+                                    <img className="mr-3 img-fluid rounded-circle mb-2" src={userLogin?.data['picture']} alt="" width={50} height={50} />
+                                    
                                 </div>
                                 <div className="post-header-button lh-100">
                                     <h6 className="mb-0 text-white lh-100">Home</h6>
-                                    <h5>Please write something in this post</h5>
+                                    <h5 className='text-white'>Hi <strong>{userLogin?.data.fullname}!</strong> Please write something in this post</h5>
                                     {/* Button to Open the Modal */}
 
                                     <Popup modal
@@ -117,6 +117,7 @@ function HomePage(props) {
                         <div className="col-12 col-lg-4 home-info mt-3">
                             <div className="card mb-3">
                                 <div className="card-body text-center">
+                        
                                     <img src={userLogin?.data['picture']} alt="Chris Wood" className="img-fluid rounded-circle mb-2" width={128} height={128} />
                                     <div>
                                         <Link className='card-title text-decoration-none mb-0' to={`/profile/${userLogin?.data.user_code}/post/`} state={{ "usercode":userLogin?.data.user_code }}> {userLogin?.data.fullname}</Link>
