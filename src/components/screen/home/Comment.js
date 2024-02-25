@@ -109,13 +109,15 @@ function Comment(props) {
                         <a className="pr-2">
                             <img src={comment.created_by.picture} width={36} height={36} className="rounded-circle " alt="Stacie Hall" />
                         </a>
-                        <div className="media-body mt-1 p-1">
+                        <div className="media-body comment-content mt-1 p-1">
                             <p className="text-muted">
                                 <strong>{comment.created_by.fullname}</strong>
                             </p>
+                           <div className="comment-content-text">
                             <span>
-                            {comment.content}
+                                {comment.content}
                             </span>
+                           </div>
                         </div>
                         <div className='mt-1 p-2'>
                                 <Popup
@@ -129,8 +131,7 @@ function Comment(props) {
                                     arrow={false}
                                 >
                                     <div className='d-flex flex-column'>
-                                        <a className="text-comment">edit</a>
-                                        <a className="text-comment" commentcode={comment.comment_code} onClick={handleDeleteComment}>delete</a>
+                                        <a className="btn btn-danger" commentcode={comment.comment_code} onClick={handleDeleteComment}>delete</a>
                                     </div>
                                 </Popup>
                             </div>
