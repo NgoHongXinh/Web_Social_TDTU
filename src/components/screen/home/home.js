@@ -19,6 +19,7 @@ function HomePage(props) {
     const {close} = useParams()
     function getComments(e){
         var getPostcode =  e.target.attributes.getNamedItem('postcode').value
+        setShowComment(true)
         setPostCode(getPostcode)
         console.log("vao fnef",getPostcode, postcodeState)
     }
@@ -99,7 +100,7 @@ function HomePage(props) {
                                             comment
                                             </div>
                                             {/*dòng bình luận*/}
-                                            <Comment postcode={postcodeState} />
+                                            {showComment &&  <Comment postcode={postcodeState} />}
                                             {/* {showComment &&  } */}
                                             {/* */}
                                         </div>

@@ -19,7 +19,7 @@ function Comment(props) {
     const [lasCommentId, setLastCommentId] = useState()
 
 
-    const callApiGetListComment = async (postcode) => {
+    const callApiGetListComment = async () => {
         try {
             const result = await getListComment(token, postcode);
             console.log(result)
@@ -141,15 +141,16 @@ function Comment(props) {
             if (commentState?.length >= 10){
                 comments.push(<div onClick={loadMoreComment}>hiển thị thêm </div>)
             }
-            setListComment(comments)
+
         }
+        setListComment(comments)
     }, [commentState])
 
 
     useEffect(() => {
         dataProfileUser()
         setPostCodeFromHomeComponent(postcode)
-        callApiGetListComment(postcode)
+        callApiGetListComment()
     }, [postcode])
     return (
         <div>
@@ -165,7 +166,7 @@ function Comment(props) {
                                 {/* Input */}
                                 <form className="input-comment mt-1">
                                     <label className="sr-only">Leave a comment...</label>
-                                    <textarea onChange={handleInput} className="form-control form-control-flush" data-toggle="autosize" rows={1} placeholder="Leave a comment" style={{ overflow: 'hidden', overflowWrap: 'break-word', height: '50px' }} defaultValue={""} />
+                                    <textarea onChange={handleInput} className="form-control form-control-flush" data-toggle="autosize" rows={1} placeholder="Leave a comment" style={{ overflow: 'hidden', overflowWrap: 'break-word', height: '50px' }} value={textComment} defaultValue={""} />
                                     <button type="button" onClick={createComment} className="btn"><FontAwesomeIcon  usercodeComment = {currentUser?.data.user_code} className='my-auto' />
                                     <svg height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
                                     </button>
