@@ -21,31 +21,34 @@ function ListFriend(props) {
             if (result.data.length > 0) {
                 for (var i = 0; i < result.data.length; i++) {
                     cardRow.push(
-                        <div className='row d-flex justify-content-center align-items-center'>
+                        
+                        <div className='row d-flex justify-content-start align-items-center'>
                             <div className='friend_card'>
-                                <div className='friend_card_avatar'>
-                                    <div className='avatar_img'>
-                                        <img src={result.data[i].picture} className='card-img ms-2'></img>
-                                    </div>
-                                    <div className='col-6 md-6 d-flex align-items-center'>
-                                        <Card.Body>
-                                            <h5><Card.Text><Link to={`/personal/${result.data[i].user_code}/post`} className='text-name-friend' state={{ 'usercode': result.data[i].user_code }}>{result.data[i].fullname}</Link></Card.Text></h5>
-                                        </Card.Body>
-                                    </div>
-                                    <div className='col-2 md-2'>
-                                        <div>
-                                            <Popup
-                                                trigger={<div className='three-dot-icon '><FontAwesomeIcon icon={faEllipsisH} /> </div>}
-                                                position='right top'
-                                                on='hover'
-                                                closeOnDocumentClick
-                                                mouseLeaveDelay={300}
-                                                mouseEnterDelay={0}
-                                                contentStyle={{ padding: '0px', border: 'none' }}
-                                                arrow={false}
-                                            >
-                                                <div type='button' className='btn btn-warning' friendusercode={result.data[i].user_code} onClick={DeleteFriend}>Hủy kết bạn</div>
-                                            </Popup>
+                                <div className="card-body ">
+                                    <div className="media card-friend-home">
+                                        <img src={result.data[i].picture} width={56} height={56} className="rounded-circle mr-2" alt="avatar" />
+                                        <div className="media-body">
+                                        <Link className='card-title text-decoration-none mb-0' to={`/personal/${result.data[i].user_code}/post`} state={{ 'usercode': result.data[i].user_code }}> {result.data[i].fullname}</Link>
+                                            {/* <div className='card-btn-home'>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
+                                            </div> */}
+                                        </div>
+                                        <div className='col-2 md-2'>
+                                            <div>
+                                                <Popup
+                                                    trigger={<div className='three-dot-icon '><FontAwesomeIcon icon={faEllipsisH} /> </div>}
+                                                    position='right top'
+                                                    on='click'
+                                                    closeOnDocumentClick
+                                                    mouseLeaveDelay={300}
+                                                    mouseEnterDelay={0}
+                                                    contentStyle={{ padding: '0px', border: 'none' }}
+                                                    arrow={false}
+                                                >
+                                                    <div type='button' className='btn btn-warning' friendusercode={result.data[i].user_code} onClick={DeleteFriend}>Hủy kết bạn</div>
+                                                </Popup>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -94,21 +97,19 @@ function ListFriend(props) {
 
 
     return (
-            <div className='container friend_profile_container'>
-                <div className='row d-flex justify-content-center align-items-center w-100'>
-                    <Card className='listfriend_title'>
-                        <Card.Header className='front_text_title'>Friends</Card.Header>
-                        
-                        <Card.Body>
-                            <div className='listfriend_content'>
-                                {elementFriend}
-                            </div>
+            <div className='friend_profile_container'>
+                <div className='card listfriend_title'>
+                        <div className="card-header">
+                            <h5 className="card-title mb-0">Friends</h5>
+                        </div>
+                    
+                    <div className='card-body'>
+                        <div className='listfriend_content'>
+                            {elementFriend}
+                        </div>
 
-                        </Card.Body>
-                    </Card>
-
+                    </div>
                 </div>
-
             </div>
     )
 }

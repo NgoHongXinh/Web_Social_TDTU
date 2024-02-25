@@ -24,3 +24,21 @@
     padding-right: 40px;
     padding-bottom: 20px;
 }
+.input-comment{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.modal-post-container{
+    width: 50vmax;
+    height: 60vh;
+    background-color: #fcf7f8;
+    border: 1px solid rgba(0,0,0,.05);
+}
+.post-header-button{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+    padding-left: 20px;
+}
