@@ -72,8 +72,8 @@ function NavBar() {
                     <Popup
                         trigger={
                             <div>
-                            <div className='noti-style'>
-                           <div className='style-number-noti'>{numberNotiNotRead}</div> 
+                        <div className='noti-style m-2'>
+                           <div className='style-number-noti '>{numberNotiNotRead}</div> 
                       
                               <svg
                                 viewBox="0 0 24 24"
@@ -115,7 +115,6 @@ function NavBar() {
                                 <button type='button' className='btn btn-light' onClick={""}>Đăng xuất</button>
                             </div>
                         </Popup>
-                        <Link className='ms-2 text-dark fw-bold text-decoration-none' to={`/profile/${userLogin?.data.user_code}/post/`} state={{ "usercode":userLogin?.data.user_code }}> {userLogin?.data.fullname}</Link>
                     </div>
                 </div>
 
