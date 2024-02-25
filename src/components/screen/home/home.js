@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
-import Comment from './Comment'
+import Comment from './Comment';
+import "../../../css/home.css"
 
 function HomePage(props) {
     const { currUserInfo } = props
@@ -14,9 +15,9 @@ function HomePage(props) {
     }
     console.log("vao fnef222", postcodeState)
     return (
-        <div>
+        <>
             {/*main*/}
-            <div className="container">
+            <div className="home-container">
                 {/* The Modal */}
                 <div className="modal" id="myModal">
                     <div className="modal-dialog">
@@ -63,8 +64,8 @@ function HomePage(props) {
                     </div>
                 </div>
                 {/*media objects (dòng trạng thái)*/}
-                <div className="container p-0">
-                    <div className="row">
+                <div className="home-post-container p-0">
+                    <div className="row home-post-content">
                         <div className="col-12 col-lg-8">
                             {/*Đăng tin*/}
                             <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-primary rounded box-shadow">
@@ -102,10 +103,10 @@ function HomePage(props) {
                                             </div>
                                             <small className="text-muted">Today 7:51 pm</small><br />{/*time real dòng trạng thái*/}
                                             {/*nút like*/}
-                                            <a href="#" className="btn btn-sm btn-danger mt-1">
+                                            <a href="#" className="btn btn-sm btn-danger mt-1 m-1">
                                                 <i className="fa fa-heart-o" /> Like</a>
                                             {/*nút bình luận*/}
-                                            <div onClick={getComments} postcode = "18b5863c-5390-4e26-9e32-2b37fd58b7f8" className="btn btn-sm btn-danger mt-1"> comment</div>
+                                            <div onClick={getComments} postcode = "18b5863c-5390-4e26-9e32-2b37fd58b7f8" className="btn btn-sm btn-danger mt-1 m-1"> comment</div>
                                             {/*dòng bình luận*/}
                                          
                                             {showComment &&    <Comment postcode={postcodeState} /> }
@@ -121,54 +122,49 @@ function HomePage(props) {
                                 </div>
                             </div>
                         </div>
-                        {/*cột thông báo trnangj thái*/}
-                        <div className="col-12 col-lg-4">
+                        {/*cột thông báo trnang thái*/}
+                        <div className="col-12 col-lg-4 home-info mt-3">
                             <div className="card mb-3">
                                 <div className="card-body text-center">
                                     <img src=" https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" alt="Chris Wood" className="img-fluid rounded-circle mb-2" width={128} height={128} />
                                     <h4 className="card-title mb-0">@username</h4>
-                                    <div className="text-muted mb-2">infor</div>
                                 </div>
                             </div>
                             <div className="card mb-3">
                                 <div className="card-header">
-                                    <div className="card-actions float-right">
-                                        <div className="dropdown show">
-                                            <a href="#" data-toggle="dropdown" data-display="static">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal align-middle"><circle cx={12} cy={12} r={1} /><circle cx={19} cy={12} r={1} /><circle cx={5} cy={12} r={1} /></svg>
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                                <a className="dropdown-item" href="#">detail</a>
-                                                <a className="dropdown-item" href="#">delete</a>
-                                                <a className="dropdown-item" href="#">chat</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/*friends*/}
                                     <h5 className="card-title mb-0">Friends</h5>
                                 </div>
-                                <div className="card-body">
-                                    <div className="media">
+                                <div className="card-body ">
+                                    <div className="media card-friend-home">
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" width={56} height={56} className="rounded-circle mr-2" alt="Chris Wood" />
                                         <div className="media-body">
                                             <p className="my-1"><strong>@username</strong></p>
-                                            <a className="btn btn-sm btn-outline-primary" href="#">Unfriend</a>
+                                            <div className='card-btn-home'>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr className="my-2" />
-                                    <div className="media">
+                                    <div className="media card-friend-home">
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" width={56} height={56} className="rounded-circle mr-2" alt="Carl Jenkins" />
                                         <div className="media-body">
                                             <p className="my-1"><strong>@username</strong></p>
-                                            <a className="btn btn-sm btn-outline-primary" href="#">Unfriend</a>
+                                            <div className='card-btn-home'>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr className="my-2" />
-                                    <div className="media">
+                                    <div className="media card-friend-home">
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" width={56} height={56} className="rounded-circle mr-2" alt="Stacie Hall" />
                                         <div className="media-body">
                                             <p className="my-1"><strong>@username</strong></p>
-                                            <a className="btn btn-sm btn-outline-primary" href="#">Unfriend</a>
+                                            <div className='card-btn-home'>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
+                                                <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +174,7 @@ function HomePage(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 export default HomePage;

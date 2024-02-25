@@ -1,0 +1,26 @@
+.home-container{
+    padding: 10px;
+}
+@media only screen and (max-width: 720px){
+    .home-info{
+        display: none;
+    }
+    .home-post-content{
+        width: 100%;
+    }
+}
+.card-friend-home{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+.card-btn-home{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.home-container{
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+}
