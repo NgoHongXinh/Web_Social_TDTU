@@ -44,7 +44,7 @@ function Notification(props) {
                 setLastNotiId(result?.data.last_noti_id)
                 result?.data.list_noti_info.forEach(noti => {
                     notis.push(
-                        <div className='d-flex mb-2' style={{ background: noti.is_checked ? "white": "azure" }} key={noti.notification_code} >
+                        <div className='d-flex mb-2' style={{ background: noti.is_checked ? "": "#E8EAF6" }} key={noti.notification_code} >
                             <div className='noti-user-avata'>
                                 <img alt='user avatar' src={noti.user_guest_info.picture} className='rounded-circle'></img>
                             </div>
@@ -129,7 +129,7 @@ function Notification(props) {
                 loader={<p className='text-info'>Đang tải thông báo...</p>}
                 scrollableTarget='scrollableDiv'
             >
-                <div className='d-flex mb-2 noti_title' style={{ background: "white" }}>
+                <div className='d-flex mb-2 noti_title'>
                 <h4><b> Thông báo </b> </h4>
                 </div>
                 {notisState}

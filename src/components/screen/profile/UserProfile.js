@@ -112,7 +112,7 @@ function UserProfile() {
                 <div className='h-100'>
                     <div className='header'>
                         <div className='background-profile--position image-fluid'>
-                            <img src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp' alt='Blog img' 
+                            <img src={inforUserInCurrentPage?.data.backgroundPicture} alt='Blog img' 
                             className='image-background-profile'></img>
                            
                         </div>
