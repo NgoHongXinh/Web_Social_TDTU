@@ -44,7 +44,8 @@
 }
 .noti-style{
     position: relative;
-    display: inline
+    display: inline;
+    padding: 0px 15px 0 0;
 }
 
 .style-number-noti {
@@ -55,7 +56,7 @@
     color: white;
     display: inline;
     padding: 3px 8px;
-    margin-left: 30px;
+    margin-left: 40px;
     border-radius: 30px;
 }
 
@@ -84,4 +85,5 @@
 }
 .menu-popup{
     z-index: 12;
+    padding: 10px;
 }
