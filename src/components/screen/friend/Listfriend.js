@@ -2,13 +2,11 @@ import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Card from 'react-bootstrap/Card';
 import { getAllFriendOfUser, deleteFriend } from "../../../common/callapi/friend"
 import { useEffect, useState } from 'react';
 import { getCookieToken } from '../../../common/functions';
 import "../../../css/listfriend.css";
 import "../../../css/style.css";
-import { CardHeader } from 'react-bootstrap';
 function ListFriend(props) {
     const { usercode } = props
     const token = getCookieToken()
@@ -18,17 +16,17 @@ function ListFriend(props) {
         var cardRow = []
         try {
             const result = await getAllFriendOfUser(token, usercode);
-            if (result.data.length > 0) {
-                for (var i = 0; i < result.data.length; i++) {
+            if (result.data.list_friend_info.length > 0) {
+                for (var i = 0; i < result.data.list_friend_info.length; i++) {
                     cardRow.push(
                         
                         <div className='row d-flex justify-content-start align-items-center'>
                             <div className='friend_card'>
                                 <div className="card-body ">
                                     <div className="media card-friend-home">
-                                        <img src={result.data[i].picture} width={56} height={56} className="rounded-circle mr-2" alt="avatar" />
+                                        <img src={result.data.list_friend_info[i].picture} width={56} height={56} className="rounded-circle mr-2" alt="avatar" />
                                         <div className="media-body">
-                                        <Link className='card-title text-decoration-none mb-0' to={`/personal/${result.data[i].user_code}/post`} state={{ 'usercode': result.data[i].user_code }}> {result.data[i].fullname}</Link>
+                                        <Link className='card-title text-decoration-none mb-0' to={`/personal/${result.data.list_friend_info[i].user_code}/post`} state={{ 'usercode': result.data.list_friend_info[i].user_code }}> {result.data.list_friend_info[i].fullname}</Link>
                                             {/* <div className='card-btn-home'>
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
@@ -46,7 +44,7 @@ function ListFriend(props) {
                                                     contentStyle={{ padding: '0px', border: 'none' }}
                                                     arrow={false}
                                                 >
-                                                    <div type='button' className='btn btn-warning' friendusercode={result.data[i].user_code} onClick={DeleteFriend}>Hủy kết bạn</div>
+                                                    <div type='button' className='btn btn-warning' friendusercode={result.data.list_friend_info[i].user_code} onClick={DeleteFriend}>Hủy kết bạn</div>
                                                 </Popup>
                                             </div>
                                         </div>

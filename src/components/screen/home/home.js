@@ -4,6 +4,7 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user";
 import {getCookieToken} from '../../../common/functions'
 import { SocketContext } from '../../../thirdparty/socket';
 import Comment from './Comment';
+import FriendHome from "./FriendHome"
 import "../../../css/home.css"
 import Popup from 'reactjs-popup';
 import ModalPost from '../post/ModalPost';
@@ -124,7 +125,9 @@ function HomePage(props) {
                                 </div>
                             </div>
                             {/* friendlist */}
-                            <div className="card mb-3">
+                            { userLogin?.data.user_code   && <FriendHome usercode = {userLogin?.data.user_code}/>}
+                      
+                            {/* <div className="card mb-3">
                                 <div className="card-header">
                                     <h5 className="card-title mb-0">Friends</h5>
                                 </div>
@@ -141,7 +144,7 @@ function HomePage(props) {
                                     </div>
                                     <hr className="my-2" />
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
                     </div>
