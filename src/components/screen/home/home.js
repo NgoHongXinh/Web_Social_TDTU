@@ -21,10 +21,15 @@ function HomePage(props) {
     
     const {close} = useParams()
     function getComments(e){
-        var getPostcode =  e.target.attributes.getNamedItem('postcode').value
+        try{        var getPostcode =  e.target.attributes.getNamedItem('postcode').value
         setShowComment(true)
         setPostCode(getPostcode)
         console.log("vao fnef",getPostcode, postcodeState)
+        }
+        catch(error){
+            console.error(error)
+        }
+
     }
 
     const calApiLikePost = async (postcode) =>{
