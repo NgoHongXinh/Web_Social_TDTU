@@ -4,6 +4,7 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user";
 import {getCookieToken} from '../../../common/functions'
 import { SocketContext } from '../../../thirdparty/socket';
 import Comment from './Comment';
+import Post from "./post_notifier";
 import FriendHome from "./FriendHome"
 import "../../../css/home.css"
 import Popup from 'reactjs-popup';
@@ -39,9 +40,14 @@ function HomePage(props) {
               }
         }
         dataProfileUser() 
+        const dataPostList = async()=>{
+
+        }
     }, [])
     return (
         <>
+        
+        {<Post postcode ={postcodeState}/>}
             {/*main*/}
             <div className="home-container">
                 
