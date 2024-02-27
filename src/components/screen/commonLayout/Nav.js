@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext, useRef } from 'react';
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import {getCookieToken} from '../../../common/functions'
+import {getCookieToken, deleteCookieAccessToken} from '../../../common/functions'
 import { getDataApiNumberNotification } from "../../../common/callapi/notification"
 import Popup from 'reactjs-popup';
 import Notification from '../notification/Notification';
@@ -54,7 +54,11 @@ function NavBar() {
         if (nameOfUserWantToFind?.length > 0)
             navigate(`/find-user/?name=${nameOfUserWantToFind}`,{ replace: true });
     }
-    console.log(numberNotiNotRead)
+    const logout = () =>{
+        deleteCookieAccessToken();
+        socket.emit("disconnect_server")
+        navigate('/login', { replace: true });
+    }
     return (
         <div className='nav-sticky'>
             <nav className='navbar navbar-expand-lg navbar-light bg-light'>
@@ -114,7 +118,7 @@ function NavBar() {
                         >
                             <div className='menu-popup d-flex flex-column bg-light'>
                                 <button type='button' className='btn btn-primary mb-2'><Link className='btn-link-text' to={`/user/${""}/update-info`}>Edit profile</Link></button>
-                                <button type='button' className='btn btn-danger' onClick={""}><span className='btn-link-text'>Log out</span></button>
+                                <button type='button' className='btn btn-danger' onClick={logout}><span className='btn-link-text'>Log out</span></button>
                             </div>
                         </Popup>
                     </div>

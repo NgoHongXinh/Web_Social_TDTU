@@ -49,7 +49,7 @@ export const getCookieToken = () => {
     return cookies.get('access_token') || null;
 }
 
-export const removeCookieToken = () => {
+export const deleteCookieAccessToken = () => {
     return cookies.remove('access_token');
 }
 

@@ -126,7 +126,7 @@ function Notification(props) {
                 dataLength={10}
                 next={loadNotiOnScroll}
                 hasMore={true}
-                loader={<p className='text-info'>Đang tải thông báo...</p>}
+                loader={""} // ko truyền dữ liệu 
                 scrollableTarget='scrollableDiv'
             >
                 <div className='d-flex mb-2 noti_title'>
