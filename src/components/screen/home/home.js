@@ -116,11 +116,16 @@ function HomePage(props) {
                                                 </div>
                                             </div>
                                             <small className="text-muted">Today 7:51 pm</small><br />{/*time real dòng trạng thái*/}
+                                            <div className='like-number'>
+                                                <span>
+                                                Đã có {dataLikePost?.data.like_number} lượt thích
+                                                </span>
+                                            </div>
                                             {/*nút like*/}
                                             <div  onClick={handleLikePost} postcode = "18aad068-3023-47b0-abcb-5deb4028bfc6" className="btn btn-sm btn-danger mt-1 m-1">
                                                 <i className="fa fa-heart-o" /> Like</div>
                                             {/*nút bình luận*/}
-                                            {dataLikePost?.data.like_number}
+                                            
                                             <div onClick={getComments} postcode = "18aad068-3023-47b0-abcb-5deb4028bfc6" className="btn btn-sm btn-danger mt-1 m-1"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" className="bi bi-chat-dots bi-sm" viewBox="0 0 16 16">
                                                 <path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
@@ -129,6 +134,7 @@ function HomePage(props) {
                                             
                                             comment
                                             </div>
+                                           
                                             {/*dòng bình luận*/}
                                             {showComment &&  <Comment postcode={postcodeState} />}
                                             {/* {showComment &&  } */}

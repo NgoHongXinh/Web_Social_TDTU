@@ -68,7 +68,13 @@
         
     }
 }
-
+.container-tab-body{
+    background-color: #dadae3;
+    
+}
+.tab-bar-post-user{
+    padding: 0 10px ;
+}
 /* .background-profile--position{
     position: absolute;
 }
