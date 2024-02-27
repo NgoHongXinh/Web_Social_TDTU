@@ -3,6 +3,12 @@
     height: 20px;
     background-color: #eff2f4;
 }
+.nav-sticky{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 
 .navbar .search-bar {
     background-color: #EDF2F7;
@@ -38,18 +44,20 @@
 }
 .noti-style{
     position: relative;
-    display: inline
+    display: inline;
+    padding: 0px 15px 0 0;
 }
 
 .style-number-noti {
     position: absolute;
-    right: 0;
+    right:0;
     background-color: rgb(29, 161, 242);
     font-size: 11px;
     color: white;
     display: inline;
-    padding: 3px 5px;
-    border-radius: 20px;
+    padding: 3px 8px;
+    margin-left: 40px;
+    border-radius: 30px;
 }
 
 .noti_title{
@@ -69,3 +77,13 @@
     color: black;
 
 } */
+.btn-link-text{
+    color: white;
+    font-weight: 700;
+    font: 1em sans-serif;
+    text-decoration-line: none;
+}
+.menu-popup{
+    z-index: 12;
+    padding: 10px;
+}

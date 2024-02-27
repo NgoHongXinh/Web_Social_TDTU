@@ -9,6 +9,7 @@ import Popup from 'reactjs-popup';
 import Notification from '../notification/Notification';
 import { SocketContext } from '../../../thirdparty/socket';
 import "../../../css/Nav.css"
+import logoTDTU from "../../../image/TDT logo.png";
 
 function NavBar() {
     const navigate = useNavigate();
@@ -55,12 +56,11 @@ function NavBar() {
     }
     console.log(numberNotiNotRead)
     return (
-        <>
-            <div className='bg-top-color'></div>
+        <div className='nav-sticky'>
             <nav className='navbar navbar-expand-lg navbar-light bg-light'>
                 <div className='d-flex justify-content-between w-100 mx-5'>
                     <NavLink to='/' className='navbar-brand'>
-                        <img src={""} alt='TDTU logo' width='52px' height='26px'></img>
+                        <img src={logoTDTU} alt='TDTU logo' width='52px' height='26px'></img>
                     </NavLink>
 
                     <form className='d-flex rounded-pill px-3 search-bar' onSubmit={finUserByName}>
@@ -72,8 +72,8 @@ function NavBar() {
                     <Popup
                         trigger={
                             <div>
-                            <div className='noti-style'>
-                           <div className='style-number-noti'>{numberNotiNotRead}</div> 
+                        <div className='noti-style m-2'>
+                           <div className='style-number-noti '>{numberNotiNotRead}</div> 
                       
                               <svg
                                 viewBox="0 0 24 24"
@@ -91,7 +91,8 @@ function NavBar() {
             
                         position='bottom right'
                     >
-                        <Notification
+                       <div className='bg-light'>
+                       <Notification
                         setNumberNotiNotRead= {setNumberNotiNotRead}
                             // loadingNotiList={loadingNotiList}
                             // setNotificationInfo={setNotificationInfo}
@@ -100,6 +101,7 @@ function NavBar() {
                             // numberNotiNotChecked={numberNotiNotChecked}
                             // setNumberNotiNotChecked={setNumberNotiNotChecked}
                         />
+                       </div>
 
                     </Popup>
                         <Popup
@@ -110,18 +112,17 @@ function NavBar() {
                             }
                             position='bottom center'
                         >
-                            <div className='menu-popup d-flex flex-column'>
-                                <button type='button' className='btn btn-light mb-2'><Link className='btn-link-text' to={`/user/${""}/update-info`}>Sửa thông tin cá nhân</Link></button>
-                                <button type='button' className='btn btn-light' onClick={""}>Đăng xuất</button>
+                            <div className='menu-popup d-flex flex-column bg-light'>
+                                <button type='button' className='btn btn-primary mb-2'><Link className='btn-link-text' to={`/user/${""}/update-info`}>Edit profile</Link></button>
+                                <button type='button' className='btn btn-danger' onClick={""}><span className='btn-link-text'>Log out</span></button>
                             </div>
                         </Popup>
-                        <Link className='ms-2 text-dark fw-bold text-decoration-none' to={`/profile/${userLogin?.data.user_code}/post/`} state={{ "usercode":userLogin?.data.user_code }}> {userLogin?.data.fullname}</Link>
                     </div>
                 </div>
 
 
             </nav>
-        </>
+        </div>
     );
 }
 export default NavBar
