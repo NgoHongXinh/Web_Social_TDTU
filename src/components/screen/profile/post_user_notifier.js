@@ -3,38 +3,42 @@ import { getCookieToken } from '../../../common/functions'
 import { useEffect, useState } from "react";
 function PostUser(props) {
     const {usercode} =props;
-    var token = getCookieToken()
     const [postState, setpostState] = useState([])
     const [postList, setPostList] = useState()
-    const callApiGetListPostUser= async () => {
+    var token = getCookieToken()
+    const callApiGetListPostUser = async () => {
         try {
             const result = await getPostListUser(token, usercode);
-            console.log(result)
+            console.log("123123123", result)
             setpostState(result?.data)
         } catch (error) {
             console.error(error)
         }
     }
     useEffect(()=>{
-        console.log("post list",postState.length)
         var post =[]
-        if (postState?.length !== 0) {
-            postState.forEach(post => {
-                post.push(
-                    <div>{post.created_by}</div>
-                )
-            });
-        }
-        setPostList(post)
+        // if (postState?.list_post_info.length !== 0) {
+            console.log(postState?.list_post_info)
+            // postState.forEach(post => {
+            //     post.push(
+            //         <div>{post.created_by}</div>
+            //     )
+            // });
+            // setPostList(post)
+        // }
+        // 
     },[postState])
-    // useEffect(() => {
-    //     // dataProfileUser()
-    //     // setPostCodeFromHomeComponent(postcode)
-    //     callApiGetListPostUser()
-    // }, )
-    // return (
-    //     postList
-    // );
+    useEffect(() => {
+        // dataProfileUser()
+        // setPostCodeFromHomeComponent(postcode)
+        callApiGetListPostUser()
+    }, [])
+    return (
+        <>
+              {postList}
+        </>
+  
+    );
 }
 
 export default PostUser
