@@ -3,13 +3,14 @@ import { getCookieToken } from '../../../common/functions'
 import { useEffect, useState } from "react";
 function PostUser(props) {
     const {usercode} =props;
+
+    var token = getCookieToken()
     const [postState, setpostState] = useState([])
     const [postList, setPostList] = useState()
-    var token = getCookieToken()
-    const callApiGetListPostUser = async () => {
+    const callApiGetListPostUser= async () => {
         try {
             const result = await getPostListUser(token, usercode);
-            console.log("123123123", result)
+            console.log(result)
             setpostState(result?.data)
         } catch (error) {
             console.error(error)
@@ -39,6 +40,7 @@ function PostUser(props) {
         </>
   
     );
+
 }
 
 export default PostUser
