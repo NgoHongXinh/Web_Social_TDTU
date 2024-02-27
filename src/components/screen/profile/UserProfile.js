@@ -108,7 +108,7 @@ function UserProfile() {
 
 
     return (
-            <div className='bg-light profile-header'>
+            <div className='bg-light profile-header m-2'>
                 <div className='h-100'>
                     <div className='header'>
                         <div className='background-profile--position image-fluid'>
@@ -155,7 +155,7 @@ function UserProfile() {
                                 </div>
                                 <hr></hr>
 
-                                <div className='row align-items-center'>
+                                <div className='row align-items-center tab-bar-post-user'>
                                     <ul className='nav nav-tabs nav-overflow header-tabs'>
                                         <li className='nav-item'>
                                             <Link  to={`/profile/${usercode}/post`} className={chooseMenu === 'post' ? 'active nav-link' : 'nav-link'} onClick={() => { setChooseMenu('post') }}>Bài đăng</Link>
@@ -170,7 +170,7 @@ function UserProfile() {
                                     </ul>
                                 </div>
                             </div>
-                            <div>
+                            <div className='container-fluid container-tab-body '>
                                 <Routes>
                                     <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
 

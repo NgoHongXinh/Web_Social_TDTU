@@ -103,8 +103,6 @@ function Comment(props) {
 
             commentState.forEach(comment => {
                 comments.push(
-
-
                     <div className="media mt-3 d-flex">
                         <a className="pr-2">
                             <img src={comment.created_by.picture} width={36} height={36} className="rounded-circle " alt="Stacie Hall" />
