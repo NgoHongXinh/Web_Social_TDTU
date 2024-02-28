@@ -76,7 +76,7 @@ function PostUser(props) {
                             </span>
                         </div>
                         {/*nút like*/}
-                        <div onClick={handleLikePost} postcode="18aad068-3023-47b0-abcb-5deb4028bfc6" className="btn btn-sm btn-danger mt-1 m-1">
+                        <div onClick={handleLikePost} postcode={postInfoData.post_code} className="btn btn-sm btn-danger mt-1 m-1">
                             <i className="fa fa-heart-o" /> Like</div>
 
                         {/*nút bình luận*/}

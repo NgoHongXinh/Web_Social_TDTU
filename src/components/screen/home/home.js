@@ -70,7 +70,7 @@ function HomePage(props) {
 
     var listPost = []
     for (let i = 0; i < postInfo?.length; i++) {
-        // socket.emit('joinRoom', postInfo[i]?._id)
+        socket.emit('join_room', postInfo[i]?.post_code)
         listPost.push(
             <>
                 {<Post key={postInfo[i]?._id}
