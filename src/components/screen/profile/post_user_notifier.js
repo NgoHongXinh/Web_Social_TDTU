@@ -33,7 +33,6 @@ function PostUser(props) {
         console.log("vao fnef", getPostcode, postcodeState)
     }
     console.log("vao fnef222", postcodeState)
-
     useEffect(() => {
         var images = []
         postInfoData.images.forEach(image => {

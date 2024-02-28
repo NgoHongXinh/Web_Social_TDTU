@@ -13,6 +13,7 @@ import ModalPost from '../post/ModalPost';
 import { getPosts } from "../../../common/callapi/post_service"
 
 function HomePage(props) {
+
     const [showComment, setShowComment] = useState(false)
     const [postcodeState, setPostCode] = useState()
     const [userLogin, setUserLogin] = useState()
@@ -84,7 +85,6 @@ function HomePage(props) {
         {/* {<Post postcode ={postcodeState}/>} */}
             {/*main*/}
             <div className="home-container">
-                
                 {/*media objects (dòng trạng thái)*/}
                 <div className="container p-0">
                     <div className="row home-post-content">
@@ -110,6 +110,7 @@ function HomePage(props) {
                                     </Popup>
                                 </div>
                             </div>
+
                             {listPost}
                             {/* <div className='card'>
                
@@ -127,6 +128,7 @@ function HomePage(props) {
                                 </div>
                             </div>
                             {/* friendlist */}
+
 
                       
                             <div className="card mb-3">

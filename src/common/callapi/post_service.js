@@ -1,7 +1,7 @@
 import {BASE_URL} from "../constant"
-async function getPostListHome(token, postcode) {
+async function getPostListHome(token) {
     try {
-        var url = `${BASE_URL}post/${postcode}`
+        var url = `${BASE_URL}post`
     
         const response = await fetch(url, 
             {
