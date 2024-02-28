@@ -36,30 +36,32 @@ function FriendHome(props) {
         var friends = []
         const result = await getAllFriendOfUser(token, usercode);
         if(result?.response_status.code==="00"){
-
-            result?.data.list_friend_info.forEach(friend => {
-                friends.push(
-                <div className="card mb-3">
-                    <div className="card-header">
-                        <h5 className="card-title mb-0">Friends</h5>
-                    </div>
-                    <div className="card-body ">
-                        <div className="media card-friend-home">
-                            <img src={friend.picture} width={56} height={56} className="rounded-circle mr-2" alt="Chris Wood" />
-                            <div className="media-body">
-                                <p className="my-1"><strong>{friend.fullname}</strong></p>
-                                <div className='card-btn-home'>
-                                    <a className="btn btn-sm  btn-outline-primary m-1" friendusercode={friend.user_code} onClick={DeleteFriend}>Hủy kết bạn</a>
-                                    <a className="btn btn-sm btn-outline-primary m-1" href="#">Nhắn tin</a>
+            if(  result?.data.list_friend_info.length > 0){
+                result?.data.list_friend_info.forEach(friend => {
+                    friends.push(
+                        <>
+                            <div className="media card-friend-home">
+                                <img src={friend.picture} width={56} height={56} className="rounded-circle mr-2" alt="Chris Wood" />
+                                <div className="media-body">
+                                    <p className="my-1"><strong>{friend.fullname}</strong></p>
+                                    <div className='card-btn-home'>
+                                        <a className="btn btn-sm  btn-outline-primary m-1" friendusercode={friend.user_code} onClick={DeleteFriend}>Hủy kết bạn</a>
+                                        <a className="btn btn-sm btn-outline-primary m-1" href="#">Nhắn tin</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr className="my-2" />
-                    </div>
-            </div>
-                )
-            })
-            setListFriend(friends)
+                            <hr className="my-2" />
+                            </>
+    
+                    )
+                })
+                setListFriend(friends)
+            }
+            else{
+                setListFriend(<div className="media card-friend-home"> Chưa có bạn bè </div>)
+            }
+            
+    
             
         }
     }

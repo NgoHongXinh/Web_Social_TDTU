@@ -51,4 +51,30 @@ async function getPostListUser(token, usercode) {
     }
     
 }
-export {getPostListHome,getPostListUser};
+async function getPosts(token) {
+    try {
+        var url = `${BASE_URL}post`
+    
+        const response = await fetch(url, 
+            {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+    }
+    
+}
+export {getPostListHome,getPostListUser, getPosts};

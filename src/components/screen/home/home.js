@@ -3,21 +3,22 @@ import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user";
 import {getCookieToken} from '../../../common/functions'
 import { SocketContext } from '../../../thirdparty/socket';
-import Comment from './Comment';
+
 import Post from "./post_notifier";
 import FriendHome from "./FriendHome"
 import "../../../css/home.css"
 import Popup from 'reactjs-popup';
 import ModalPost from '../post/ModalPost';
-import { LikePost } from '../../../common/callapi/post';
 
-function HomePage(props, props2) {
-    const { currUserInfo } = props
-    const {postcode} =props2
+import { getPosts } from "../../../common/callapi/post_service"
+
+function HomePage(props) {
+
     const [showComment, setShowComment] = useState(false)
     const [postcodeState, setPostCode] = useState()
     const [userLogin, setUserLogin] = useState()
     const [dataLikePost, setDataLikePost] = useState()
+    const [postInfo, setPostInfo] = useState()
     var token = getCookieToken()
     const socket = useContext(SocketContext);
     
@@ -34,20 +35,7 @@ function HomePage(props, props2) {
 
     }
 
-    const calApiLikePost = async (postcode) =>{
-        try {
-            const likePostInfo = await LikePost(token, postcode);
-            setDataLikePost(likePostInfo)
- 
-          } catch (error) {
-            console.error(error)
-          }
-    }
 
-    function handleLikePost(e){
-        var getPostcode =  e.target.attributes.getNamedItem('postcode').value
-        calApiLikePost(getPostcode)
-    }
     useEffect(()=>{
         const dataProfileUser = async () =>{
             try {
@@ -66,8 +54,35 @@ function HomePage(props, props2) {
 
         }
     }, [])
+
+    const callApiGetListPostUser = async () => {
+        try {
+            const result = await getPosts(token);
+            console.log(result.data)
+            setPostInfo(result?.data.list_post_info)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    useEffect(() => {
+        callApiGetListPostUser()
+    }, [])
+
+    var listPost = []
+    for (let i = 0; i < postInfo?.length; i++) {
+        // socket.emit('joinRoom', postInfo[i]?._id)
+        listPost.push(
+            <>
+                {<Post key={postInfo[i]?._id}
+                    postInfoData={postInfo[i]}
+                />}
+            </>
+        )
+    }
     return (
         <>
+        
+        {/* {<Post postcode ={postcodeState}/>} */}
             {/*main*/}
             <div className="home-container">
                 {/*media objects (dòng trạng thái)*/}
@@ -95,18 +110,11 @@ function HomePage(props, props2) {
                                     </Popup>
                                 </div>
                             </div>
-                            <div className="content-post">
-                                <div className="post-profile pt-3 pb-3">
-                                            {<Post postcode ={postcode}/>}
-                                </div>
-                                
-                            </div>
-                            {/*hết trang tin*/}
-                            <div className="media-body">
-                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-delete-animal-pet-wild-domestic-256.png" width={56} height={56} className="mr-3" alt="Ashley Briggs" />
-                                <h5 className="text-center lh-100">You have watched all the news</h5>
-                            </div>
-                            
+
+                            {listPost}
+                            {/* <div className='card'>
+               
+                            </div> */}
                         </div>
                         {/*cột thông báo trnang thái*/}
                         <div className="col-12 col-lg-4 home-info mt-3">
@@ -120,21 +128,16 @@ function HomePage(props, props2) {
                                 </div>
                             </div>
                             {/* friendlist */}
-                            { userLogin?.data.user_code   && <FriendHome usercode = {userLogin?.data.user_code}/>}
+
+
+                      
                             <div className="card mb-3">
-                            <div className="card-header">
-                                <h5 className="card-title mb-0">Friends</h5>
-                                    </div>
-                                    <div className="card-body ">
-                                        <span>Bạn chưa có bạn hãy kết bạn thêm nhé!</span>
-                                    </div>
-                            </div>               
-                            {/* <div className="card mb-3">
                                 <div className="card-header">
                                     <h5 className="card-title mb-0">Friends</h5>
                                 </div>
                                 <div className="card-body ">
-                                    <div className="media card-friend-home">
+                                { userLogin?.data.user_code   && <FriendHome usercode = {userLogin?.data.user_code}/>}
+                                    {/* <div className="media card-friend-home">
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" width={56} height={56} className="rounded-circle mr-2" alt="Chris Wood" />
                                         <div className="media-body">
                                             <p className="my-1"><strong>@username</strong></p>
@@ -143,10 +146,9 @@ function HomePage(props, props2) {
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
                                             </div>
                                         </div>
-                                    </div>
-                                    <hr className="my-2" />
+                                    </div> */}
                                 </div>
-                            </div> */}
+                            </div>
 
                         </div>
                     </div>
