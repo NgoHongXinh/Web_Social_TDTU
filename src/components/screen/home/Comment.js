@@ -17,30 +17,40 @@ function Comment(props) {
     const [currentUser, setCurrentUser] = useState()
     const [listComment, setListComment] = useState()
     const [lasCommentId, setLastCommentId] = useState()
-
+    const [NewDataComment, setNewDataComment] = useState()
+    const [needToUpdateCommentRealTime, setNeedToUpdateCommentRealTime] = useState(true)
 
     const callApiGetListComment = async () => {
         try {
             const result = await getListComment(token, postcode);
             console.log(result)
             setLastCommentId(result?.data.last_comment_id)
+            console.log("3444444444444",result )
             setCommentState(result?.data.list_comment_info)
         } catch (error) {
             console.error(error)
         }
     }
 
-    // socket phai lay du lieu tu ben post vi neu goij truc tiep socket tu comment se khien cho du lieu comment duoc luwu trong 
-    // state :commentState bi rong dan den ko the tra ra dung du lieu nhu ban dau
+    // để bắt được socket cần dùng 2 useEffect, 1 cái để handle sự thay đổi của socket, 
+    // 1 cái đểcập nhật dữ lieuj socket vao dữ liệu hiện có trong state
+    // nếu chỉ sử dụng 1 useEffect handle socket và cập nhật dữ liệu sẽ xảy ra th dữ liệu state của comment bị mất sạch => cạp nhật bị sai
     useEffect(()=>{
-            setCommentState([...[dataComment?.data], ...commentState])
-    }, [dataComment])
+        socket.on("event_comment", dataComment =>{
+            console.log(dataComment)
+            setNewDataComment(dataComment)
+        })
+    }, [socket])
+    useEffect(()=>{
+        if(NewDataComment?.data){
+            setCommentState([...[NewDataComment?.data], ...commentState])
+        }
 
+    }, [NewDataComment])
     const loadMoreComment = async () => {
         try {
             if(lasCommentId){
                 const result = await getListComment(token, postCodeFromHomeComponent, lasCommentId);
-                console.log("load more comment", result)
                 setLastCommentId(result?.data.last_comment_id)
                 setCommentState([...commentState, ...result?.data.list_comment_info])
 
@@ -70,10 +80,10 @@ function Comment(props) {
     const callApicreateNewComment = async (formData) => {
         try {
             const result = await createNewComment(token, postCodeFromHomeComponent, formData);
-            console.log(result)
             if (result?.response_status.code === "00") {
                 setTextComment("")
                 setCommentState([...[result?.data], ...commentState])
+                
                 
             }
 
@@ -89,9 +99,10 @@ function Comment(props) {
     function createComment() {
         var formData = new FormData();
         formData.append('content', textComment);
+        setNeedToUpdateCommentRealTime(false)
         // choox nayf neeus cos ảnh sẽ làm thêm 
         callApicreateNewComment(formData)
-
+     
     }
 
     function handleDeleteComment(e) {
@@ -102,10 +113,8 @@ function Comment(props) {
 
     // thay đổi nội dung danh sách comment bằng useEffect bắt sự kiệm mỗi khi commentState thay đổi giá trị 
     useEffect(() => {
-        console.log("111111111", commentState?.length)
-
         var comments = []
-        if (commentState?.length !== 0) {
+        if (commentState?.length !== 0 && commentState[0] !== undefined) {
 
             commentState.forEach(comment => {
                 comments.push(

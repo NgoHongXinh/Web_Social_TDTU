@@ -22,11 +22,11 @@ function Post(props) {
             console.error(error)
         }
     }
-    useEffect(()=>{
-        socket.on("event_comment", dataComment =>{
-            setNewDataComment(dataComment)
-        })
-    })
+    // useEffect(()=>{
+    //     socket.on("event_comment", dataComment =>{
+    //         setNewDataComment(dataComment)
+    //     })
+    // })
     function handleLikePost(e) {
         var getPostcode = e.target.attributes.getNamedItem('postcode').value
         calApiLikePost(getPostcode)
@@ -34,7 +34,7 @@ function Post(props) {
     function getComments(e) {
         setShowComment(true)
         console.log("da vo")
-        var getPostcode = e.target.attributes.getNamedItem('postcode').value
+        var getPostcode = e.target.attributes.getNamedItem('postcode')?.value
         setPostCode(getPostcode)
         console.log("vao fnef", getPostcode, postcodeState)
     }
@@ -91,7 +91,8 @@ function Post(props) {
                     </div>
 
                     {/*dòng bình luận*/}
-                    {showComment && <Comment dataComment = {newDataComment} postcode={postInfoData.post_code} />}
+                    {/* {showComment && <Comment dataComment = {newDataComment} postcode={postInfoData.post_code} />} */}
+                    {showComment && <Comment  postcode={postInfoData.post_code} />}
                     {/* {showComment &&  } */}
                     {/* */}
                 </div>
