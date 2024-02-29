@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { faCheck, faX } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getDataApiAllnotification, getDataApiUpdateNoti, getDataApiNumberNotification } from "../../../common/callapi/notification"
 import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
 import { Link, Redirect } from 'react-router-dom';

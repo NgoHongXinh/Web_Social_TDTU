@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { getListComment, createNewComment, deleteComment } from "../../../common/callapi/comment"
 import { getDataApiDetailUserLogin } from "../../../common/callapi/user"
 import { getCookieToken } from '../../../common/functions'
 import "../../../css/home.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
+import { SocketContext } from '../../../thirdparty/socket';
 import Popup from 'reactjs-popup';
 function Comment(props) {
-    const { postcode } = props
-
+    const { postcode, dataComment } = props
+    const socket = useContext(SocketContext);
     var token = getCookieToken()
     const [postCodeFromHomeComponent, setPostCodeFromHomeComponent] = useState(postcode ? postcode : "")
     const [commentState, setCommentState] = useState([])
@@ -29,6 +29,12 @@ function Comment(props) {
             console.error(error)
         }
     }
+
+    // socket phai lay du lieu tu ben post vi neu goij truc tiep socket tu comment se khien cho du lieu comment duoc luwu trong 
+    // state :commentState bi rong dan den ko the tra ra dung du lieu nhu ban dau
+    useEffect(()=>{
+            setCommentState([...[dataComment?.data], ...commentState])
+    }, [dataComment])
 
     const loadMoreComment = async () => {
         try {
@@ -68,7 +74,7 @@ function Comment(props) {
             if (result?.response_status.code === "00") {
                 setTextComment("")
                 setCommentState([...[result?.data], ...commentState])
-                console.log("dddddddd")
+                
             }
 
         } catch (error) {
