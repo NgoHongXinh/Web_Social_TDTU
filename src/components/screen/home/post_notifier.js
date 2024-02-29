@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { getPostListHome } from "../../../common/callapi/post_service"
+import { useEffect, useState, useContext } from "react";
 import { getCookieToken } from '../../../common/functions'
 import Comment from './Comment';
 import { LikePost } from '../../../common/callapi/post';
+import { SocketContext } from '../../../thirdparty/socket';
+
 function Post(props) {
+    const socket = useContext(SocketContext);
     const { postInfoData } = props
     const [listImage, setListImage] = useState([])
     const [showComment, setShowComment] = useState(false)
     const [postcodeState, setPostCode] = useState()
+    const [newDataComment, setNewDataComment] = useState()
     const [dataLikePost, setDataLikePost] = useState()
     var token = getCookieToken()
     const calApiLikePost = async (postcode) => {
@@ -19,7 +22,11 @@ function Post(props) {
             console.error(error)
         }
     }
-
+    // useEffect(()=>{
+    //     socket.on("event_comment", dataComment =>{
+    //         setNewDataComment(dataComment)
+    //     })
+    // })
     function handleLikePost(e) {
         var getPostcode = e.target.attributes.getNamedItem('postcode').value
         calApiLikePost(getPostcode)
@@ -27,7 +34,7 @@ function Post(props) {
     function getComments(e) {
         setShowComment(true)
         console.log("da vo")
-        var getPostcode = e.target.attributes.getNamedItem('postcode').value
+        var getPostcode = e.target.attributes.getNamedItem('postcode')?.value
         setPostCode(getPostcode)
         console.log("vao fnef", getPostcode, postcodeState)
     }
@@ -64,9 +71,10 @@ function Post(props) {
                     </div>
                     <small className="text-muted">Today 7:51 pm</small><br />{/*time real dòng trạng thái*/}
                     <div className='like-number'>
-                        <span>
+                    <span>
                             Đã có {dataLikePost?.data.like_number} lượt thích
                         </span>
+                      
                     </div>
                     {/*nút like*/}
                     <div onClick={handleLikePost} postcode={postInfoData.post_code} className="btn btn-sm btn-danger mt-1 m-1">
@@ -83,7 +91,8 @@ function Post(props) {
                     </div>
 
                     {/*dòng bình luận*/}
-                    {showComment && <Comment postcode={postInfoData.post_code} />}
+                    {/* {showComment && <Comment dataComment = {newDataComment} postcode={postInfoData.post_code} />} */}
+                    {showComment && <Comment  postcode={postInfoData.post_code} />}
                     {/* {showComment &&  } */}
                     {/* */}
                 </div>

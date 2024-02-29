@@ -23,18 +23,6 @@ function HomePage(props) {
     const socket = useContext(SocketContext);
     
     const {close} = useParams()
-    function getComments(e){
-        try{        var getPostcode =  e.target.attributes.getNamedItem('postcode').value
-        setShowComment(true)
-        setPostCode(getPostcode)
-        console.log("vao fnef",getPostcode, postcodeState)
-        }
-        catch(error){
-            console.error(error)
-        }
-
-    }
-
 
     useEffect(()=>{
         const dataProfileUser = async () =>{
