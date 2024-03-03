@@ -10,6 +10,7 @@ function Post(props) {
     const [listImage, setListImage] = useState([])
     const [showComment, setShowComment] = useState(false)
     const [postcodeState, setPostCode] = useState()
+    const [dataPost, setDataPost] = useState()
     const [newDataComment, setNewDataComment] = useState()
     const [dataLikePost, setDataLikePost] = useState()
     var token = getCookieToken()
@@ -27,6 +28,7 @@ function Post(props) {
     //         setNewDataComment(dataComment)
     //     })
     // })
+
     function handleLikePost(e) {
         var getPostcode = e.target.attributes.getNamedItem('postcode').value
         calApiLikePost(getPostcode)
@@ -41,8 +43,10 @@ function Post(props) {
     console.log("vao fnef222", postcodeState)
 
     useEffect(() => {
+        const listPost = []
         var images = []
-        if(postInfoData.images.length > 0){
+
+        if(postInfoData!=="" && postInfoData.images.length > 0){
             postInfoData.images.forEach(image => {
                 images.push(
                     <div className="col-6">
@@ -53,12 +57,23 @@ function Post(props) {
             })
             setListImage(images)
         }
-  
-    }, [])
-
-    return (
-        <div className="card">
-        <div className="card-body h-100">
+        if(postInfoData === ""){
+            listPost.push(   
+            <div className="card-body h-100">
+            <div className="media">
+             Bạn chưa có bài viết nào
+            </div>
+            {/*hết trang tin*/}
+            {/* <div className="media-body">
+                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-delete-animal-pet-wild-domestic-256.png" width={56} height={56} className="mr-3" alt="Ashley Briggs" />
+                <h5 className="text-center lh-100">You have watched all the news</h5>
+            </div> */}
+        </div>)
+                setDataPost(listPost)
+         
+        }
+        else{
+            listPost.push(   <div className="card-body h-100">
             <div className="media">
                 <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                 <div className="media-body">
@@ -102,7 +117,16 @@ function Post(props) {
                 <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-delete-animal-pet-wild-domestic-256.png" width={56} height={56} className="mr-3" alt="Ashley Briggs" />
                 <h5 className="text-center lh-100">You have watched all the news</h5>
             </div> */}
-        </div>
+        </div> )
+        setDataPost(listPost)
+         
+        }
+  
+    }, [])
+
+    return (
+        <div className="card">
+            {dataPost}
         </div>
     );
 }

@@ -1,6 +1,9 @@
 import React from 'react'
 
-export default function ModalPost({close}) {
+export default function ModalPost(props) {
+    const {close,userLogin} = props 
+    console.log(userLogin)
+
   return (
     <div>
         {/* The Modal */}
@@ -9,14 +12,14 @@ export default function ModalPost({close}) {
                 <div className="modal-content">
                     {/* Modal Header */}
                     <div className="modal-header">
-                        <h4 className="modal-title text-white">Your Post</h4>
+                        <h4 className="modal-title text-white">Tạo bài viết</h4>
                     </div>
                     {/* Modal body */}
                     <div className="modal-body">
                         <form>
                             <div className="form-group">
-                                <label htmlFor="recipient-name" className="col-form-label text-white">Recipient:</label>
-                                <input type="text" className="form-control" id="recipient-name" defaultValue="@username" />
+                                <label htmlFor="recipient-name" className="col-form-label text-white">{userLogin?.fullname}</label>
+                                {/* <input type="text" className="form-control" id="recipient-name" defaultValue="@username" /> */}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="message-text" className="col-form-label text-white">Message:</label>
