@@ -1,8 +1,4 @@
-import { faEllipsisH } from '@fortawesome/fontawesome-free-solid';
-import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
-import Popup from 'reactjs-popup';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Card from 'react-bootstrap/Card';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAllFriendOfUser, deleteFriend } from "../../../common/callapi/friend"
 import { useEffect, useState } from 'react';
 import { getCookieToken } from '../../../common/functions';
@@ -14,6 +10,7 @@ function FriendHome(props) {
     console.log("33333333333", usercode)
     const [listFriend, setListFriend] = useState()
     const token = getCookieToken()
+    const navigate = useNavigate();
 
 
     const callGetAllDeleteFriend = async (friendusercode) => {
@@ -25,6 +22,13 @@ function FriendHome(props) {
         } catch (error) {
             console.error(error)
         }
+    }
+     function gotoChatPage(e){
+        // console.log("123123",  e.target.attributes.getNamedItem('usercode'))
+        // var usercode =  e.target.attributes.getNamedItem('usercode').value
+        // chỗ này là ví dụ sử dụng navigate 
+        navigate(`/chat`,{ replace: true });
+
     }
     function DeleteFriend(e) {
         var friendUserCode = e.target.attributes.getNamedItem('friendusercode').value;
@@ -45,8 +49,12 @@ function FriendHome(props) {
                                 <div className="media-body">
                                     <p className="my-1"><strong>{friend.fullname}</strong></p>
                                     <div className='card-btn-home'>
-                                        <a className="btn btn-sm  btn-outline-primary m-1" friendusercode={friend.user_code} onClick={DeleteFriend}>Hủy kết bạn</a>
-                                        <a className="btn btn-sm btn-outline-primary m-1" href="#">Nhắn tin</a>
+                                        <a className="btn btn-sm  btn-outline-primary m-1" friendusercode={friend.user_code} onClick={DeleteFriend}>Unfriends</a>
+                                       <div> 
+                                       <a className="btn btn-sm btn-outline-primary m-1" onClick={gotoChatPage} state={{ "usercode": usercode }}>
+                                            <span>Chat</span>
+                                        </a>
+                                       </div>
                                     </div>
                                 </div>
                             </div>

@@ -30,11 +30,11 @@ function PostInProfile(props) {
     for (let i = 0; i < postInfo?.length; i++) {
         // socket.emit('join_room', postInfo[i]?.post_code)
         listPost.push(
-            <>
+                <div className="row d-flex align-item-center">
                 {<PostUser key={postInfo[i]?._id}
                     postInfoData={postInfo[i]}
                 />}
-            </>
+            </div>
         )
     }
     return (

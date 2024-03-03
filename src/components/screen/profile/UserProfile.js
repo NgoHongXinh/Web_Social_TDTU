@@ -170,7 +170,7 @@ function UserProfile() {
                                     </ul>
                                 </div>
                             </div>
-                            <div className='container-fluid container-tab-body '>
+                            <div className='container-tab-body '>
                                 <Routes>
                                     <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
 

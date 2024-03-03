@@ -29,12 +29,12 @@ export default function ModalPost(props) {
                             <div>
                                 <div className="input-group m-2">
                                     <div>
-                                        <i className="bi bi-file-earmark-richtext" />
                                         <label htmlFor="image_uploads" className='text-white'>Choose images to upload (PNG, JPG, JPEG)</label>
                                         <input className="fa fa-image icon text-white" type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple aria-hidden="true" />
                                     </div>
                                     <div>
-                                        <label htmlFor="file_uploads" className='text-white'>Choose files to upload</label>
+1                                        <label htmlFor="file_uploads" className='text-white'>Choose files to upload</label>
+                                        
                                         <input className="fa fa-file icon text-white" type="file" id="file_uploads" multiple aria-hidden="true" />
                                     </div>
                                     <div className="preview">
