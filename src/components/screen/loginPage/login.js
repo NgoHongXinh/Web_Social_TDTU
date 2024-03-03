@@ -103,7 +103,7 @@ function LoginPage() {
 
       
         } catch (err) {
-            if (err.response.status === 400 || err.response.status === 401){
+            if (err?.response?.status === 400 || err?.response?.status === 401){
 
                 setErrMsg("Tài khoản google khong phải do trường TDT cấp");
             }
