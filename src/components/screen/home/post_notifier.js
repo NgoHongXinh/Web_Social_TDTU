@@ -40,7 +40,6 @@ function Post(props) {
         setPostCode(getPostcode)
         console.log("vao fnef", getPostcode, postcodeState)
     }
-    console.log("vao fnef222", postcodeState)
 
     useEffect(() => {
         const listPost = []

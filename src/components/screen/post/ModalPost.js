@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { createPost } from '../../../common/callapi/post_service';
 import { getCookieToken } from '../../../common/functions'
+
 export default function ModalPost(props) {
-    const {close,userLogin} = props 
+    const {close,userLogin, setLastPostId, setPostInfo, setpostState} = props 
     const [textPost, setTextPost] = useState("")
     const [postImages, setPostImages] = useState();
     const [postVideo, setpostVideo] = useState([]);
@@ -41,9 +42,10 @@ export default function ModalPost(props) {
               });
         }
         formData.append('video_upload', postVideo);
-  
-
         callApiCreateNewPost(formData)
+        window.location.reload(true);
+        close()
+    
     }
   return (
     <div>
