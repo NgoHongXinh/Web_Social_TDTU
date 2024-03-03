@@ -57,16 +57,25 @@ function HomePage(props) {
     }, [])
 
     var listPost = []
-    for (let i = 0; i < postInfo?.length; i++) {
-        socket.emit('join_room', postInfo[i]?.post_code)
-        listPost.push(
-            <>
-                {<Post key={postInfo[i]?._id}
-                    postInfoData={postInfo[i]}
-                />}
-            </>
-        )
+    if (postInfo?.length === 0 ){
+        listPost.push(      <>
+            {<Post postInfoData={""}
+            />}
+        </>)
     }
+    else{
+        for (let i = 0; i < postInfo?.length; i++) {
+            socket.emit('join_room', postInfo[i]?.post_code)
+            listPost.push(
+                <>
+                    {<Post key={postInfo[i]?._id}
+                        postInfoData={postInfo[i]}
+                    />}
+                </>
+            )
+        }
+    }
+
     return (
         <>
         
@@ -94,7 +103,7 @@ function HomePage(props) {
                                             Post 
                                         </button>}
                                     >
-                                    {close => <ModalPost close={close}/>}
+                                    {close => <ModalPost userLogin={userLogin} close={close}/>}
                                     </Popup>
                                 </div>
                             </div>
