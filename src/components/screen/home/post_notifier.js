@@ -45,8 +45,9 @@ function Post(props) {
     useEffect(() => {
         const listPost = []
         var images = []
+        var videos = []
 
-        if(postInfoData!=="" && postInfoData.images.length > 0){
+        if(postInfoData !=="" && postInfoData.images.length > 0){
             postInfoData.images.forEach(image => {
                 images.push(
                     <div className="col-6">
@@ -55,7 +56,15 @@ function Post(props) {
     
                 )
             })
-            setListImage(images)
+            // setListImage(images)
+        }
+        if(postInfoData !=="" && postInfoData?.videos){
+            videos.push(  
+            <video width="750" height="500" controls >
+                        
+            <source src={postInfoData.videos} type="video/mp4"/>
+        </video>)
+          
         }
         if(postInfoData === ""){
             listPost.push(   
@@ -79,10 +88,12 @@ function Post(props) {
                 <div className="media-body">
                     <small className="float-right text-navy">5m ago</small>
                     <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
-                    <p>{postInfoData.content}</p>
+                    <p>{postInfoData?.content}</p>
                     {/*hình ảnh được upload*/}
                     <div className="row no-gutters mt-1">
-                    {listImage}
+                    {/* {listImage} */}
+                    {images}
+                    {videos}
                     </div>
                     <small className="text-muted">Today 7:51 pm</small><br />{/*time real dòng trạng thái*/}
                     <div className='like-number'>
@@ -125,8 +136,12 @@ function Post(props) {
     }, [])
 
     return (
+        <div>
+
+
         <div className="card">
             {dataPost}
+        </div>
         </div>
     );
 }

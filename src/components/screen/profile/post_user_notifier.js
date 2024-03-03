@@ -32,7 +32,22 @@ function PostUser(props) {
         setPostCode(getPostcode)
         console.log("vao fnef", getPostcode, postcodeState)
     }
-    console.log("vao fnef222", postcodeState)
+    const callApiDeletePost = async (postcode) =>{
+        try {
+            const likePostInfo = await LikePost(token, postcode);
+            setDataLikePost(likePostInfo)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    function deletePost(e) {
+        setShowComment(true)
+        var getPostcode = e.target.attributes.getNamedItem('postcode').value
+
+        setPostCode(getPostcode)
+        console.log("vao fnef", getPostcode, postcodeState)
+    }
     useEffect(() => {
         var images = []
         postInfoData.images.forEach(image => {

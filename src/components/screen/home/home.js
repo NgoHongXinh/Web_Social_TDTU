@@ -85,7 +85,7 @@ function HomePage(props) {
                 {/*media objects (dòng trạng thái)*/}
                 <div className="container p-0">
                     <div className="row home-post-content">
-                        <div className="col-12 col-lg-8">
+                        <div className="col-lg-8">
                             {/*Đăng tin*/}
                             <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-primary rounded box-shadow">
                                 <div className="p-3">
@@ -114,7 +114,7 @@ function HomePage(props) {
                             </div> */}
                         </div>
                         {/*cột thông báo trnang thái*/}
-                        <div className="col-12 col-lg-4 home-info mt-3">
+                        <div className="col-lg-4 home-info mt-3">
                             <div className="card mb-3">
                                 <div className="card-body text-center">
                         

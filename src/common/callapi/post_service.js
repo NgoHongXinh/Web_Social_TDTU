@@ -77,4 +77,54 @@ async function getPosts(token) {
     }
     
 }
-export {getPostListHome,getPostListUser, getPosts};
+
+
+async function createPost(token, formdata) {
+    try {
+        const response = await fetch(`${BASE_URL}post`,
+        {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formdata
+        }
+    )
+
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+    }
+    
+}
+
+async function deletePost(token, postcode) {
+    try {
+        const response = await fetch(`${BASE_URL}post/${postcode}`,
+        {
+            method: 'post',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+    )
+
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+    }
+    
+}
+export {getPostListHome,getPostListUser, getPosts, createPost, deletePost};
