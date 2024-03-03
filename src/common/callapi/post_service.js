@@ -1,8 +1,10 @@
 import {BASE_URL} from "../constant"
-async function getPostListHome(token) {
+async function getPostListHome(token, last_id) {
     try {
         var url = `${BASE_URL}post`
-    
+        if(last_id){
+          url =  `${BASE_URL}post?last_post_ids=${last_id}`
+        }    
         const response = await fetch(url, 
             {
                 method: 'GET',
@@ -108,7 +110,7 @@ async function deletePost(token, postcode) {
     try {
         const response = await fetch(`${BASE_URL}post/${postcode}`,
         {
-            method: 'post',
+            method: 'delete',
             headers: {
                 'Authorization': `Bearer ${token}`
             }
