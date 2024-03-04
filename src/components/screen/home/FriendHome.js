@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { getAllFriendOfUser, deleteFriend } from "../../../common/callapi/friend"
+import { createConversation } from "../../../common/callapi/chat"
 import { useEffect, useState } from 'react';
 import { getCookieToken } from '../../../common/functions';
 import "../../../css/listfriend.css";
@@ -22,10 +23,21 @@ function FriendHome(props) {
             console.error(error)
         }
     }
+    const callApiCreateConversation = async (user_code_need_to_chat) =>{
+        try {
+            const result = await createConversation(token, user_code_need_to_chat);
+            if(result?.response_status.code === "00"){
+                console.log("success")
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
      function gotoChatPage(e){
         // console.log("123123",  e.target.attributes.getNamedItem('usercode'))
-        // var usercode =  e.target.attributes.getNamedItem('usercode').value
-        // chỗ này là ví dụ sử dụng navigate 
+        var friendUserCode = e.target.attributes.getNamedItem('friendusercode').value;
+        // chỗ này là ví dụ sử dụng navigate
+        callApiCreateConversation(friendUserCode) 
         navigate(`/chat`,{ replace: true });
 
     }
@@ -50,8 +62,8 @@ function FriendHome(props) {
                                     <div className='card-btn-home'>
                                         <a className="btn btn-sm  btn-outline-primary m-1" friendusercode={friend.user_code} onClick={DeleteFriend}>Unfriends</a>
                                        <div> 
-                                       <a className="btn btn-sm btn-outline-primary m-1" onClick={gotoChatPage} state={{ "usercode": usercode }}>
-                                            <span>Chat</span>
+                                       <a className="btn btn-sm btn-outline-primary m-1" onClick={gotoChatPage} friendusercode={friend.user_code}>
+                                            Chat
                                         </a>
                                        </div>
                                     </div>

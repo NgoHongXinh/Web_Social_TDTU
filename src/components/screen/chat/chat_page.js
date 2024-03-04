@@ -1,7 +1,50 @@
 import React, { useState, useEffect, useContext} from 'react';
+import {getListConversation} from "../../../common/callapi/chat"
 import "../../../css/chat.css"
+import { getCookieToken } from '../../../common/functions';
 function ChatPage(props) {
-    // const {usercode} = useParams()
+    const [lastConversationId, setLasConversationId] = useState()
+    const [conversationInfo, setConversationInfo] = useState()
+    const token = getCookieToken()
+    const callGetAllConversation = async () => {
+        try {
+            const result = await getListConversation(token);
+            if(result?.response_status.code === "00"){
+                var listConversation = []
+                console.log(result?.data.list_conversation_info)
+                for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
+                    if(result?.data.list_conversation_info[i].members_obj?.length === 1){
+                        listConversation.push(
+                            <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
+                                <div className="d-flex align-items-start">
+                                    {/* avatar friend chat */}
+                                    <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
+                                
+                                    <div className="pr-3 text-algin-left">
+                                        {result?.data.list_conversation_info[i].members_obj[0].fullname}
+  
+                                        {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
+                                     
+                                       
+                                    </div>
+                                </div>
+                            </a>
+                        )
+                    }
+    
+    
+                setConversationInfo(listConversation)
+            }
+        }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    
+    useEffect(()=>{
+        callGetAllConversation()
+    }, [])
+
     return (
         <div className='chat-container'>
             <div className='container'>
@@ -17,9 +60,10 @@ function ChatPage(props) {
                             </div>
                             {/* Danh sach cac chat */}
                             <div className='p-2'>
-                                <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
+                                {conversationInfo}
+                                {/* <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
                                     <div className="d-flex align-items-start">
-                                        {/* avatar friend chat */}
+                     
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
                                     
                                         <div className="pr-3 text-algin-left">
@@ -27,9 +71,9 @@ function ChatPage(props) {
                                             <div className="small text-secondary chat-offline"><span/> Offline</div>
                                         </div>
                                     </div>
-                                </a>
+                                </a> */}
                                 {/* item friend chat */}
-                                <a href="#" className="list-group-item list-group-item-action border-0 p-2">
+                                {/* <a href="#" className="list-group-item list-group-item-action border-0 p-2">
                                     <div className="d-flex align-items-start">
                                         <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle" alt="Jennifer Chang" width={40} height={40} />
                                         <div className="text-align-left m-1">
@@ -41,7 +85,7 @@ function ChatPage(props) {
                                             </div>
                                         </div>
                                     </div>
-                                </a>
+                                </a> */}
                             </div>
                             <hr className="d-block d-lg-none mt-1 mb-0" />
                         </div>
