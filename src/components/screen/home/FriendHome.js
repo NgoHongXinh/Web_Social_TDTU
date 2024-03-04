@@ -7,7 +7,6 @@ import "../../../css/style.css";
 
 function FriendHome(props) {
     const {usercode} = props
-    console.log("33333333333", usercode)
     const [listFriend, setListFriend] = useState()
     const token = getCookieToken()
     const navigate = useNavigate();

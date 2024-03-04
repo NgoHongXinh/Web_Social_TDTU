@@ -3,7 +3,7 @@ import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
 import { getDataApiDetailUserLogin } from "../../../common/callapi/user";
 import { getCookieToken } from '../../../common/functions'
 import { SocketContext } from '../../../thirdparty/socket';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Post from "./post_notifier";
 import FriendHome from "./FriendHome"
 import "../../../css/home.css"
@@ -19,6 +19,8 @@ function HomePage(props) {
     const [userLogin, setUserLogin] = useState()
     const [dataLikePost, setDataLikePost] = useState()
     const [postInfo, setPostInfo] = useState()
+    const [lastPostId, setLastPostId] = useState()
+    const [postState, setpostState] = useState()
     var token = getCookieToken()
     const socket = useContext(SocketContext);
     const { close } = useParams()
@@ -48,17 +50,26 @@ function HomePage(props) {
                 console.error(error)
             }
         }
-        dataProfileUser()
-        const dataPostList = async () => {
 
-        }
+        dataProfileUser() 
+
+
     }, [])
+    
 
     const callApiGetListPostUser = async () => {
         try {
-            const result = await getPosts(token);
-            console.log(result.data)
-            setPostInfo(result?.data.list_post_info)
+            const result = await getPosts(token, lastPostId);
+            if(lastPostId){
+                setLastPostId(result?.data.list_post_info)
+                setPostInfo([...postInfo, ...result?.data.list_post_info])
+            }
+            else{
+                console.log(result.data)
+                setPostInfo(result?.data.list_post_info)
+                setLastPostId(result?.data.last_post_id)
+            }
+            
         } catch (error) {
             console.error(error)
         }
@@ -67,25 +78,56 @@ function HomePage(props) {
         callApiGetListPostUser()
     }, [])
 
-    var listPost = []
-    if (postInfo?.length === 0 ){
-        listPost.push(      <>
-            {<Post postInfoData={""}
-            />}
-        </>)
-    }
-    else{
-        for (let i = 0; i < postInfo?.length; i++) {
-            socket.emit('join_room', postInfo[i]?.post_code)
-            listPost.push(
-                <>
-                    {<Post key={postInfo[i]?._id}
-                        postInfoData={postInfo[i]}
-                    />}
-                </>
-            )
+    useEffect(()=>{
+
+        var listPost = []
+        if (postInfo?.length === 0 ){
+            listPost.push(      <>
+                {<Post postInfoData={""}
+                />}
+            </>)
         }
-    }
+        else{
+
+           for (let i = 0; i < postInfo?.length; i++) {
+                console.log("vaof nef", postInfo[i]?.post_code)
+                socket.emit('join_room', postInfo[i]?.post_code)
+                listPost.push(
+                    <>
+                        {<Post key={postInfo[i]?._id}
+                            postInfoData={postInfo[i]}
+                        />}
+                    </>
+                )
+            }
+        }
+        setpostState(listPost)
+    }, [postInfo])
+
+    // var listPost = []
+
+    // if (postInfo?.length === 0 ){
+    //     listPost.push(      <>
+    //         {<Post postInfoData={""}
+    //         />}
+    //     </>)
+    // }
+    // else{
+        
+    //     console.log("vaof nef", postInfo)
+    //     for (let i = 0; i < postInfo?.length; i++) {
+    //         socket.emit('join_room', postInfo[i]?.post_code)
+    //         console.log( postInfo[i]?.post_code)
+    //         listPost.push(
+    //             <>
+    //                 {<Post key={postInfo[i]?._id}
+    //                     postInfoData={postInfo[i]}
+    //                 />}
+    //             </>
+    //         )
+    //     }
+    // }
+   
 
     return (
         <>
@@ -96,7 +138,7 @@ function HomePage(props) {
                 {/*media objects (dòng trạng thái)*/}
                 <div className="container p-0">
                     <div className="row home-post-content">
-                        <div className="col-12 col-lg-8">
+                        <div className="col-lg-8">
                             {/*Đăng tin*/}
                             <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-primary rounded box-shadow">
                                 <div className="p-3">
@@ -114,17 +156,31 @@ function HomePage(props) {
                                                 Post
                                             </button>}
                                     >
-                                    {close => <ModalPost userLogin={userLogin} close={close}/>}
+                                    {close => <ModalPost setpostState={setpostState} setLastPostId={setLastPostId} setPostInfo={setPostInfo} userLogin={userLogin} close={close}/>}
 
                                     </Popup>
                                 </div>
                             </div>
-
-                            {listPost}
+                            {postState}
+                            <InfiniteScroll
+                                dataLength={10}
+                                next={callApiGetListPostUser}
+                                hasMore={true}
+                                loader={""} // ko truyền dữ liệu 
+                                scrollableTarget='scrollableDiv'
+                                >
+                                {postState}
+                         
+                                </InfiniteScroll>
+                                            
                             {/* <div className='card'>
                
                             </div> */}
                         </div>
+
+                        {/*cột thông báo trnang thái*/}
+                        {/* <div className="col-lg-4 home-info mt-3"> */}
+
                         {/*cột thông báo trang thái*/}
                         <div className="col-12 col-lg-4 sticky home-info mt-3 sticky-scroll__post">
                             <div className="card mb-3">

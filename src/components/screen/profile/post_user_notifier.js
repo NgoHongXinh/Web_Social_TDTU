@@ -2,6 +2,9 @@ import { getPostListUser } from "../../../common/callapi/post_service"
 import { getCookieToken } from '../../../common/functions'
 import Comment from '../home/Comment.js';
 import { LikePost } from '../../../common/callapi/post';
+
+import { deletePost } from '../../../common/callapi/post_service.js';
+
 import { useEffect, useState } from "react";
 function PostUser(props) {
     const { postInfoData } = props
@@ -32,7 +35,20 @@ function PostUser(props) {
         setPostCode(getPostcode)
         console.log("vao fnef", getPostcode, postcodeState)
     }
-    console.log("vao fnef222", postcodeState)
+    const callApiDeletePost = async (postcode) =>{
+        try {
+            const result = await deletePost(token, postcode);
+            if(result?.response_status.code === '00'){
+                window.location.reload(true);
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    function handleDeletePost(e) {
+        var getPostcode = e.target.attributes.getNamedItem('postcode').value
+        callApiDeletePost(getPostcode)
+    }
     useEffect(() => {
         var images = []
         if (images.length > 2) {
@@ -79,6 +95,7 @@ function PostUser(props) {
                 Đã có {dataLikePost?.data.like_number} lượt thích
                 </span>
             </div> */}
+                        <div className="btn btn-danger" postcode = {postInfoData.post_code} onClick={handleDeletePost}> delete </div>
                         {/*nút like*/}
                         <div className='like-number'>
                             <span>
