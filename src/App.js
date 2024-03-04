@@ -13,6 +13,8 @@ import { SocketContext, socket } from './thirdparty/socket';
 import UserProfile from './components/screen/profile/UserProfile';
 import UpdateInfo from './components/screen/profile/UpdateInfo';
 import FindUser from './components/screen/search/FindUser';
+import ChatPage from "./components/screen/chat/chat_page.js";
+
 function App() {
   const [currUserInfo, setCurrUserInfo] = useState()
   useEffect(()=> {
@@ -40,8 +42,9 @@ function App() {
                   <Route path='/profile/:usercode/*' element={<UserProfile/>}></Route>
                   <Route path='/find-user' element={<FindUser />}> </Route>
                   <Route path='/user/:usercode/update-info' element={<UpdateInfo/>}> </Route>
-       
-                  {/* <Route path='/chat' element={<ChatPage currUserInfo={currUserInfo} />}> </Route> */}
+                  <Route path='/chat' element={<ChatPage/>}> </Route> 
+                  {/* <Route path='/chat' element={<ChatPage />}> </Route>  */}
+
                 </Route>
 
                 <Route path='*' element={<ErrorPage />} />

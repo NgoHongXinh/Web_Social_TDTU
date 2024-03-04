@@ -80,6 +80,7 @@ export default function ModalPost(props) {
                                     <div>
                                         <label htmlFor="file_uploads" className='text-white'>Choose video to upload</label>
                                         <input  onChange={changeVideo} className="fa fa-file icon text-white" type="file" id="file_uploads" aria-hidden="true" />
+
                                     </div>
                                     <div className="preview">
                                     </div>
