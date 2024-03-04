@@ -33,6 +33,7 @@ function InfoUserInUserProfile() {
     function gotosettingPag(e){
         console.log("123123",  e.target.attributes.getNamedItem('usercode'))
         var usercode =  e.target.attributes.getNamedItem('usercode').value
+        // chỗ này là ví dụ sử dụng navigate 
         navigate(`/user/${usercode}/update-info`,{ replace: true });
 
     }
