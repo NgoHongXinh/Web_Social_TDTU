@@ -1,39 +1,70 @@
 import React, { useState, useEffect, useContext} from 'react';
-import {getListConversation} from "../../../common/callapi/chat"
+import {getListConversation, getListMess} from "../../../common/callapi/chat"
+import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import "../../../css/chat.css"
 import { getCookieToken } from '../../../common/functions';
-function ChatPage(props) {
+function ChatPage() {
     const [lastConversationId, setLasConversationId] = useState()
     const [conversationInfo, setConversationInfo] = useState()
+    const [messageInfo, setMessageInfo] = useState()
+    const [lastMessId, setlastMessId] = useState()
+    const [userLogin, setUserLogin] = useState()
+    const [firstConversationCode, setfirstConversationCode] = useState()
+    const [message, setMessage] = useState()
     const token = getCookieToken()
+    const dataProfileUser = async () => {
+        try {
+            const userInfo = await getDataApiDetailUserLogin(token);
+            setUserLogin(userInfo)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const callApigetListMess = async (conversationCode) =>{
+        try{
+            const result = await getListMess(token, conversationCode)
+            if(result?.data?.list_mess_info?.length> 0){
+                setMessageInfo(result?.data?.list_mess_info)
+                setlastMessId(result?.data?.last_mess_id)
+            }
+            
+
+        }catch(error){
+            console.error(error)
+        }
+    }
     const callGetAllConversation = async () => {
         try {
             const result = await getListConversation(token);
             if(result?.response_status.code === "00"){
                 var listConversation = []
-                console.log(result?.data.list_conversation_info)
-                for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
-                    if(result?.data.list_conversation_info[i].members_obj?.length === 1){
-                        listConversation.push(
-                            <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
-                                <div className="d-flex align-items-start">
-                                    {/* avatar friend chat */}
-                                    <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
-                                
-                                    <div className="pr-3 text-algin-left">
-                                        {result?.data.list_conversation_info[i].members_obj[0].fullname}
-  
-                                        {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
-                                     
-                                       
+                if(result?.data.list_conversation_info?.length > 0){
+                    setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
+                        if(result?.data.list_conversation_info[i].members_obj?.length === 1){
+                            listConversation.push(
+                                <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
+                                    <div className="d-flex align-items-start">
+                                        {/* avatar friend chat */}
+                                        <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
+                                    
+                                        <div className="pr-3 text-algin-left">
+                                            {result?.data.list_conversation_info[i].members_obj[0].fullname}
+    
+                                            {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
+                                        
+                                        
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        )
-                    }
-    
-    
-                setConversationInfo(listConversation)
+                                </a>
+                            )
+                        }
+        
+        
+                    setConversationInfo(listConversation)
+                }
             }
         }
         } catch (error) {
@@ -42,8 +73,49 @@ function ChatPage(props) {
     }
     
     useEffect(()=>{
+        dataProfileUser()
         callGetAllConversation()
     }, [])
+    useEffect(()=>{
+        callApigetListMess(firstConversationCode)
+    }, [firstConversationCode])
+
+    
+    useEffect(()=>{
+        var list_mess = []
+        messageInfo?.slice().reverse().forEach(mess =>{
+            if(mess['sender_code'] === userLogin['data']['user_code']){
+                list_mess.push(
+                <div className="chat-message-right p-4">
+                    <div>
+                        <img src={userLogin['picture']}className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
+                        <div className="text-muted small text-nowrap mt-2">2:33 am</div>
+                    </div>
+                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                        <span>
+                            {mess.text}
+                        </span>
+                    </div>
+                </div>
+                )
+            }
+            else{
+                list_mess.push(
+                <div className="chat-message-left pb-4">
+                <div>
+                    <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
+                    <div className="text-muted small text-nowrap mt-2">2:36 am</div>
+                </div>
+                <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                {mess.text}
+                </div>
+            </div>
+                )
+            }
+        }
+        )
+        setMessage(list_mess)
+    }, [messageInfo])
 
     return (
         <div className='chat-container'>
@@ -113,7 +185,8 @@ function ChatPage(props) {
                             <div className="position-relative">
                                 {/* body noi dung chat */}
                                 <div className="chat-messages p-4">
-                                    <div className="chat-message-right p-4">
+                                    {message}
+                                    {/* <div className="chat-message-right p-4">
                                         <div>
                                             <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
                                             <div className="text-muted small text-nowrap mt-2">2:33 am</div>
@@ -123,9 +196,9 @@ function ChatPage(props) {
                                             Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
                                             </span>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 
-                                    <div className="chat-message-left pb-4">
+                                    {/* <div className="chat-message-left pb-4">
                                         <div>
                                             <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
                                             <div className="text-muted small text-nowrap mt-2">2:36 am</div>
@@ -134,7 +207,7 @@ function ChatPage(props) {
                                             Sed pulvinar, massa vitae interdum pulvinar, risus lectus porttitor magna, vitae commodo lectus mauris et velit.
                                             Proin ultricies placerat imperdiet. Morbi varius quam ac venenatis tempus.
                                         </div>
-                                    </div>
+                                    </div> */}
                     
                                 </div>
                             </div>
