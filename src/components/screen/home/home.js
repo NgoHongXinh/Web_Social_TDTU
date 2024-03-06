@@ -140,7 +140,7 @@ function HomePage(props) {
                     <div className="row home-post-content">
                         <div className="col-lg-8">
                             {/*Đăng tin*/}
-                            <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-primary rounded box-shadow">
+                            <div className="bg-post-home d-flex align-items-center p-3 my-3 text-black-50 rounded box-shadow">
                                 <div className="p-3">
                                     <img className="mr-3 img-fluid rounded-circle mb-2" src={userLogin?.data['picture']} alt="" width={50} height={50} />
 

@@ -36,7 +36,7 @@ function PostInProfile(props) {
                 />}
             </div>
         )
-    }
+}
     return (
         <>
             {listPost}

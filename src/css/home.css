@@ -24,6 +24,12 @@
     flex-direction: row;
     justify-content: space-around;
 }
+.bg-post-home{
+    background-color: #0336ff;
+}
+.icon-color-custom{
+    background-color: #0336ff;
+}
 /* .home-container{
     padding-left: 40px;
     padding-right: 40px;
