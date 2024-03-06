@@ -1,17 +1,22 @@
-import React, { useState, useEffect, useContext} from 'react';
-import {getListConversation, getListMess} from "../../../common/callapi/chat"
+import React, { useState, useEffect, useRef} from 'react';
+import {getListConversation, getListMess, createMess} from "../../../common/callapi/chat"
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import "../../../css/chat.css"
 import { getCookieToken } from '../../../common/functions';
 function ChatPage() {
     const [lastConversationId, setLasConversationId] = useState()
     const [conversationInfo, setConversationInfo] = useState()
-    const [messageInfo, setMessageInfo] = useState()
+    const [messageInfo, setMessageInfo] = useState() // này đẻ lưu lại response từ backend khi vừa gọi xong api 
     const [lastMessId, setlastMessId] = useState()
     const [userLogin, setUserLogin] = useState()
-    const [firstConversationCode, setfirstConversationCode] = useState()
-    const [message, setMessage] = useState()
+    // const [firstConversationCode, setfirstConversationCode] = useState()
+    const [currentConversationCode, setcurrentConversationCode] = useState()
+
+    const [message, setMessage] = useState() // sử dụng để cập nhật thay đổi mess, bao gồm code html 
+    const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
     const token = getCookieToken()
+    const btnElement = useRef()
+    const btncreate = useRef()
     const dataProfileUser = async () => {
         try {
             const userInfo = await getDataApiDetailUserLogin(token);
@@ -29,28 +34,64 @@ function ChatPage() {
                 setMessageInfo(result?.data?.list_mess_info)
                 setlastMessId(result?.data?.last_mess_id)
             }
+            else{
+                setMessageInfo([])
+                setlastMessId("")
+            }
             
 
         }catch(error){
             console.error(error)
         }
     }
+
+    function handleInput(event) {
+        setNewMess(event.target.value)
+    }
+    useEffect(()=>{
+        console.log(newMess)
+    }, [newMess])
+    //ĐIỀU HƯỚNG CLICK KHI CLICK NHẦM ICON CHỨ KO CLICK VÀO BTN
+    function btncreateClick(){
+        console.log("btncreate")
+        btncreate.current.click()
+    }
+    function clickBtn(){
+        console.log("vooooooooooooo")
+        btnElement.current.click()
+    }
+
+    function getMessOfConverstation(e){
+        try{
+            var convercode = e.target.attributes.getNamedItem('convercode').value
+            setcurrentConversationCode(convercode)
+            callApigetListMess(convercode)
+        }
+        catch(error){
+            console.error(error)
+        }
+ 
+        // callApigetListMess(commentcode)
+    }
+
     const callGetAllConversation = async () => {
         try {
             const result = await getListConversation(token);
             if(result?.response_status.code === "00"){
                 var listConversation = []
                 if(result?.data.list_conversation_info?.length > 0){
-                    setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    // setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    setcurrentConversationCode(result?.data.list_conversation_info[0].conversation_code)
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
                         if(result?.data.list_conversation_info[i].members_obj?.length === 1){
                             listConversation.push(
-                                <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
-                                    <div className="d-flex align-items-start">
+                                // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
+                                <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
+                                    <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start">
                                         {/* avatar friend chat */}
                                         <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
                                     
-                                        <div className="pr-3 text-algin-left">
+                                        <div onClick={clickBtn} className="pr-3 text-algin-left">
                                             {result?.data.list_conversation_info[i].members_obj[0].fullname}
     
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
@@ -71,19 +112,36 @@ function ChatPage() {
             console.error(error)
         }
     }
+    const callApiCreateNewMess = async(conversationCode, text) =>{
+        try{
+            const result = await createMess(token,conversationCode, text)
+            setMessageInfo([...[result?.data], ...messageInfo])
+            setNewMess("")// cập nhật lại mess rỗng trong input 
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+    //hàm để onclick tạo mới mess
+    // conversationcode và newMess đều được lưu ở state nên chỉ việc lấy ra dùng
+    function createNewMess(e){
+        callApiCreateNewMess(currentConversationCode, newMess)
+    }
     
     useEffect(()=>{
         dataProfileUser()
         callGetAllConversation()
     }, [])
     useEffect(()=>{
-        callApigetListMess(firstConversationCode)
-    }, [firstConversationCode])
+        callApigetListMess(currentConversationCode)
+    }, [currentConversationCode])
 
     
     useEffect(()=>{
+        console.log("vao nè ")
         var list_mess = []
         messageInfo?.slice().reverse().forEach(mess =>{
+            console.log("333333333333")
             if(mess['sender_code'] === userLogin['data']['user_code']){
                 list_mess.push(
                 <div className="chat-message-right p-4">
@@ -103,7 +161,7 @@ function ChatPage() {
                 list_mess.push(
                 <div className="chat-message-left pb-4">
                 <div>
-                    <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
+                    <img src={mess?.sender_info?.picture} className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
                     <div className="text-muted small text-nowrap mt-2">2:36 am</div>
                 </div>
                 <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
@@ -213,9 +271,9 @@ function ChatPage() {
                             </div>
                             <div className="flex-grow-0 py-3 px-4 border-top">
                                 <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Type your message" />
-                                <button className="btn">
-                                    <svg height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
+                                <input onChange={handleInput} type="text" className="form-control" placeholder="Type your message" />
+                                <button conser onClick={createNewMess} ref={btncreate} className="btn">
+                                    <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
                                 </button>
                                 </div>
                             </div>
