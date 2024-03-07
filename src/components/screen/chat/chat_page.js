@@ -1,13 +1,15 @@
 
 
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef, useContext} from 'react';
 import {getListConversation, getListMess, createMess} from "../../../common/callapi/chat"
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
+import { SocketContext } from '../../../thirdparty/socket';
 import "../../../css/chat.css";
 import "../../../css/style.css";
 
 import { getCookieToken } from '../../../common/functions';
 function ChatPage() {
+    const socket = useContext(SocketContext);
     const [lastConversationId, setLasConversationId] = useState()
     const [conversationInfo, setConversationInfo] = useState()
     const [messageInfo, setMessageInfo] = useState() // này đẻ lưu lại response từ backend khi vừa gọi xong api 
@@ -15,6 +17,7 @@ function ChatPage() {
     const [userLogin, setUserLogin] = useState()
     // const [firstConversationCode, setfirstConversationCode] = useState()
     const [currentConversationCode, setcurrentConversationCode] = useState()
+    const [reloadListMess, setreloadListMess] = useState(true)
 
     const [message, setMessage] = useState() // sử dụng để cập nhật thay đổi mess, bao gồm code html 
     const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
@@ -33,6 +36,8 @@ function ChatPage() {
 
     const callApigetListMess = async (conversationCode) =>{
         try{
+            console.log("fffffffffffff", conversationCode)
+            socket.emit("join_room", conversationCode)
             const result = await getListMess(token, conversationCode)
             if(result?.data?.list_mess_info?.length> 0){
                 setMessageInfo(result?.data?.list_mess_info)
@@ -70,11 +75,7 @@ function ChatPage() {
             console.error(error)
         }
  
-        // callApigetListMess(commentcode)
     }
-    useEffect(()=>{
-        console.log("sssssssssss", currentConversationCode)
-    }, [currentConversationCode])
     const callGetAllConversation = async () => {
         try {
             const result = await getListConversation(token);
@@ -116,6 +117,8 @@ function ChatPage() {
             const result = await createMess(token,conversationCode, text)
             setMessageInfo([...[result?.data], ...messageInfo])
             setNewMess("")// cập nhật lại mess rỗng trong input 
+            callGetAllConversation()
+            setreloadListMess(false)
         }
         catch(error){
             console.log(error)
@@ -128,11 +131,18 @@ function ChatPage() {
     }
     
     useEffect(()=>{
+        console.log("dfdfdf")
         dataProfileUser()
         callGetAllConversation()
     }, [])
     useEffect(()=>{
-        callApigetListMess(currentConversationCode)
+        if(reloadListMess===true){
+            callApigetListMess(currentConversationCode)
+        }
+        else{
+            setreloadListMess(true)
+        }
+
     }, [currentConversationCode])
 
     
@@ -221,9 +231,9 @@ function ChatPage() {
                             </div>
                             
                         </div>
-                        <div className="flex-grow-0 py-3 px-4 chat-input-content">
+                        <div className="py-3 px-4 chat-input-content">
                             <div className="input-group">
-                                <input onChange={handleInput}  type="text" className="form-control rounded" placeholder="Type your message" />
+                                <input onChange={handleInput}  type="text" className="form-control rounded" value={newMess} placeholder="Type your message" />
                                 <button onClick={createNewMess} ref={btncreate} className="btn">
                                     <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
                                 </button>
