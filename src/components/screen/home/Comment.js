@@ -106,9 +106,15 @@ function Comment(props) {
     }
 
     function handleDeleteComment(e) {
-        var commentcode = e.target.attributes.getNamedItem('commentcode').value
-        console.log(commentcode)
-        callApiDeleteComment(commentcode)
+        try{
+            var commentcode = e.target.attributes.getNamedItem('commentcode').value
+            console.log(commentcode)
+            callApiDeleteComment(commentcode)
+        }
+        catch(error){
+            console.log(error)
+        }
+
     }
 
     // thay đổi nội dung danh sách comment bằng useEffect bắt sự kiệm mỗi khi commentState thay đổi giá trị 

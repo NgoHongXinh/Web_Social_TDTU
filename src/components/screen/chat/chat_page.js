@@ -1,50 +1,179 @@
-import React, { useState, useEffect, useContext} from 'react';
-import {getListConversation} from "../../../common/callapi/chat"
+
+
+import React, { useState, useEffect, useRef} from 'react';
+import {getListConversation, getListMess, createMess} from "../../../common/callapi/chat"
+import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import "../../../css/chat.css";
 import "../../../css/style.css";
+
 import { getCookieToken } from '../../../common/functions';
-function ChatPage(props) {
+function ChatPage() {
     const [lastConversationId, setLasConversationId] = useState()
     const [conversationInfo, setConversationInfo] = useState()
+    const [messageInfo, setMessageInfo] = useState() // này đẻ lưu lại response từ backend khi vừa gọi xong api 
+    const [lastMessId, setlastMessId] = useState()
+    const [userLogin, setUserLogin] = useState()
+    // const [firstConversationCode, setfirstConversationCode] = useState()
+    const [currentConversationCode, setcurrentConversationCode] = useState()
+
+    const [message, setMessage] = useState() // sử dụng để cập nhật thay đổi mess, bao gồm code html 
+    const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
     const token = getCookieToken()
+    const btnElement = useRef()
+    const btncreate = useRef()
+    const dataProfileUser = async () => {
+        try {
+            const userInfo = await getDataApiDetailUserLogin(token);
+            setUserLogin(userInfo)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const callApigetListMess = async (conversationCode) =>{
+        try{
+            const result = await getListMess(token, conversationCode)
+            if(result?.data?.list_mess_info?.length> 0){
+                setMessageInfo(result?.data?.list_mess_info)
+                setlastMessId(result?.data?.last_mess_id)
+            }
+            else{
+                setMessageInfo([])
+                setlastMessId("")
+            }
+            
+
+        }catch(error){
+            console.error(error)
+        }
+    }
+
+    function handleInput(event) {
+        setNewMess(event.target.value)
+    }
+    //ĐIỀU HƯỚNG CLICK KHI CLICK NHẦM ICON CHỨ KO CLICK VÀO BTN
+    function btncreateClick(){
+        btncreate.current.click()
+    }
+
+    function getMessOfConverstation(e){
+        try{
+            var convercode = e.target.attributes.getNamedItem('convercode')?.value
+            if(convercode !== undefined){
+                setcurrentConversationCode(convercode)
+                callApigetListMess(convercode)
+            }
+   
+        }
+        catch(error){
+            console.error(error)
+        }
+ 
+        // callApigetListMess(commentcode)
+    }
+    useEffect(()=>{
+        console.log("sssssssssss", currentConversationCode)
+    }, [currentConversationCode])
     const callGetAllConversation = async () => {
         try {
             const result = await getListConversation(token);
             if(result?.response_status.code === "00"){
                 var listConversation = []
-                console.log(result?.data.list_conversation_info)
-                for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
-                    if(result?.data.list_conversation_info[i].members_obj?.length === 1){
-                        listConversation.push(
-                            <a href="#" className="list-group-item list-group-item-action p-2 ">
-                                <div className="d-flex align-items-start list-group--padding">
-                                    {/* avatar friend chat */}
-                                    <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1 mt-2" alt="Avatar" width={50} height={50} />
-                                
-                                    <div className="pr-4 text-algin-left item-conversation">
-                                        {result?.data.list_conversation_info[i].members_obj[0].fullname}
-  
-                                        {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
-                                     
-                                       
+                if(result?.data.list_conversation_info?.length > 0){
+                    // setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    setcurrentConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
+                        if(result?.data.list_conversation_info[i].members_obj?.length === 1){
+                            listConversation.push(
+                                // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
+                                // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
+                                     <a className="list-group-item list-group-item-action p-2 ">
+                                    <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                        {/* avatar friend chat */}
+                                        <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
+                                    
+                                        <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                            {result?.data.list_conversation_info[i].members_obj[0].fullname}
+    
+                                            {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
+                                        </div>
+
                                     </div>
-                                </div>
-                            </a>
-                        )
-                    }
-    
-    
-                setConversationInfo(listConversation)
+                                </a>
+                            )
+                        }
+                    setConversationInfo(listConversation)
+                }
             }
         }
         } catch (error) {
             console.error(error)
         }
     }
+    const callApiCreateNewMess = async(conversationCode, text) =>{
+        try{
+            const result = await createMess(token,conversationCode, text)
+            setMessageInfo([...[result?.data], ...messageInfo])
+            setNewMess("")// cập nhật lại mess rỗng trong input 
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+    //hàm để onclick tạo mới mess
+    // conversationcode và newMess đều được lưu ở state nên chỉ việc lấy ra dùng
+    function createNewMess(e){
+        callApiCreateNewMess(currentConversationCode, newMess)
+    }
     
     useEffect(()=>{
+        dataProfileUser()
         callGetAllConversation()
     }, [])
+    useEffect(()=>{
+        callApigetListMess(currentConversationCode)
+    }, [currentConversationCode])
+
+    
+    useEffect(()=>{
+        var list_mess = []
+        messageInfo?.slice().reverse().forEach(mess =>{
+            if(mess['sender_code'] === userLogin['data']['user_code']){
+                list_mess.push(
+
+                    <div className="chat-message-right p-4">
+                    <div>
+                        <img src={userLogin['picture']}  className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
+                        <div className="text-muted small text-nowrap mt-2">2:33 am</div>
+                    </div>
+                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                        <span>
+                        {mess.text}
+                        </span>
+                    </div>
+                </div>
+                )
+            }
+            else{
+                list_mess.push(
+                    <div className="chat-message-left pb-4">
+                    <div>
+                        <img src={mess?.sender_info?.picture}  className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
+                        <div className="text-muted small text-nowrap mt-2">2:36 am</div>
+                    </div>
+                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+      
+                             {mess.text}
+      
+                    </div>
+                </div>
+                )
+            }
+        }
+        )
+        setMessage(list_mess)
+    }, [messageInfo])
 
     return (
         <div className='bg-light px-3'>
@@ -61,31 +190,6 @@ function ChatPage(props) {
                         {/* Danh sach cac chat */}
                         <div className='p-2 '>
                             {conversationInfo}
-                            {/* <a href="#" className="list-group-item list-group-item-action p-2 list-group-item--select">
-                                <div className="d-flex align-items-start">
-                    
-                                    <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Christina Mason" width={40} height={40} />
-                                
-                                    <div className="pr-3 text-algin-left">
-                                        Christina Mason
-                                        <div className="small text-secondary chat-offline"><span/> Offline</div>
-                                    </div>
-                                </div>
-                            </a> */}
-                            {/* item friend chat */}
-                            {/* <a href="#" className="list-group-item list-group-item-action border-0 p-2">
-                                <div className="d-flex align-items-start">
-                                    <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle" alt="Jennifer Chang" width={40} height={40} />
-                                    <div className="text-align-left m-1">
-                                        Jennifer Chang
-                                        <div className="small text-primary chat-online">
-                                            <span>
-                                                online
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a> */}
                         </div>
                         
                     </div>
@@ -113,37 +217,15 @@ function ChatPage(props) {
                         <div className="position-relative">
                             {/* body noi dung chat */}
                             <div className="chat-messages p-4">
-                                <div className="chat-message-right p-4">
-                                    <div>
-                                        <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
-                                        <div className="text-muted small text-nowrap mt-2">2:33 am</div>
-                                    </div>
-                                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                        <span>
-                                        Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
-                                        </span>
-                                    </div>
-                                </div>
-                            
-                                <div className="chat-message-left pb-4">
-                                    <div>
-                                        <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
-                                        <div className="text-muted small text-nowrap mt-2">2:36 am</div>
-                                    </div>
-                                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                        Sed pulvinar, massa vitae interdum pulvinar, risus lectus porttitor magna, vitae commodo lectus mauris et velit.
-                                        Proin ultricies placerat imperdiet. Morbi varius quam ac venenatis tempus.
-                                    </div>
-                                </div>
-                
+                            {message}
                             </div>
                             
                         </div>
                         <div className="flex-grow-0 py-3 px-4 chat-input-content">
                             <div className="input-group">
-                                <input type="text" className="form-control rounded" placeholder="Type your message" />
-                                <button className="btn">
-                                    <svg height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
+                                <input onChange={handleInput}  type="text" className="form-control rounded" placeholder="Type your message" />
+                                <button onClick={createNewMess} ref={btncreate} className="btn">
+                                    <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
                                 </button>
                             </div>
                         </div>
