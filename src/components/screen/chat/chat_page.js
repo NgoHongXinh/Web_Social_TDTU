@@ -8,6 +8,7 @@ import "../../../css/chat.css";
 import "../../../css/style.css";
 import Popup from 'reactjs-popup';
 import ModelCreateGroupChat from '../chat/model_create_group';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import { getCookieToken } from '../../../common/functions';
 function ChatPage() {
@@ -24,11 +25,48 @@ function ChatPage() {
 
     const [message, setMessage] = useState() // sử dụng để cập nhật thay đổi mess, bao gồm code html 
     const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
+    const [isScrollDownToBottom, setIsScrollDownToBottom] = useState(false) // biến dùng để handle khi nào thì nên tự động scroll xuống 
+    const [onloadMore, setOnLoadMore] = useState(false)
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
     const messageRef = useRef(null)
 
+    const parentRef = useRef(null);
+    // này dùng để check nếu như scroll lên trên cùng của message sẽ thiết lập cho phép get data hay khong
+    useEffect(() => {
+        const handleScroll = (e) => {
+          const { scrollTop, scrollHeight, clientHeight } = parentRef.current;
+          // Check if the scroll position is at the top
+            if (scrollTop === 0) {
+                console.log('Scroll is at the top of the parent div');
+                setOnLoadMore(true)
+                parentRef.current.scrollTop = 50;
+                
+                
+              }
+        //   }
+      
+        };
+    
+        // Add event listener to the scroll event of the parent div
+        parentRef.current.addEventListener('scroll', handleScroll);
+    
+        // Clean up by removing the event listener when component unmounts
+        return () => {
+          parentRef.current.removeEventListener('scroll', handleScroll);
+        };
+      }, [currentConversationCode]); // cho thiết lâp theo conversation code để mỗi khi chọn qua conversation khác sẽ ko bị mất thanh scroll
+
+    // tự động scroll xuống dưới
+    useEffect(() => {
+    if(isScrollDownToBottom === true){
+        messageRef.current?.scrollIntoView() // tự động scroll xuống cuối 
+        setIsScrollDownToBottom(false)
+    }
+    
+    
+    }, [message])
     // receive mess realtime
     useEffect(()=>{
         socket.on("event_chat", dataChat =>{
@@ -55,17 +93,32 @@ function ChatPage() {
 
     const callApigetListMess = async (conversationCode) =>{
         try{
-            console.log("fffffffffffff", conversationCode)
             socket.emit("join_room", conversationCode)
             const result = await getListMess(token, conversationCode)
             if(result?.data?.list_mess_info?.length> 0){
                 setMessageInfo(result?.data?.list_mess_info)
+        
                 setlastMessId(result?.data?.last_mess_id)
             }
             else{
                 setMessageInfo([])
                 setlastMessId("")
             }
+            
+
+        }catch(error){
+            console.error(error)
+        }
+    }
+    const onloadMoreMessOfConversation = async () =>{
+        try{
+            const result = await getListMess(token, currentConversationCode, lastMessId)
+            if(result?.data?.list_mess_info?.length> 0){
+                setOnLoadMore(false)
+                setMessageInfo([...messageInfo, ...result?.data?.list_mess_info])
+                setlastMessId(result?.data?.last_mess_id)
+            }
+
             
 
         }catch(error){
@@ -89,6 +142,7 @@ function ChatPage() {
             if(convercode !== undefined){
                 setcurrentConversationCode(convercode)
                 callApigetListMess(convercode)
+                setIsScrollDownToBottom(true)
             }
    
         }
@@ -140,6 +194,7 @@ function ChatPage() {
             setNewMess("")// cập nhật lại mess rỗng trong input 
             callGetAllConversation()
             setreloadListMess(false)
+            setIsScrollDownToBottom(true)
         }
         catch(error){
             console.log(error)
@@ -157,15 +212,16 @@ function ChatPage() {
     }
     
     useEffect(()=>{
-        console.log("dfdfdf")
         dataProfileUser()
         callGetAllConversation()
     }, [])
+
+    // nếu bấm qua conversation khác thì sẽ tự động cập nhật danh sách message theo conversation đó
     useEffect(()=>{
         if(reloadListMess===true){
             if (currentConversationCode !== undefined){
-                console.log("ghgggggggggggggggg", currentConversationCode)
                 callApigetListMess(currentConversationCode)
+                setIsScrollDownToBottom(true)
             }
           
         }
@@ -175,9 +231,7 @@ function ChatPage() {
 
     }, [currentConversationCode])
 
-    useEffect(() => {
-        messageRef.current?.scrollIntoView() // tự động scroll xuống cuối 
-    }, [message])
+
     
     useEffect(()=>{
         var list_mess = []
@@ -241,8 +295,8 @@ function ChatPage() {
                             <Popup modal
                                 trigger={
                                     <div className='button-group-create'>
-                                        <button type="button" class="btn btn-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87">
+                                        <button type="button" className="btn btn-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87">
                                             </path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                             </svg>
                                         </button>
@@ -276,19 +330,45 @@ function ChatPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="position-relative">
+                        <div className="position-relative" > 
+                            {lastMessId}
                             {/* body noi dung chat */}
-                            <div className="chat-messages p-4">
-                            {message}
+                            <div  id='scrollableDiv2' className="chat-messages p-4"  ref={parentRef}>
+                            {/* <div  id='scrollableDiv2' className="chat-messages p-4 menu-popup noti-popu" > */}
+                            <InfiniteScroll
+          
+                                    loadMore={onloadMoreMessOfConversation}
+                                    hasMore={onloadMore}
+                  
+                                    isReverse={true}
+                                    // useWindow={false}
+                               
+                              
+                                >
+                              {message}
+                                </InfiniteScroll>
+                          
+
+                            {/* <InfiniteScroll
+                                dataLength={6}
+                                next={onloadMoreMessOfConversation}
+                                hasMore={true}
+                                loader={""} // ko truyền dữ liệu 
+                                scrollableTarget='scrollableDiv2'
+                                inverse={true}
+                            >
+                                      {message}
+                            </InfiniteScroll>
+                             */}
                             <div ref={messageRef} />
                             </div>
                             
                         </div>
                         <div className="py-3 px-4 chat-input-content">
                             <div className="input-group">
-                                <input onChange={handleInput}  type="text" className="form-control rounded input-mess-custom" value={newMess} placeholder="Type your message" />
+                                <input onChange={handleInput}  type="text" className="form-control rounded input-mess-custom" value={newMess} placeholder="Type your message" onKeyDown={handleKeyPress}/>
                                 <button onClick={createNewMess} ref={btncreate} className="btn btn-danger">
-                                <svg onClick={btncreateClick} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <svg onClick={btncreateClick} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" stroke-linejoin="round">
                                     <path d="M14 9l6 6-6 6"/><path d="M4 4v7a4 4 0 0 0 4 4h11"/>
                                 </svg>
                                     {/* <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg> */}

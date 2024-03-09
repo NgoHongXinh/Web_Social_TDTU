@@ -53,9 +53,13 @@ async function getListConversation(token){
         throw error;
       }
     }
-async function getListMess(token, conversationCode){
+async function getListMess(token, conversationCode, lastMessId){
   try {
+
       var url = `${BASE_URL}conversation/${conversationCode}/message`
+      if(lastMessId){
+        url = `${BASE_URL}conversation/${conversationCode}/message?last_message_id=${lastMessId}`
+      }
       const response = await fetch(url, 
           {
               method: 'GET',
