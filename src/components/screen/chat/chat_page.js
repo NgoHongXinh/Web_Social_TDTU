@@ -6,6 +6,8 @@ import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { SocketContext } from '../../../thirdparty/socket';
 import "../../../css/chat.css";
 import "../../../css/style.css";
+import Popup from 'reactjs-popup';
+import ModelCreateGroupChat from '../chat/model_create_group';
 
 import { getCookieToken } from '../../../common/functions';
 function ChatPage() {
@@ -108,14 +110,14 @@ function ChatPage() {
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
-                                     <a className="list-group-item list-group-item-action p-2 ">
+                                <a className="list-group-item list-group-item-action p-2 ">
                                     <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
                                         {/* avatar friend chat */}
                                         <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
                                         <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].fullname}
-    
+
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
                                         </div>
 
@@ -188,7 +190,7 @@ function ChatPage() {
                         <img src={userLogin['picture']}  className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
                         <div className="text-muted small text-nowrap mt-2">2:33 am</div>
                     </div>
-                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                    <div className="flex-shrink-1 bg-custom text-white rounded py-2 px-3 mr-3 mess-text-content">
                         <span>
                         {mess.text}
                         </span>
@@ -203,10 +205,8 @@ function ChatPage() {
                         <img src={mess?.sender_info?.picture}  className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
                         <div className="text-muted small text-nowrap mt-2">2:36 am</div>
                     </div>
-                    <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-      
-                             {mess.text}
-      
+                    <div className="flex-shrink-1 bg-custom rounded py-2 px-3 ml-3 mess-text-content">
+                        {mess.text}
                     </div>
                 </div>
                 )
@@ -220,7 +220,7 @@ function ChatPage() {
         <div className='bg-light px-3'>
            <div className='h-100'>
            <div className="row  row-content">
-                    <div className="col-3 col-lg-5 col-xl-3 conversation-content">
+                    <div className="col-3 col-lg-3 col-xl-3 conversation-content">
                         <div className="p-2 d-none d-md-block">
                             <div className="d-flex align-items-center">
                             <div className="flex-grow-1">
@@ -229,8 +229,30 @@ function ChatPage() {
                             </div>
                         </div>
                         {/* Danh sach cac chat */}
-                        <div className='p-2 '>
+                        <div className='p-2 conversation-list-item'>
                             {conversationInfo}
+                        </div>
+                        {/* Tạo group */}
+                        <div className='group-create'>
+                            <div className='text-group-create'>
+                                <span>Hãy tạo nhóm Chat</span>
+                            </div>
+                            
+                            <Popup modal
+                                trigger={
+                                    <div className='button-group-create'>
+                                        <button type="button" class="btn btn-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87">
+                                            </path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                }
+                            >
+                            {close => <ModelCreateGroupChat userLogin={userLogin} close={close}/>}
+
+                            </Popup>
+
                         </div>
                         
                     </div>
@@ -248,7 +270,7 @@ function ChatPage() {
                                 </div>
                                 {/* button header khung chat */}
                                 <div className='m-3'>
-                                    <button className="btn btn-light border ">
+                                    <button className="btn border btn-header-chat-custom">
                                         <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal feather-lg"><circle cx={12} cy={12} r={1} /><circle cx={19} cy={12} r={1} /><circle cx={5} cy={12} r={1} /></svg>
                                     </button>
                                 </div>
@@ -264,9 +286,12 @@ function ChatPage() {
                         </div>
                         <div className="py-3 px-4 chat-input-content">
                             <div className="input-group">
-                                <input onChange={handleInput}  type="text" className="form-control rounded" value={newMess} placeholder="Type your message"  onKeyDown={handleKeyPress}/>
-                                <button onClick={createNewMess} ref={btncreate} className="btn">
-                                    <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
+                                <input onChange={handleInput}  type="text" className="form-control rounded input-mess-custom" value={newMess} placeholder="Type your message" />
+                                <button onClick={createNewMess} ref={btncreate} className="btn btn-danger">
+                                <svg onClick={btncreateClick} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 9l6 6-6 6"/><path d="M4 4v7a4 4 0 0 0 4 4h11"/>
+                                </svg>
+                                    {/* <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg> */}
                                 </button>
                             </div>
                         </div>
