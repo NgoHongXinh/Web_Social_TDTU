@@ -235,8 +235,8 @@ function ChatPage() {
                         
                     </div>
                     {/* Khung chat  */}
-                    <div className="col-9 col-lg-7 col-xl-9 chat-container">
-                        <div className="py-2  d-none d-lg-block header-chat">
+                    <div className="col-9 col-lg-9 col-xl-9 chat-container">
+                        <div className="py-2 d-lg-block header-chat">
                             {/* Header khung chat */}
                             <div className="d-flex align-items-center p-1 ">
                                 {/* avatar */}
@@ -245,7 +245,6 @@ function ChatPage() {
                                 </div>
                                 <div className="flex-grow-1 pl-3">
                                     <strong className='front_text_white'>Sharon Lessman</strong>
-                                    <div className="small front_text_white_w4"><em>Typing...</em></div>
                                 </div>
                                 {/* button header khung chat */}
                                 <div className='m-3'>

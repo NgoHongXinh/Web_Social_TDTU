@@ -31,7 +31,8 @@ body{
     flex-direction: column;
     overflow-y: auto;
     background-color: #dadae3;
-    min-height: 70svh;
+    min-height: 70vh;
+    max-height: 70vh;
 }
 
 .chat-message-left,
