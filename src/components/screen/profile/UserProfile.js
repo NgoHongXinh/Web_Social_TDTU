@@ -117,7 +117,7 @@ function UserProfile() {
                 <div className='h-100'>
                     <div className='header'>
                         <div className='background-profile--position image-fluid'>
-                            <img src={inforUserInCurrentPage?.data.backgroundPicture} alt='Blog img' 
+                            <img src={inforUserInCurrentPage?.data.background_picture} alt='Blog img' 
                             className='image-background-profile'></img>
                            
                         </div>
