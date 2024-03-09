@@ -3,6 +3,9 @@ import { getCookieToken } from '../../../common/functions'
 import Comment from './Comment';
 import { LikePost } from '../../../common/callapi/post';
 import { SocketContext } from '../../../thirdparty/socket';
+import ModelSharePost from "./model_share_post";
+import Popup from 'reactjs-popup';
+import { getDataApiDetailUserLogin } from "../../../common/callapi/user";
 
 function Post(props) {
     const socket = useContext(SocketContext);
@@ -14,6 +17,7 @@ function Post(props) {
     const [dataPost, setDataPost] = useState()
     const [newDataComment, setNewDataComment] = useState()
     const [dataLikePost, setDataLikePost] = useState()
+    const [userLogin, setUserLogin] = useState()
     var token = getCookieToken()
     const calApiLikePost = async (postcode) => {
         try {
@@ -124,11 +128,20 @@ function Post(props) {
 
                     </div>
                     {/* nút share */}
-                    <div postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1 icon-color-custom">
-                        <svg postcode={postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" className="bi bi-share" viewBox="0 0 16 16">
-                            <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
-                        </svg>
-                    </div>
+                
+                    <Popup modal
+                                trigger={
+                                    <div postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1 icon-color-custom">
+                                        <svg postcode={postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                          <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                                       </svg>
+                                    </div>
+                                }
+                            >
+                            {close => <ModelSharePost userLogin={userLogin} close={close}/>}
+
+                            </Popup>
+                    
 
                     {/*dòng bình luận*/}    
                     {/* {showComment && <Comment dataComment = {newDataComment} postcode={postInfoData.post_code} />} */}
@@ -144,6 +157,20 @@ function Post(props) {
             </div> */}
         </div> )
         setDataPost(listPost)
+        const dataProfileUser = async () => {
+            try {
+                const userInfo = await getDataApiDetailUserLogin(token);
+
+                setUserLogin(userInfo)
+                console.log("111111111", userLogin, socket.id)
+                socket.emit("new_user_connect", userInfo?.data.user_code);
+
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        dataProfileUser() 
          
         }
   
