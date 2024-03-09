@@ -25,6 +25,7 @@ function ChatPage() {
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
+    const messageRef = useRef(null)
 
     // receive mess realtime
     useEffect(()=>{
@@ -172,6 +173,9 @@ function ChatPage() {
 
     }, [currentConversationCode])
 
+    useEffect(() => {
+        messageRef.current?.scrollIntoView() // tự động scroll xuống cuối 
+    }, [message])
     
     useEffect(()=>{
         var list_mess = []
@@ -255,6 +259,7 @@ function ChatPage() {
                             {/* body noi dung chat */}
                             <div className="chat-messages p-4">
                             {message}
+                            <div ref={messageRef} />
                             </div>
                             
                         </div>
