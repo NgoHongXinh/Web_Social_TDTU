@@ -54,7 +54,7 @@ function SettingProfile() {;
         setClassName(currUserInfo?.data.class_name)
         setUsername(currUserInfo?.data.username)
         setPhone(currUserInfo?.data.phone)
-        setGender(currUserInfo?.data.gender)
+        setGender(currUserInfo?.data.gender ? currUserInfo?.data.gender : "Nam")
         // setPicture(currUserInfo?.data.picture)
         setFaculty(currUserInfo?.data.faculty)
         setBiography(currUserInfo?.data.biography)
@@ -66,7 +66,7 @@ function SettingProfile() {;
     },[currUserInfo])
 
 
-    function onchanePhone(e) {
+    function onchangePhone(e) {
         setPhone(e.target.value)
     }
     const onchangeClassName = (e) => {
@@ -78,10 +78,11 @@ function SettingProfile() {;
     const onchangeFamalyName = (e) => {
         setFamilyName(e.target.value)
     }
-    const onchaneGender = (e) => {
+    const onchangeGender = (e) => {
+        console.log(gender)
         setGender(e.target.value)
     }
-    const onchaneFaculty = (e) => {
+    const onchangeFaculty = (e) => {
         setFaculty(e.target.value)
     }
     const onchangePicture = (e) => {
@@ -93,7 +94,7 @@ function SettingProfile() {;
         setBackgroundPicture(e.target.files[0])
         setBackgroundImageChoosen(URL.createObjectURL(e.target.files[0]))
     }
-    const onchaneBirthday = (e) => {
+    const onchangeBirthday = (e) => {
         setBirthday(e.target.value)
     }
     const callApiUpdateProfile = async(formdata)=>{
@@ -187,22 +188,22 @@ function SettingProfile() {;
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label className='fw-bold'>Số điện thoại</Form.Label>
-                                                    <Form.Control type='text' value={phone} onChange={onchanePhone} />
+                                                    <Form.Control type='text' value={phone} onChange={onchangePhone} />
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label className='fw-bold'>Ngày sinh</Form.Label>
-                                                    <Form.Control type='text' value={birthday} onChange={onchaneBirthday} />
+                                                    <Form.Control type='text' value={birthday} onChange={onchangeBirthday} />
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label className='fw-bold'>Giới tính</Form.Label>
-                                                    <select className='mt-1 ms-1' value={gender} onChange={onchaneGender}>
+                                                    <select className='mt-1 ms-1' value={gender} onChange={onchangeGender}>
                                                         <option name='Nam'> Nam</option>
                                                         <option name='Nữ'>Nữ</option>
                                                     </select>
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label className='fw-bold'>Khoa </Form.Label>
-                                                    <select className='mt-1 ms-1' value={faculty} onChange={onchaneFaculty}>
+                                                    <select className='mt-1 ms-1' value={faculty} onChange={onchangeFaculty}>
                                                         <option name='Công nghệ thông tin'>Công nghệ thông tin</option>
                                                         <option name='Lao động công đoàn'>Lao động công đoàn</option>
                                                         <option name='Luật'>Luật</option>
