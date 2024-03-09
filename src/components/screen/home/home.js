@@ -29,7 +29,6 @@ function HomePage(props) {
             var getPostcode = e.target.attributes.getNamedItem('postcode').value
             setShowComment(true)
             setPostCode(getPostcode)
-            console.log("vao fnef", getPostcode, postcodeState)
         }
         catch (error) {
             console.error(error)
@@ -43,7 +42,6 @@ function HomePage(props) {
                 const userInfo = await getDataApiDetailUserLogin(token);
 
                 setUserLogin(userInfo)
-                console.log("111111111", userLogin, socket.id)
                 socket.emit("new_user_connect", userInfo?.data.user_code);
 
             } catch (error) {
@@ -59,14 +57,18 @@ function HomePage(props) {
 
     const callApiGetListPostUser = async () => {
         try {
+            console.log("fffffffffff", lastPostId)
             const result = await getPosts(token, lastPostId);
             if(lastPostId){
-                setLastPostId(result?.data.list_post_info)
+                setLastPostId(result?.data.last_post_id)
+                // setPostInfo(result?.data.list_post_info)
+                console.log(result?.data.list_post_info)
                 setPostInfo([...postInfo, ...result?.data.list_post_info])
             }
             else{
                 console.log(result.data)
                 setPostInfo(result?.data.list_post_info)
+                console.log(result?.data.last_post_id)
                 setLastPostId(result?.data.last_post_id)
             }
             
@@ -90,7 +92,6 @@ function HomePage(props) {
         else{
 
            for (let i = 0; i < postInfo?.length; i++) {
-                console.log("vaof nef", postInfo[i]?.post_code)
                 socket.emit('join_room', postInfo[i]?.post_code)
                 listPost.push(
                     <>
@@ -161,7 +162,6 @@ function HomePage(props) {
                                     </Popup>
                                 </div>
                             </div>
-                            {postState}
                             <InfiniteScroll
                                 dataLength={10}
                                 next={callApiGetListPostUser}

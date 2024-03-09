@@ -46,7 +46,7 @@ function InfoUserInUserProfile() {
                         <div className="col-9 md-6 justify-content-center " >
                             <Card.Body>
                                 <ul style ={{margin:"10px"}} className="list-group list-group-flush">
-                                    <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-user" />{currentUser?.data.fullname}</li>
+                                    <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-user" />{currentUser?.data.family_name} {currentUser?.data.given_name}</li>
                                     <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-transgender" />{currentUser?.data.gender}</li>
                                     <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-phone" />{currentUser?.data.phone}</li>
                                     <li className="list-group-item d-flex justify-content-start"><FontAwesomeIcon icon="fa-birthday-cake" />{currentUser?.data.birthday}</li>
