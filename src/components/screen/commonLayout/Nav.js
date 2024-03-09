@@ -32,7 +32,6 @@ function NavBar() {
                 const userInfo = await getDataApiDetailUserLogin(token);
 
                 setUserLogin(userInfo)
-                console.log("111111111", userLogin, socket.id)
                 socket.emit("new_user_connect", userInfo?.data.user_code);
      
               } catch (error) {
@@ -44,7 +43,6 @@ function NavBar() {
     }, [])
     useEffect(()=>{
         socket.on("send_noti", (data) => {
-            console.log("fffffffffffffffffff", data, numberNotiNotRead)
             numberNoti()
         });
     }, [socket])
@@ -111,13 +109,13 @@ function NavBar() {
                         <Popup
                             trigger={
                                 <div>
-                                    <img src={userLogin?.data['picture']} className='rounded-circle nav-avatar' alt='avatar'></img>
+                                    <img src={userLogin?.data.picture} className='rounded-circle nav-avatar' alt='avatar'></img>
                                 </div>
                             }
                             position='bottom center'
                         >
                             <div className='menu-popup d-flex flex-column bg-light'>
-                                <button type='button' className='btn btn-primary mb-2'><Link className='btn-link-text' to={`/user/${""}/update-info`}>Edit profile</Link></button>
+                                <button type='button' className='btn btn-primary mb-2'><Link className='btn-link-text' to={`/user/${userLogin?.data.user_code}/update-info`}>Edit profile</Link></button>
                                 <button type='button' className='btn btn-danger' onClick={logout}><span className='btn-link-text'>Log out</span></button>
                             </div>
                         </Popup>

@@ -11,7 +11,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SocketContext, socket } from './thirdparty/socket';
 import UserProfile from './components/screen/profile/UserProfile';
-import UpdateInfo from './components/screen/profile/UpdateInfo';
+import SettingProfile from './components/screen/profile/settingProfile.js';
 import FindUser from './components/screen/search/FindUser';
 import ChatPage from "./components/screen/chat/chat_page.js";
 
@@ -41,7 +41,7 @@ function App() {
                   <Route path='/' element={<HomePage currUserInfo={currUserInfo} />} />
                   <Route path='/profile/:usercode/*' element={<UserProfile/>}></Route>
                   <Route path='/find-user' element={<FindUser />}> </Route>
-                  <Route path='/user/:usercode/update-info' element={<UpdateInfo/>}> </Route>
+                  <Route path='/user/:usercode/update-info' element={<SettingProfile/>}> </Route>
                   <Route path='/chat' element={<ChatPage/>}> </Route> 
                   {/* <Route path='/chat' element={<ChatPage />}> </Route>  */}
 
