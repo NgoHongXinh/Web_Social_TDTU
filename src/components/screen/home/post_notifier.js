@@ -46,7 +46,7 @@ function Post(props) {
         const listPost = []
         var images = []
         var videos = []
-
+        
         if(postInfoData !=="" && postInfoData.images.length > 0){
             postInfoData.images.forEach(image => {
                 images.push(
@@ -104,7 +104,7 @@ function Post(props) {
                     <small className="text-muted">Today 7:51 pm</small><br />{/*time real dòng trạng thái*/}
                     <div className='like-number'>
                     <span>
-                            Đã có {dataLikePost?.data.like_number} lượt thích
+                            Đã có {dataLikePost ? dataLikePost?.data.like_number : postInfoData?.liked_by.length} lượt thích
                         </span>
                       
                     </div>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-// import ClipLoader from 'react-spinners/ClipLoader';
+import BounceLoader from 'react-spinners/BounceLoader';
 import { Form } from 'react-bootstrap';
 import {getDataApiDetailUserLogin, updateUsrProfile} from "../../../common/callapi/user"
 import { getCookieToken } from '../../../common/functions';
@@ -10,7 +10,7 @@ import { getCookieToken } from '../../../common/functions';
 function SettingProfile() {;
     const token = getCookieToken()
     const [currUserInfo, setcurrUserInfo] = useState()
-    const [loading, setLoading] = useState(false);
+    const [loadingState, setLoadingState] = useState(false);
 
     const [familyName, setFamilyName] = useState()
     const [givenName, setGivenName] = useState()
@@ -18,10 +18,10 @@ function SettingProfile() {;
     const [username, setUsername] = useState()
     const [phone, setPhone] = useState()
     const [gender, setGender] = useState()
-    const [picture, setPicture] = useState()
+    const [picture, setPicture] = useState("")
     const [faculty, setFaculty] = useState()
     const [biography, setBiography] = useState()
-    const [backgroundPicture, setBackgroundPicture] = useState()
+    const [backgroundPicture, setBackgroundPicture] = useState("")
     const [birthday, setBirthday] = useState()
 
     const [imageChoosen, setImageChoosen] = useState()
@@ -55,10 +55,10 @@ function SettingProfile() {;
         setUsername(currUserInfo?.data.username)
         setPhone(currUserInfo?.data.phone)
         setGender(currUserInfo?.data.gender)
-        setPicture(currUserInfo?.data.picture)
+        // setPicture(currUserInfo?.data.picture)
         setFaculty(currUserInfo?.data.faculty)
         setBiography(currUserInfo?.data.biography)
-        setBackgroundPicture(currUserInfo?.data.background_picture)
+        // setBackgroundPicture(currUserInfo?.data.background_picture)
         setBirthday(currUserInfo?.data.birthday)
         setImageChoosen(currUserInfo?.data.picture)
         setBackgroundImageChoosen(currUserInfo?.data.background_picture)
@@ -85,6 +85,7 @@ function SettingProfile() {;
         setFaculty(e.target.value)
     }
     const onchangePicture = (e) => {
+        console.log("da vo roi ", e.target.files[0])
         setPicture(e.target.files[0])
         setImageChoosen(URL.createObjectURL(e.target.files[0]))
     }
@@ -96,25 +97,33 @@ function SettingProfile() {;
         setBirthday(e.target.value)
     }
     const callApiUpdateProfile = async(formdata)=>{
+        console.log(formdata)
         const result = await updateUsrProfile(token, currUserInfo?.data.user_code, formdata)
+        setLoadingState(false)
         console.log("result", result)
     }
     function handleSubmit(e) {
         e.preventDefault()
-        setLoading(true)
+        var formData = new FormData()
+        if(picture){
+            formData.append('picture', picture)
+        }
+        if(backgroundPicture){
+            formData.append('background_picture', backgroundPicture)
+        }
+ 
+        if (familyName){
+            console.log("vao nef ", familyName)
+            formData.append('family_name', familyName)
+            console.log(formData)
+        }
 
-        const formData = new FormData()
-
-        formData.append('image', picture)
-        formData.append('backgroundPicture', backgroundPicture)
-        if (familyName)
-            formData.append('familyName', familyName)
         if (givenName)
-            formData.append('givenName', givenName)
+            formData.append('given_name', givenName)
         if(biography)
             formData.append('biography', biography)
         if(className)
-            formData.append('className', className)
+            formData.append('class_name', className)
         if(phone)
             formData.append('phone', phone)
         if(gender)
@@ -123,38 +132,9 @@ function SettingProfile() {;
             formData.append('faculty', faculty)
         if(birthday)
             formData.append('birthday', birthday)
+        
+        setLoadingState(true)
         callApiUpdateProfile(formData)
-        // axios.put(`${BASE_URL}api/account/${id}`, formData,
-        //     {
-
-        //         headers: {
-        //             'Content-type': 'multipart/form-date',
-        //             // 'Content-type': 'application/json',
-        //             'Authorization': `Bearer ${token}`
-        //         },
-        //         // body:formData
-        //         // body: JSON.stringify(yourNewData)
-        //     }
-
-        // )
-        //     .then(res => {
-        //         if (res.status === 200) {
-        //             setCurrUserInfo(res.data)
-        //             // setMessage('Cập nhật thông tin thành công')
-        //             // setCheckShowMess(true)
-        //         }
-        //         else {
-        //             // setMessage('Có lỗi xảy ra')
-        //             // setCheckShowMess(true)
-        //         }
-        //         setLoading(false)
-        //     })
-        //     .catch(err => {
-        //         setMessage('Có lỗi xảy ra')
-        //         setCheckShowMess(true)
-        //         console.error(err)
-        //         setLoading(false)
-        //     })
 
 
     }
@@ -278,12 +258,12 @@ function SettingProfile() {;
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type='Submit' className='btn btn-primary mt-2 px-3'>Cập nhật</button>
-                                        {/* {loading ?
-                                            <div className='mt-3'><ClipLoader color={'#5239AC'} loading={loading} size={48} /></div>
+                                        {loadingState ?
+                                            <div className='mt-3'>
+                                            <BounceLoader color="#36d7b7" loading={loadingState} size={40} />  </div>
                                             :
-                                         
-                                        } */}
+                                            <button type='Submit' className='btn btn-primary mt-2 px-3'>Cập nhật</button>
+                                        }
                                     </Form>
 
                                 </div>

@@ -109,7 +109,7 @@ function NavBar() {
                         <Popup
                             trigger={
                                 <div>
-                                    <img src={userLogin?.data['picture']} className='rounded-circle nav-avatar' alt='avatar'></img>
+                                    <img src={userLogin?.data.picture} className='rounded-circle nav-avatar' alt='avatar'></img>
                                 </div>
                             }
                             position='bottom center'

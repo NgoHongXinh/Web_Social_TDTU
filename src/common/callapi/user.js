@@ -79,7 +79,6 @@ async function updateUsrProfile(token, user_code, formdata){
           {
               method: 'POST',
               headers: {
-                  'Content-type': 'application/json',
                   'Authorization': `Bearer ${token}`
               },
               body: formdata
