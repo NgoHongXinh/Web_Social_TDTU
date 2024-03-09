@@ -28,6 +28,25 @@
     background: linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
     background: -webkit-linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
 }
+.bg-post-home--custom {
+    width: fit-content;
+    padding: 10px;
+    background: linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
+    background: -webkit-linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
+}
+.input-post-custom{
+    border: 2px solid #fccb90;
+}
+.modal-post-header-custom{
+    cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -30px;
+  top: -30px;
+    width: fit-content;
+}
 
 .icon-color-custom{
     background-color: #0336ff;
@@ -71,4 +90,8 @@
     position: sticky;
     top: 70px;
     height: 70vh;
+}
+.modal-post-container{
+    background: linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
+    background: -webkit-linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
 }
