@@ -18,12 +18,28 @@ function ChatPage() {
     // const [firstConversationCode, setfirstConversationCode] = useState()
     const [currentConversationCode, setcurrentConversationCode] = useState()
     const [reloadListMess, setreloadListMess] = useState(true)
+    const [newChatRealTime, setNewChatRealTime] = useState()
 
     const [message, setMessage] = useState() // sử dụng để cập nhật thay đổi mess, bao gồm code html 
     const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
+
+    // receive mess realtime
+    useEffect(()=>{
+        socket.on("event_chat", dataChat =>{
+            setNewChatRealTime(dataChat)
+        })
+    }, [socket])
+    useEffect(()=>{
+        if(newChatRealTime?.data){
+            setMessageInfo([...[newChatRealTime?.data], ...messageInfo])
+        }
+
+    }, [newChatRealTime])
+
+
     const dataProfileUser = async () => {
         try {
             const userInfo = await getDataApiDetailUserLogin(token);
@@ -61,6 +77,8 @@ function ChatPage() {
     function btncreateClick(){
         btncreate.current.click()
     }
+
+    // thiết lập nhấn enter để chat
 
     function getMessOfConverstation(e){
         try{
@@ -124,6 +142,11 @@ function ChatPage() {
             console.log(error)
         }
     }
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            createNewMess()
+        }
+      };
     //hàm để onclick tạo mới mess
     // conversationcode và newMess đều được lưu ở state nên chỉ việc lấy ra dùng
     function createNewMess(e){
@@ -137,7 +160,11 @@ function ChatPage() {
     }, [])
     useEffect(()=>{
         if(reloadListMess===true){
-            callApigetListMess(currentConversationCode)
+            if (currentConversationCode !== undefined){
+                console.log("ghgggggggggggggggg", currentConversationCode)
+                callApigetListMess(currentConversationCode)
+            }
+          
         }
         else{
             setreloadListMess(true)
@@ -233,7 +260,7 @@ function ChatPage() {
                         </div>
                         <div className="py-3 px-4 chat-input-content">
                             <div className="input-group">
-                                <input onChange={handleInput}  type="text" className="form-control rounded" value={newMess} placeholder="Type your message" />
+                                <input onChange={handleInput}  type="text" className="form-control rounded" value={newMess} placeholder="Type your message"  onKeyDown={handleKeyPress}/>
                                 <button onClick={createNewMess} ref={btncreate} className="btn">
                                     <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
                                 </button>

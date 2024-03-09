@@ -28,6 +28,7 @@ function FriendHome(props) {
             const result = await createConversation(token, user_code_need_to_chat);
             if(result?.response_status.code === "00"){
                 console.log("success")
+                navigate(`/chat`,{ replace: true });
             }
         } catch (error) {
             console.error(error)
@@ -38,7 +39,7 @@ function FriendHome(props) {
         var friendUserCode = e.target.attributes.getNamedItem('friendusercode').value;
         // chỗ này là ví dụ sử dụng navigate
         callApiCreateConversation(friendUserCode) 
-        navigate(`/chat`,{ replace: true });
+
 
     }
     function DeleteFriend(e) {
