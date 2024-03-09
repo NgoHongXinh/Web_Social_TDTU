@@ -6,7 +6,8 @@ import { SocketContext } from '../../../thirdparty/socket';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Post from "./post_notifier";
 import FriendHome from "./FriendHome"
-import "../../../css/home.css"
+import "../../../css/home.css";
+import "../../../css/style.css"
 import Popup from 'reactjs-popup';
 import ModalPost from '../post/ModalPost';
 
@@ -152,7 +153,7 @@ function HomePage(props) {
 
                                     <Popup modal
                                         trigger={
-                                            <button type="button" className="btn btn-danger">
+                                            <button type="button" className="btn btn-block btn-danger">
                                                 Post
                                             </button>}
                                     >
