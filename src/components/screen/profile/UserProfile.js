@@ -8,6 +8,7 @@ import ListFriend from "../friend/Listfriend"
 import { getCookieToken } from '../../../common/functions';
 import "../../../css/userProfile.css"
 function UserProfile() {
+    const navigate = useNavigate();
     const {usercode} = useParams()
     const [chooseMenu, setChooseMenu] = useState("post") // đang chọn tab menu nào post, user, fiend, mặc định là post
     const [inforUserInCurrentPage, setUserInfoCurrentPage] = useState() // thông tin của user ở trang cá nhân hiện tại theo usercode
@@ -65,6 +66,10 @@ function UserProfile() {
     function AcceptFriendRequest(e){
         var usercodeWaitForAccept = e.target.attributes.getNamedItem('usercode').value;
         callApiAcceptFriendRequest(usercodeWaitForAccept)
+    }
+    
+    function gotoChatPage(){
+        navigate(`/chat`,{ replace: true });
     }
     useEffect(()=>{
 
@@ -143,7 +148,7 @@ function UserProfile() {
                                     <div className='col-12 col-md-auto mt-2 mt-md-0 mb-md-3'>
 
                                         {btnFriendStatus}
-                                        <button type='button' onClick={""} className='btn btn-primary  d-md-inline-block lift'>
+                                        <button type='button' onClick={gotoChatPage} className='btn btn-primary  d-md-inline-block lift'>
                                             <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' className='bi bi-chat-square-dots-fill' viewBox='0 0 16 16'>
                                                 <path d='M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.5a1 1 0 0 0-.8.4l-1.9 2.533a1 1 0 0 1-1.6 0L5.3 12.4a1 1 0 0 0-.8-.4H2a2 2 0 0 1-2-2V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z' />
                                             </svg> {inforUserInCurrentPage?.data.is_current_login_user !== false ? 'Xem tin nhắn' : 'Nhắn tin'}

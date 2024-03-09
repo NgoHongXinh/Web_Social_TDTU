@@ -49,27 +49,52 @@ async function getDataApiDetailUserLogin(token){
       }
     }
 
-    async function getDataApiFindUser(token, name_or_email){
-      try {
-          const response = await fetch(`${BASE_URL}user/find-user?name_or_email=${name_or_email}`,
-              {
-                  method: 'GET',
-                  headers: {
-                      'Content-type': 'application/json',
-                      'Authorization': `Bearer ${token}`
-                  }
+async function getDataApiFindUser(token, name_or_email){
+  try {
+      const response = await fetch(`${BASE_URL}user/find-user?name_or_email=${name_or_email}`,
+          {
+              method: 'GET',
+              headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `Bearer ${token}`
               }
-          )
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
           }
-      
-          const data = await response.json();
-          return data;
-        } catch (error) {
-          console.error('Error fetching data:', error.message);
-          throw error;
-        }
+      )
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-export {getDataApiDetailUserLogin, getDataApiProfileUser, getDataApiFindUser};
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }
+
+async function updateUsrProfile(token, user_code, formdata){
+  try {
+      const response = await fetch(`${BASE_URL}user/${user_code}`,
+          {
+              method: 'POST',
+              headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: formdata
+          }
+      )
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }
+export {getDataApiDetailUserLogin, getDataApiProfileUser, getDataApiFindUser, updateUsrProfile};
