@@ -124,11 +124,11 @@ function Comment(props) {
 
             commentState.forEach(comment => {
                 comments.push(
-                    <div className="media mt-3 d-flex">
-                        <a className="pr-2">
-                            <img src={comment.created_by.picture} width={36} height={36} className="rounded-circle " alt="Stacie Hall" />
+                    <div className="media mt-2 p-1 media-comment">
+                        <a className="pr-2 m-1">
+                            <img src={comment.created_by.picture} width={50} height={50} className="rounded-circle " alt="Stacie Hall" />
                         </a>
-                        <div className="media-body comment-content mt-1 p-1">
+                        <div className="media-body bg-custom comment-content mt-1">
                             <p className="text-muted">
                                 <strong>{comment.created_by.fullname}</strong>
                             </p>
@@ -139,21 +139,25 @@ function Comment(props) {
                            </div>
                         </div>
                         <div className='mt-1 p-2'>
-                                <Popup
-                                    trigger={<div className='three-dot-icon '><FontAwesomeIcon icon={faEllipsisH} /> </div>}
-                                    position='bottom left'
-                                    on='hover'
-                                    closeOnDocumentClick
-                                    mouseLeaveDelay={300}
-                                    mouseEnterDelay={0}
-                                    contentStyle={{ padding: '0px', border: 'none' }}
-                                    arrow={false}
-                                >
-                                    <div className='d-flex flex-column'>
-                                        <a className="btn btn-danger" commentcode={comment.comment_code} onClick={handleDeleteComment}>delete</a>
+                            <Popup
+                                trigger={
+                                    <div className='three-dot-icon '>
+                                        <FontAwesomeIcon icon={faEllipsisH} /> 
                                     </div>
-                                </Popup>
-                            </div>
+                                }
+                                position='bottom left'
+                                on='hover'
+                                closeOnDocumentClick
+                                mouseLeaveDelay={300}
+                                mouseEnterDelay={0}
+                                contentStyle={{ padding: '0px', border: 'none' }}
+                                arrow={false}
+                            >
+                                <div className='d-flex flex-column'>
+                                    <a className="btn btn-danger" commentcode={comment.comment_code} onClick={handleDeleteComment}>delete</a>
+                                </div>
+                            </Popup>
+                        </div>
                     </div>
 
                 )
@@ -175,37 +179,39 @@ function Comment(props) {
     return (
         <div>
             <div className="row">
-                         <hr />
-                            <div className="col-auto mt-2">
-                                {/* Avatar */}
-                                <div className="avatar avatar-sm">
-                                    <img src={currentUser?.data.picture} width={36} height={36} className="rounded-circle mr-2" alt="img" />
-                                </div>
-                            </div>
-                            <div className="col ml-n2">
-                                {/* Input */}
-                                <form className="input-comment mt-1">
-                                    <label className="sr-only">Leave a comment...</label>
-                                    <textarea onChange={handleInput} className="form-control form-control-flush" data-toggle="autosize" rows={1} placeholder="Leave a comment" style={{ overflow: 'hidden', overflowWrap: 'break-word', height: '50px' }} value={textComment} defaultValue={""} />
-                                    <button type="button" onClick={createComment} className="btn"><FontAwesomeIcon  usercodeComment = {currentUser?.data.user_code} className='my-auto' />
-                                    <svg height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
-                                    </button>
-                                </form>
-                            </div>
-                            <div className="col-auto align-self-end">
-                                {/* Icons input file phần bình luân */}
-                                {/* <div className="input-container mb-2">
-                                    <a className="text-reset mr-3" href="#!" type="file" data-toggle="tooltip" title data-original-title="Add photo">
-                                        <i className="fa fa-camera" />
-                                    </a>
-                                    <a className="text-reset mr-3" href="#!" data-toggle="tooltip" title data-original-title="Attach file">
-                                        <i className="fa fa-paperclip" />
-                                    </a>
-                                </div> */}
+                <hr />
+                <div className="col-auto mt-2">
+                    {/* Avatar */}
+                    <div className="avatar avatar-sm">
+                        <img src={currentUser?.data.picture} width={36} height={36} className="rounded-circle mr-2" alt="img" />
+                    </div>
+                </div>
+                <div className="col ml-n2">
+                    {/* Input */}
+                    <form className="input-comment mt-1">
+                        <label className="sr-only">Leave a comment...</label>
+                        <textarea onChange={handleInput} className="form-control form-control-flush" data-toggle="autosize" rows={1} placeholder="Leave a comment" style={{ overflow: 'hidden', overflowWrap: 'break-word', height: '50px' }} value={textComment} defaultValue={""} />
+                        <button type="button" onClick={createComment} className="btn btn-custom"><FontAwesomeIcon  usercodeComment = {currentUser?.data.user_code} className='my-auto' />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                            </svg>
+                        </button>
+                        
+                    </form>
+                </div>
+                <div className="col-auto align-self-end">
+                    {/* Icons input file phần bình luân */}
+                    {/* <div className="input-container mb-2">
+                        <a className="text-reset mr-3" href="#!" type="file" data-toggle="tooltip" title data-original-title="Add photo">
+                            <i className="fa fa-camera" />
+                        </a>
+                        <a className="text-reset mr-3" href="#!" data-toggle="tooltip" title data-original-title="Attach file">
+                            <i className="fa fa-paperclip" />
+                        </a>
+                    </div> */}
                 </div>
             </div>
             {listComment}
-            <hr />
 
         </div>
 

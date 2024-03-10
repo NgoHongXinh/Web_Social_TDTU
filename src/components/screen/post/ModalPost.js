@@ -73,7 +73,7 @@ export default function ModalPost(props) {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="message-text" className="col-form-label">Message:</label>
-                                <div className=' rounded input-post-custom'>
+                                <div className='rounded input-post-custom'>
                                 <textarea onChange = {handleInput} className="form-control" id="message-text" defaultValue="" />
                                 </div>
                                 

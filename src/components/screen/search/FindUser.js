@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { useSearchParams, Link } from 'react-router-dom';
 import { getDataApiFindUser } from '../../../common/callapi/user'
 import { getCookieToken } from '../../../common/functions'
+import "../../../css/FindFriend.css"
 import { getAllFriendOfUser, deleteFriend, createNewFriendRequest, acceptFriendRequest } from "../../../common/callapi/friend"
 function FindUser() {
     var token = getCookieToken()
@@ -96,18 +97,17 @@ function FindUser() {
                             }
                         }
                         listUser.push(  
-                            <div className='row d-flex justify-content-center align-items-center'>
-                            <Card className='flex-row' style={{ borderRadius: "none", width: '60%' }}>
-                                <div className='my-auto'>
-                                    <img src={result.data[i].picture} className='rounded-circle card-img' alt='avatar'></img>
-                                </div>
-                                <div className='my-auto flex-grow-1'>
-                                    <h5><Link className='text-dark fw-bold text-decoration-none' to={`/profile/${result.data[i].user_code}/post/`} state={{ 'usercode': "" }}>{result.data[i].fullname}</Link></h5>
-                                </div>
-                                <div className='my-auto me-2'>{btn}</div>
-                            </Card>
-                            <p></p>
-                        </div>
+                            <div className='find-user-item bg-custom'>
+                                    <div className='info-find-user'>
+                                        <div className='my-auto'>
+                                            <img src={result.data[i].picture} className='rounded-circle mr-1 p-1' width={70} height={70} alt='avatar'></img>
+                                        </div>
+                                        <div className='my-auto flex-grow-1'>
+                                            <h5><Link className='text-dark fw-bold text-decoration-none' to={`/profile/${result.data[i].user_code}/post/`} state={{ 'usercode': "" }}>{result.data[i].fullname}</Link></h5>
+                                        </div>
+                                    </div>
+                                    <div className='my-auto me-2'>{btn}</div>
+                            </div>
                         )
                 
                      
@@ -127,11 +127,15 @@ function FindUser() {
     // console.log(allUser)
     return (
         <div className='container find-user'>
-            <br></br>
-            {allUser}
-    
+            <div className='header-find-user'>
+                <h3>Những người bạn mà bạn có thể biết</h3>
+            <hr className='border-5'></hr>
 
+            </div>
+            <div className='find-user-list'>
+                {allUser}
 
+            </div>
         </div>
     )
 }
