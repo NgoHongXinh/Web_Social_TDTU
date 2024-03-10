@@ -27,6 +27,7 @@ function ChatPage() {
     const [newMess, setNewMess] = useState() // biến dùng để handle dữ liệu nhập ở input
     const [isScrollDownToBottom, setIsScrollDownToBottom] = useState(false) // biến dùng để handle khi nào thì nên tự động scroll xuống 
     const [onloadMore, setOnLoadMore] = useState(false)
+    const [currentUserChatOrNameGroupChat, setcurrentUserChatOrNameGroupChat] = useState()
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
@@ -159,7 +160,11 @@ function ChatPage() {
                 if(result?.data.list_conversation_info?.length > 0){
                     // setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
                     setcurrentConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                   
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
+                        if(result?.data.list_conversation_info[i].type === "1"){
+                            setcurrentUserChatOrNameGroupChat(result?.data.list_conversation_info[0].name)
+                        }
                         if(result?.data.list_conversation_info[i].members_obj?.length === 1){
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 

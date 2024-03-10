@@ -8,6 +8,7 @@ import { deletePost } from '../../../common/callapi/post_service.js';
 import { useEffect, useState } from "react";
 function PostUser(props) {
     const { postInfoData } = props
+    console.log(postInfoData)
     var token = getCookieToken()
     const [postState, setpostState] = useState([])
     const [listImage, setListImage] = useState([])
