@@ -131,4 +131,34 @@ async function deletePost(token, postcode) {
     }
     
 }
-export {getPostListHome,getPostListUser, getPosts, createPost, deletePost};
+
+
+async function sharePost(token,post_code, content) {
+    try {
+        const data_body = {
+            "content": content
+        }
+        const response = await fetch(`${BASE_URL}post/${post_code}/share`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data_body)
+        }
+    )
+
+        if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+    }
+    
+}
+export {getPostListHome,getPostListUser, getPosts, createPost, deletePost, sharePost};
