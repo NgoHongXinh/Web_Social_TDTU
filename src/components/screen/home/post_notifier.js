@@ -207,7 +207,7 @@ function Post(props) {
                                                 </div>
                                             }
                                         >
-                                        {close => <ModelSharePost userLogin={userLogin} close={close}/>}
+                                        {close => <ModelSharePost postInfoData={postInfoData}  userLogin={userLogin} close={close}/>}
             
                                         </Popup>
                                 </div>
@@ -280,7 +280,7 @@ function Post(props) {
                                                 </div>
                                             }
                                         >
-                                        {close => <ModelSharePost userLogin={userLogin} close={close}/>}
+                                        {close => <ModelSharePost postInfoData={postInfoData} userLogin={userLogin} close={close}/>}
             
                                         </Popup>
                                 </div>

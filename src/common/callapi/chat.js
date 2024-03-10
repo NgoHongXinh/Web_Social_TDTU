@@ -110,5 +110,33 @@ async function getListMess(token, conversationCode, lastMessId){
         throw error;
       }
     } 
+async function createGroupConversation(token, listUsercode, name=""){
+  try {
+      var data_user = {
+          "list_user_to_chat": listUsercode,
+          "name": name
+          }
+      var url = `${BASE_URL}conversation`
+      const response = await fetch(url, 
+          {
+              method: 'POST',
+              headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(data_user)
+          }
+      )
   
-export {getListConversation, createConversation, getListMess, createMess};
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }
+export {getListConversation, createConversation, getListMess, createMess, createGroupConversation};
