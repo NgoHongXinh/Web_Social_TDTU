@@ -1,8 +1,137 @@
 import React, { useState, useEffect, useRef, useContext} from 'react';
 import "../../../css/chat.css";
+import {getAllFriendOfUser} from "../../../common/callapi/friend"
+import { getCookieToken } from '../../../common/functions';
+import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
+import {createGroupConversation} from "../../../common/callapi/chat"
 export default function ModelCreateGroupChat(props) {
-    const {close,userLogin} = props 
+    const {close, userLogin} = props 
+    const token = getCookieToken()
+    const [listFriend, setListFriend] = useState([])
+    const [objectFriendInfo, setObjectFriendInfo] = useState(null)
+    const [userChooseInfo, setUserChooseInfo] = useState(null) // lưu object user bao gồm
+    const [userChoose, setUserChoose] = useState([]) // code html hieenr thij user được chọn
+    const [listUserCode, setListUsercode] = useState([])
+    // const listUserCodeForCreate = []
+    var user_code__info_user = {}
+    // const [userLogin, setUserLogin] = useState()
+// 
+    function addUserToGroup(e){
+        console.log("vao roi")
+        try{
+            var usercode = e.target.attributes.getNamedItem('usercode').value
+            console.log(usercode, user_code__info_user)
+            if (user_code__info_user){
+                console.log("dfdfdf", user_code__info_user.hasOwnProperty(usercode))
+                if (user_code__info_user.hasOwnProperty(usercode)){
+                    // if(userChoose.length===0){
+                        console.log("voooo", user_code__info_user[usercode])
+                        setUserChooseInfo(user_code__info_user[usercode])
+                        // setUserChoose([   
+                        //     <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
+                        //     Xinh
+                        //     {/* icon xoas */}
+                        //     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        //     </a>])
+                    // }
+                // else{
+                    // setUserChoose([...userChoose, ...[   
+                    //     <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
+                    //     Xinh
+                    //     {/* icon xoas */}
+                    //     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    //     </a>]])
+                // }
+             
+                 
+                }
+            }
+        }
+        catch(error){
+            console.log("loi roi ")
+            console.error(error)
+        }
+    }
 
+    useEffect(()=>{
+        if(userChooseInfo!== null){
+            setListUsercode([...listUserCode, ...[userChooseInfo?.user_code]])
+            setUserChoose([...userChoose, ...[   
+                <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
+                {userChooseInfo?.given_name}
+                {/* icon xoas */}
+                <svg onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="18" y1="6" x2="6" y2="18"></line><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </a>]])
+        }
+
+    }, [userChooseInfo])
+
+
+    const removeFromcurrentChooseGroup = (e)=>{
+        var usercode = e.target.attributes.getNamedItem('usercode').value
+        console.log("listUserCodeForCreate", listUserCode, usercode)
+        const index = listUserCode.indexOf(usercode); 
+        console.log(index)
+
+    }
+    const callApiGetAllFriend = async(usercode) =>{
+        const result = await getAllFriendOfUser(token, usercode)
+        if(result?.response_status.code){
+            var friends = []
+            if(result?.data.list_friend_info.length > 0){
+               
+                result?.data.list_friend_info.forEach(friend =>{
+                    user_code__info_user[friend.user_code] = friend 
+                    friends.push(       
+                    <div className="list-group-add-item  p-2">
+                        <div className="d-flex align-items-center list-group--padding">
+                            {/* avatar friend chat */}
+                            <img src={friend?.picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
+                        
+                            <div className="m-2 text-algin-left">
+                                <span>{friend?.fullname}</span>
+                            </div>
+                            
+
+                        </div>
+                        {/* button chọn add vao nhóm */}
+                        <button onClick ={addUserToGroup} usercode = {friend?.user_code} type="button" className='btn btn-danger btn-sm'>
+                            <svg onClick ={addUserToGroup} usercode  = {friend?.user_code} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="12" y1="5" x2="12" y2="19"></line><line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>)
+             
+                })
+            }
+            setObjectFriendInfo(user_code__info_user)
+            setListFriend(friends)
+        }
+        
+    }
+
+    const callApiCreateGroup = async(data_user_code,name) =>{
+        console.log("all user code", data_user_code)
+        await createGroupConversation(token,data_user_code, name)
+    }
+    
+    // const dataProfileUser = async () => {
+    //     try {
+    //         const userInfo = await getDataApiDetailUserLogin(token);
+    //         setUserLogin(userInfo)
+
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
+    useEffect(()=>{
+        callApiGetAllFriend(userLogin?.data.user_code)
+
+    }, [])
+    function creategroup(){
+        console.log("listUserCode", listUserCode)
+        callApiCreateGroup(listUserCode, "")
+    }
     return(
         <div>
         {/* The Modal */}
@@ -24,121 +153,35 @@ export default function ModelCreateGroupChat(props) {
                             {/* list friend chon add vào group */}
                            <div>
                            <div className='m-2 list-item-add'>
-                                <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
+                           {userChoose}
+                                {/* <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
                                     Xinh
-                                    {/* icon xoas */}
+                  
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </a>
                                 <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
                                     Như
-                                    {/* icon xoas */}
+                       
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </a>
                                 <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
                                     Anh
-                                    {/* icon xoas */}
+                     
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 </a>
-                               
+                                */}
                             </div>
                             <div className="list-friend-group">
-                                <div className="list-group-add-item  p-2">
-                                            <div className="d-flex align-items-center list-group--padding">
-                                                {/* avatar friend chat */}
-                                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
-                                            
-                                                <div className="m-2 text-algin-center">
-                                                    <span>Ngo Hong Xinh</span>
-                                                </div>
-                                                
-
-                                            </div>
-                                            {/* button chọn add vao nhóm */}
-                                            <button className='btn btn-danger btn-sm'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div className="list-group-add-item  p-2">
-                                            <div className="d-flex align-items-center list-group--padding">
-                                                {/* avatar friend chat */}
-                                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
-                                            
-                                                <div className="m-2 text-algin-left">
-                                                    <span>Ngo Hong Xinh</span>
-                                                </div>
-                                                
-
-                                            </div>
-                                            {/* button chọn add vao nhóm */}
-                                            <button className='btn btn-danger btn-sm'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    
-                                        <div className="list-group-add-item  p-2">
-                                            <div className="d-flex align-items-center list-group--padding">
-                                                {/* avatar friend chat */}
-                                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
-                                            
-                                                <div className="m-2 text-algin-left">
-                                                    <span>Ngo Hong Xinh</span>
-                                                </div>
-                                                
-
-                                            </div>
-                                            {/* button chọn add vao nhóm */}
-                                            <button className='btn btn-danger btn-sm'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div className="list-group-add-item  p-2">
-                                            <div className="d-flex align-items-center list-group--padding">
-                                                {/* avatar friend chat */}
-                                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
-                                            
-                                                <div className="m-2 text-algin-left">
-                                                    <span>Ngo Hong Xinh</span>
-                                                </div>
-                                                
-
-                                            </div>
-                                            {/* button chọn add vao nhóm */}
-                                            <button className='btn btn-danger btn-sm'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div className="list-group-add-item  p-2">
-                                            <div className="d-flex align-items-center list-group--padding">
-                                                {/* avatar friend chat */}
-                                                <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
-                                            
-                                                <div className="m-2 text-algin-left">
-                                                    <span>Ngo Hong Xinh</span>
-                                                </div>
-                                                
-
-                                            </div>
-                                            {/* button chọn add vao nhóm */}
-                                            <button className='btn btn-danger btn-sm'>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                                    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-                                                </svg>
-                                            </button>
-                                        </div>
+                                {listFriend}
+                 
+                    
+                                 
                                 </div>
                            </div>
                         </form>
                         {/* Modal footer */}
                         <div className="modal-footer p-2 ">
-                            <button type="button"  className="btn btn-success btn-lg m-1 w-100 align-item-center">Add</button>
+                            <button type="button" onClick={creategroup}  className="btn btn-success btn-lg m-1 w-100 align-item-center">Add</button>
                         </div>
                     </div>
                 </div>

@@ -23,9 +23,7 @@ function Comment(props) {
     const callApiGetListComment = async () => {
         try {
             const result = await getListComment(token, postcode);
-            console.log(result)
             setLastCommentId(result?.data.last_comment_id)
-            console.log("3444444444444",result )
             setCommentState(result?.data.list_comment_info)
         } catch (error) {
             console.error(error)
