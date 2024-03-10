@@ -20,10 +20,10 @@ function ListFriend(props) {
                 for (var i = 0; i < result.data.list_friend_info.length; i++) {
                     cardRow.push(
                         
-                        <div className='row d-flex justify-content-start align-items-center'>
+                        <div className='friends-profile bg-custom m-2 p-2'>
                             <div className='friend_card'>
                                 <div className="card-body ">
-                                    <div className="media card-friend-home">
+                                    <div className="media card-friend-profile">
                                         <img src={result.data.list_friend_info[i].picture} width={56} height={56} className="rounded-circle mr-2" alt="avatar" />
                                         <div className="media-body">
                                         <Link className='card-title text-decoration-none mb-0' to={`/personal/${result.data.list_friend_info[i].user_code}/post`} state={{ 'usercode': result.data.list_friend_info[i].user_code }}> {result.data.list_friend_info[i].fullname}</Link>
@@ -44,7 +44,9 @@ function ListFriend(props) {
                                                     contentStyle={{ padding: '0px', border: 'none' }}
                                                     arrow={false}
                                                 >
-                                                    <div type='button' className='btn btn-warning' friendusercode={result.data.list_friend_info[i].user_code} onClick={DeleteFriend}>Hủy kết bạn</div>
+                                                    <div type='button' className='btn btn-danger' friendusercode={result.data.list_friend_info[i].user_code} onClick={DeleteFriend}>
+                                                        Hủy kết bạn
+                                                    </div>
                                                 </Popup>
                                             </div>
                                         </div>
@@ -95,20 +97,24 @@ function ListFriend(props) {
 
 
     return (
-            <div className='friend_profile_container'>
-                <div className='card listfriend_title'>
-                        <div className="card-header">
-                            <h5 className="card-title mb-0">Friends</h5>
+                <div className='container p-3'>
+                    <div className='friend_profile_container p-3'>
+                        <div className='listfriend_title'>
+                                <div className="card-header">
+                                    <h3 className="card-title text-white mb-0">Friends</h3>
+                                </div>
+                                <hr className='border-5'/>
+                            
+                            
                         </div>
-                    
-                    <div className='card-body'>
-                        <div className='listfriend_content'>
-                            {elementFriend}
-                        </div>
+                        <div className='card-body'>
+                            <div className='listfriend_content'>
+                                {elementFriend}
+                            </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
     )
 }
 

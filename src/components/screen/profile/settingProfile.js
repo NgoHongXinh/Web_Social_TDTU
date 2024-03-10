@@ -159,7 +159,7 @@ function SettingProfile() {;
 
                         <div className='tab-pane' id='account'>
                             {/* <!--Phần setting tài khoàn public info--> */}
-                            <div className='card my-box-shadow'>
+                            <div className='card my-box-shadow bg-custom'>
                                 <div className='card-header d-flex justify-content-between'>
                                     <h5 className='card-titl my-auto'>Thông tin cá nhân</h5>
                                     {/* <div>
