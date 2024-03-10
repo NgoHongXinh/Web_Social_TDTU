@@ -113,6 +113,8 @@ export default function ModelCreateGroupChat(props) {
     const callApiCreateGroup = async(data_user_code,name) =>{
         console.log("all user code", data_user_code)
         await createGroupConversation(token,data_user_code, name)
+        window.location.reload(true);
+
     }
     
     // const dataProfileUser = async () => {
