@@ -1,8 +1,81 @@
-import  React, { useState } from 'react';
+import  React, { useEffect, useState } from 'react';
+import { getCookieToken } from '../../../common/functions'
 import "../../../css/share.css"
+import {sharePost} from '../../../common/callapi/post_service'
+import { getDataApiDetailUserLogin } from "../../../common/callapi/user";
 
 function ModelSharePost(props) {
-    const {close,userLogin} = props 
+    const {close, postInfoData} = props 
+    console.log(postInfoData, postInfoData.post_code)
+    const [textPost, setTextPost] = useState("")
+    const [userLogin, setUserLogin] = useState("")
+    const [imageInPost, setImageInPost] = useState("")
+    const [videoInPost, setVideoInPost] = useState("")
+
+    var token = getCookieToken()
+    function handleInput(event) {
+        console.log(event.target.value)
+        setTextPost(event.target.value)
+    }
+    const dataProfileUser = async () => {
+        try {
+            const userInfo = await getDataApiDetailUserLogin(token);
+            setUserLogin(userInfo)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+    useEffect(()=>{
+        dataProfileUser() 
+    }, [])
+
+    useEffect(()=>{
+        var images = []
+        var videos = []
+        var postData = []
+        if(postInfoData !=="" && postInfoData.images.length > 0){
+            postInfoData.images.forEach(image => {
+                images.push(
+                    <div className='posted-image'>
+                    <img src={image} className="img-fluid img-posted" alt="Unsplash"></img>
+                  </div>
+      
+
+                )
+            })
+            setImageInPost(images)
+        }
+        
+        if(postInfoData !=="" && postInfoData.videos){
+
+                videos.push(
+                    <video  controls >
+                        <source src={postInfoData.videos} type="video/mp4"/>
+                    </video>
+
+                )
+            setVideoInPost(videos)
+        }
+
+        
+    }, [])
+    const callApiSharePost = async()=>{
+        try{
+
+            const result = await sharePost(token, postInfoData.post_code, textPost)
+            if(result?.response_status?.code === "00"){
+                console.log("da share bai viet")
+ 
+            }
+            close()
+        }
+        catch(error){
+            console.error(error)
+        }
+
+      
+    }
+
   return (
     <div>
         {/* The Modal */}
@@ -12,7 +85,7 @@ function ModelSharePost(props) {
                     
                     <div className='modal-post-header-custom'>
                         <a className='btn btn-custom ' onClick={close}>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </a>
                     </div>
                     {/* Modal Header */}
@@ -26,14 +99,13 @@ function ModelSharePost(props) {
                             {/* Info nguoi share post */}
                             <div className="form-group bg-post-home--custom rounded mb-2 mt-2">
                                 <label htmlFor="recipient-name" className="col-form-label">
-                                    {/* {userLogin?.data.fullname} */}
-                                    Ngo Hong Xinh
+                                    {userLogin?.data?.fullname}
                                     </label>
                                 {/* <input type="text" className="form-control" id="recipient-name" defaultValue="@username" /> */}
                             </div>
                             <div className="form-group">
                                 <div className='rounded input-post-custom'>
-                                <textarea  className="form-control" id="message-text" defaultValue="Bạn đang nghĩ gì thế?" />
+                                <textarea  className="form-control" id="message-text" value = {textPost} onChange={handleInput}  >Bạn đang nghĩ gì thế?</textarea>
                                 </div>
                                 
                             </div>
@@ -43,25 +115,27 @@ function ModelSharePost(props) {
                                 {/* info chu bai post */}
                                 <div className='p-2 header-posted bg-light'>
                                     <div className='info-user-posted'>
-                                      <img src='https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png'  className="rounded-circle m-2" alt="Sharon Lessman" width={50} height={50}/>
+                                      <img src={postInfoData.created_by.picture}  className="rounded-circle m-2" alt="Sharon Lessman" width={50} height={50}/>
                                       <div className='name-posted-content'>
-                                        <span className=''><strong>Xinh Ngô</strong></span>
-                                        <smal>5m</smal>
+                                        <span className=''><strong>{postInfoData?.created_by.fullname}</strong></span>
+                                        <small>5m</small>
                                       </div>
                                     </div>
-                                    <b className='text-posted'>hi! how are you?</b>
+                                    <b className='text-posted'>{postInfoData.content}</b>
                                 </div>
                                 {/* hinh bai post dc share */}
-                                <div className='posted-image'>
+                                {imageInPost}
+                                {videoInPost}
+                                {/* <div className='posted-image'>
                                   <img src="http://res.cloudinary.com/darjwnxvd/image/upload/v1709994210/xinhnh2/o4koarfg7giyvjw9pqgd.jpg" class="img-fluid img-posted" alt="Unsplash"></img>
-                                </div>
+                                </div> */}
                             </div>
                             {/*Mục input hình ảnh, file, video*/}
                             
                         </form>
                         {/* Modal footer */}
                         <div className="modal-footer w-100">
-                            <button type="button" className="btn btn-primary mt-5 btn-lg w-100">Share</button>
+                            <button onClick={callApiSharePost} type="button" className="btn btn-primary mt-5 btn-lg w-100">Share</button>
                         </div>
                     </div>
                 </div>

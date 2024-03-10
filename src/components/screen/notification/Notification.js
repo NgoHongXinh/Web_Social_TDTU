@@ -131,12 +131,6 @@ function Notification(props) {
                 <h4><b> Thông báo </b> </h4>
                 </div>
                 {notisState}
-                {/* {notisState ?
-                    <div className='w-100 text-center mt-3'><ClipLoader color={'#5239AC'} loading={notisState} size={48} /></div>
-                    :
-                    
-                }
-           */}
             </InfiniteScroll>
         </div>
     )

@@ -296,7 +296,7 @@ function ChatPage() {
                                 trigger={
                                     <div className='button-group-create'>
                                         <button type="button" className="btn btn-secondary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87">
                                             </path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                             </svg>
                                         </button>
@@ -368,7 +368,7 @@ function ChatPage() {
                             <div className="input-group">
                                 <input onChange={handleInput}  type="text" className="form-control rounded input-mess-custom" value={newMess} placeholder="Type your message" onKeyDown={handleKeyPress}/>
                                 <button onClick={createNewMess} ref={btncreate} className="btn btn-danger">
-                                <svg onClick={btncreateClick} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" stroke-linejoin="round">
+                                <svg onClick={btncreateClick} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M14 9l6 6-6 6"/><path d="M4 4v7a4 4 0 0 0 4 4h11"/>
                                 </svg>
                                     {/* <svg onClick={btncreateClick} height="48" viewBox="0 0 48 48"  width="48" xmlns="http://www.w3.org/2000/svg"><path d="M4.02 42l41.98-18-41.98-18-.02 14 30 4-30 4z"/><path d="M0 0h48v48h-48z" fill="none"/></svg> */}
