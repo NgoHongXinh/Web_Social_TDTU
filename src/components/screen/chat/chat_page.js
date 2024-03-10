@@ -9,8 +9,8 @@ import "../../../css/style.css";
 import Popup from 'reactjs-popup';
 import ModelCreateGroupChat from '../chat/model_create_group';
 import InfiniteScroll from 'react-infinite-scroller';
-
 import { getCookieToken } from '../../../common/functions';
+import imageGroup from "../../../image/two-people.png";
 function ChatPage() {
     const socket = useContext(SocketContext);
     const [lastConversationId, setLasConversationId] = useState()
@@ -55,7 +55,13 @@ function ChatPage() {
     
         // Clean up by removing the event listener when component unmounts
         return () => {
-          parentRef.current.removeEventListener('scroll', handleScroll);
+            try{
+                parentRef.current.removeEventListener('scroll', handleScroll);
+            }
+            catch(error){
+                console.error(error)
+            }
+
         };
       }, [currentConversationCode]); // cho thiết lâp theo conversation code để mỗi khi chọn qua conversation khác sẽ ko bị mất thanh scroll
 
@@ -92,6 +98,7 @@ function ChatPage() {
         }
     }
 
+        
     const callApigetListMess = async (conversationCode) =>{
         try{
             socket.emit("join_room", conversationCode)
@@ -165,6 +172,15 @@ function ChatPage() {
                         if(result?.data.list_conversation_info[i].type === "1"){
                             setcurrentUserChatOrNameGroupChat(result?.data.list_conversation_info[0].name)
                         }
+                        else{
+                            if(result?.data.list_conversation_info[0].members_obj[0].user_code !== userLogin?.data.user_code){
+                                setcurrentUserChatOrNameGroupChat(result?.data.list_conversation_info[0].members_obj[0].fullname)
+                            }
+                            else{
+                                setcurrentUserChatOrNameGroupChat(result?.data.list_conversation_info[0].members_obj[1].fullname)
+                            }
+                        
+                        }
                         if(result?.data.list_conversation_info[i].members_obj?.length === 1){
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
@@ -176,6 +192,25 @@ function ChatPage() {
                                     
                                         <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].fullname}
+
+                                            {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
+                                        </div>
+
+                                    </div>
+                                </a>
+                            )
+                        }
+                        else{
+                            listConversation.push(
+                                // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
+                                // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
+                                <a className="list-group-item list-group-item-action p-2 ">
+                                    <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                        {/* avatar friend chat */}
+                                        <img src={imageGroup} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
+                                    
+                                        <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                            {result?.data.list_conversation_info[i].members_obj[0].given_name},  {result?.data.list_conversation_info[i].members_obj[1].given_name} ...
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
                                         </div>
@@ -325,7 +360,7 @@ function ChatPage() {
                                     <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle m-2" alt="Sharon Lessman" width={50} height={50} />
                                 </div>
                                 <div className="flex-grow-1 pl-3">
-                                    <strong className='front_text_white'>Sharon Lessman</strong>
+                                    <strong className='front_text_white'>{currentUserChatOrNameGroupChat}</strong>
                                 </div>
                                 {/* button header khung chat */}
                                 <div className='m-3'>
@@ -336,7 +371,6 @@ function ChatPage() {
                             </div>
                         </div>
                         <div className="position-relative" > 
-                            {lastMessId}
                             {/* body noi dung chat */}
                             <div  id='scrollableDiv2' className="chat-messages p-4"  ref={parentRef}>
                             {/* <div  id='scrollableDiv2' className="chat-messages p-4 menu-popup noti-popu" > */}

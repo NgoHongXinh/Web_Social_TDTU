@@ -116,7 +116,7 @@ async function createGroupConversation(token, listUsercode, name=""){
           "list_user_to_chat": listUsercode,
           "name": name
           }
-      var url = `${BASE_URL}conversation`
+      var url = `${BASE_URL}group/conversation`
       const response = await fetch(url, 
           {
               method: 'POST',
