@@ -18,7 +18,7 @@ function ChatPage() {
     const [messageInfo, setMessageInfo] = useState() // này đẻ lưu lại response từ backend khi vừa gọi xong api 
     const [lastMessId, setlastMessId] = useState()
     const [userLogin, setUserLogin] = useState()
-    // const [firstConversationCode, setfirstConversationCode] = useState()
+    const [firstConversationCode, setfirstConversationCode] = useState()
     const [currentConversationCode, setcurrentConversationCode] = useState()
     const [reloadListMess, setreloadListMess] = useState(true)
     const [newChatRealTime, setNewChatRealTime] = useState()
@@ -28,6 +28,7 @@ function ChatPage() {
     const [isScrollDownToBottom, setIsScrollDownToBottom] = useState(false) // biến dùng để handle khi nào thì nên tự động scroll xuống 
     const [onloadMore, setOnLoadMore] = useState(false)
     const [currentUserChatOrNameGroupChat, setcurrentUserChatOrNameGroupChat] = useState()
+    const [changeName, setchangeName] = useState()
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
@@ -42,7 +43,7 @@ function ChatPage() {
             if (scrollTop === 0) {
                 console.log('Scroll is at the top of the parent div');
                 setOnLoadMore(true)
-                parentRef.current.scrollTop = 50;
+                // parentRef.current.scrollTop = 50;
                 
                 
               }
@@ -72,8 +73,7 @@ function ChatPage() {
         setIsScrollDownToBottom(false)
     }
     
-    
-    }, [message])
+    }, [message, currentConversationCode]) // set ,mỗi khi có mess mới hoặc đổi qua convert khác thì sẽ tự động scroll xuống
     // receive mess realtime
     useEffect(()=>{
         socket.on("event_chat", dataChat =>{
@@ -86,6 +86,11 @@ function ChatPage() {
         }
 
     }, [newChatRealTime])
+
+    // hiển thị tên nhóm chat khi click qua conversation khác
+    useEffect(()=>{
+        setchangeName(<strong className='front_text_white'>{currentUserChatOrNameGroupChat}</strong>)
+    }, [currentUserChatOrNameGroupChat])
 
 
     const dataProfileUser = async () => {
@@ -147,6 +152,8 @@ function ChatPage() {
     function getMessOfConverstation(e){
         try{
             var convercode = e.target.attributes.getNamedItem('convercode')?.value
+            var nameconvert = e.target.attributes.getNamedItem('nameconvert')?.value
+            setcurrentUserChatOrNameGroupChat(nameconvert)
             if(convercode !== undefined){
                 setcurrentConversationCode(convercode)
                 callApigetListMess(convercode)
@@ -165,7 +172,7 @@ function ChatPage() {
             if(result?.response_status.code === "00"){
                 var listConversation = []
                 if(result?.data.list_conversation_info?.length > 0){
-                    // setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
+                    setfirstConversationCode(result?.data.list_conversation_info[0].conversation_code)
                     setcurrentConversationCode(result?.data.list_conversation_info[0].conversation_code)
                    
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
@@ -186,11 +193,11 @@ function ChatPage() {
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
                                 <a className="list-group-item list-group-item-action p-2 ">
-                                    <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                    <div nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname} ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
                                         {/* avatar friend chat */}
                                         <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
-                                        <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                        <div nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname}   onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].fullname}
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
@@ -201,15 +208,16 @@ function ChatPage() {
                             )
                         }
                         else{
+                            var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data.list_conversation_info[i].members_obj[1].given_name} ...`
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
                                 <a className="list-group-item list-group-item-action p-2 ">
-                                    <div ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                    <div  ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
                                         {/* avatar friend chat */}
                                         <img src={imageGroup} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
-                                        <div onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                        <div nameconvert = {name_group}  onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].given_name},  {result?.data.list_conversation_info[i].members_obj[1].given_name} ...
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
@@ -256,9 +264,11 @@ function ChatPage() {
         callGetAllConversation()
     }, [])
 
-    // nếu bấm qua conversation khác thì sẽ tự động cập nhật danh sách message theo conversation đó
+    // tự động lấy message cho conversation trong lần đầu tiên đi vào trang chat
+    //getMessOfConverstation sẽ thiết lập sau khi đã vào trang chat bấm convert nào thì lấy message convert đó
     useEffect(()=>{
         if(reloadListMess===true){
+            console.log()
             if (currentConversationCode !== undefined){
                 callApigetListMess(currentConversationCode)
                 setIsScrollDownToBottom(true)
@@ -269,7 +279,7 @@ function ChatPage() {
             setreloadListMess(true)
         }
 
-    }, [currentConversationCode])
+    }, [firstConversationCode])
 
 
     
@@ -360,7 +370,8 @@ function ChatPage() {
                                     <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle m-2" alt="Sharon Lessman" width={50} height={50} />
                                 </div>
                                 <div className="flex-grow-1 pl-3">
-                                    <strong className='front_text_white'>{currentUserChatOrNameGroupChat}</strong>
+                                    {changeName}
+                                    {/* <strong className='front_text_white'>{currentUserChatOrNameGroupChat}</strong> */}
                                 </div>
                                 {/* button header khung chat */}
                                 <div className='m-3'>
