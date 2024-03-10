@@ -30,10 +30,12 @@ function PostInProfile(props) {
     for (let i = 0; i < postInfo?.length; i++) {
         // socket.emit('join_room', postInfo[i]?.post_code)
         listPost.push(
-                <div className="row d-flex align-item-center">
-                {<PostUser key={postInfo[i]?._id}
-                    postInfoData={postInfo[i]}
-                />}
+            <div className="container p-3">
+                <div className="card card-post mb-2">
+                    {<PostUser key={postInfo[i]?._id}
+                        postInfoData={postInfo[i]}
+                    />}
+                </div>
             </div>
         )
 }
