@@ -44,7 +44,7 @@ function Notification(props) {
                     notis.push(
                         <div className='d-flex mb-2' style={{ background: noti.is_checked ? "": "#E8EAF6" }} key={noti.notification_code} >
                             <div className='noti-user-avata'>
-                                <img alt='user avatar' src={noti.user_guest_info.picture} className='rounded-circle'></img>
+                                <img alt='user avatar' src={noti.user_guest_info.picture} className='rounded-circle mr-1 p-1' width={70} height={70}></img>
                             </div>
                             <div className='noti-content'>
                                 <div  >

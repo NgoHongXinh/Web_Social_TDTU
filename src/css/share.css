@@ -6,7 +6,16 @@
     overflow-y: scroll;
   
 }
-
+.modal-post-header-custom{
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -30px;
+    top: -30px;
+    width: fit-content;
+}
 .posted-container::-webkit-scrollbar
 {
    width: 0px;

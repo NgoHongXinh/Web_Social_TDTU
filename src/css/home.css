@@ -2,7 +2,39 @@
     padding: 10px;
     background-color: #dadae3;
 }
-
+.media-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.media-body{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-start; */
+}
+.icon-post{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    align-self: start;
+}
+.text-like{
+    float: left;
+}
+.text-content-post{
+    align-self: flex-start;
+    text-align: left;
+    width: fit-content;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+.media-header-info{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 @media only screen and (max-width: 720px){
     .home-info{
         display: none;
@@ -77,14 +109,28 @@
     padding-left: 20px;
 }
 .comment-content-text{
-    max-width: 30vw;
+    width: fit-content;
+    align-self: flex-start;
     text-align: left;
+    width: fit-content;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    font-weight: 400;
+}
+.media-comment{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .comment-content{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-self: start;
+    padding: 10px 20px 10px 20px;
+}
+.form-control-flush{
+    border: 1px solid #fccb90;
 }
 .sticky-scroll__post{
     position: sticky;
@@ -94,4 +140,13 @@
 .modal-post-container{
     background: linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
     background: -webkit-linear-gradient(to bottom right, rgba(252, 203, 144, 1), rgba(213, 126, 235, 1));
+}
+/* comment */
+.bg-custom{
+    background: rgba(24, 24, 16, .2);
+    border-radius: 2em;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
 }

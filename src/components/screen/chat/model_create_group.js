@@ -9,6 +9,11 @@ export default function ModelCreateGroupChat(props) {
         <div className="modal-post-container p-5 border bg-custom mt-1 h-100" >
             <div className="modal-dialog">
                 <div className="modal-content">
+                    <div className='modal-post-header-custom'>
+                        <a className='btn btn-custom ' onClick={close}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </a>
+                    </div>
                     {/* Modal Header */}
                     <div className="modal-header">
                         <h4 className="modal-title text-white">Tạo Nhóm Chat</h4>
@@ -132,9 +137,8 @@ export default function ModelCreateGroupChat(props) {
                            </div>
                         </form>
                         {/* Modal footer */}
-                        <div className="modal-footer p-3">
-                            <button type="button" className="btn btn-secondary m-1" data-dismiss="modal"  onClick={close}>Close</button>
-                            <button type="button"  className="btn btn-success m-1">Add</button>
+                        <div className="modal-footer p-2 ">
+                            <button type="button"  className="btn btn-success btn-lg m-1 w-100 align-item-center">Add</button>
                         </div>
                     </div>
                 </div>
