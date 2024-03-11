@@ -4,9 +4,13 @@ import {BASE_URL} from "../constant"
 
 
 // friend request
-async function getAllFriendOfUser(token, usercode){
+async function getAllFriendOfUser(token, usercode, lastFriendId =""){
  try {
-      const response = await fetch(`${BASE_URL}get-all-friend/user/${usercode}`,
+      var url = `${BASE_URL}get-all-friend/user/${usercode}`
+      if(lastFriendId){
+        url = `${BASE_URL}get-all-friend/user/${usercode}?last_friend_id=${lastFriendId}`
+      }
+      const response = await fetch(url,
           {
               method: 'GET',
               headers: {

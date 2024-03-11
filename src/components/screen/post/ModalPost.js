@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import { createPost } from '../../../common/callapi/post_service';
 import { getCookieToken } from '../../../common/functions'
+import BounceLoader from 'react-spinners/BounceLoader';
 
 export default function ModalPost(props) {
     const {close,userLogin, setLastPostId, setPostInfo, setpostState} = props 
     const [textPost, setTextPost] = useState("")
     const [postImages, setPostImages] = useState();
     const [postVideo, setpostVideo] = useState([]);
+    const [onLoading, setOnLoading] = useState(false)
     var token = getCookieToken()
 
     function handleInput(event) {
@@ -26,26 +28,37 @@ export default function ModalPost(props) {
     const callApiCreateNewPost = async (formdata) =>{
         try {
             const newPost = await createPost(token, formdata);
+            if(newPost?.response_status?.code === "00"){
+                console.log("vaof nef")
+                setOnLoading(false)
+                window.location.reload(true);
+                close()
+            }
             console.log(newPost)
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
     const createNewPost = ()=>{
-        console.log("voaf")
-        console.log("sdfsdfdf", postImages)
-        var formData = new FormData();
-        formData.append('content', textPost);
-        if(postImages?.length > 0 ){
-            postImages.forEach((image, index) => {
-                formData.append(`images_upload`, image);
-              });
+        try{
+            var formData = new FormData();
+            formData.append('content', textPost);
+            if(postImages?.length > 0 ){
+                postImages.forEach((image, index) => {
+                    formData.append(`images_upload`, image);
+                  });
+            }
+            formData.append('video_upload', postVideo);
+            setOnLoading(true)
+            callApiCreateNewPost(formData)
+
+
+        
         }
-        formData.append('video_upload', postVideo);
-        callApiCreateNewPost(formData)
-        window.location.reload(true);
-        close()
-    
+        catch(error){
+            console.log(error)
+        }
+
     }
   return (
     <div>
@@ -98,7 +111,17 @@ export default function ModalPost(props) {
                             </div></form>
                         {/* Modal footer */}
                         <div className="modal-footer">
-                            <button type="button" onClick={createNewPost} className="btn btn-danger mt-5 btn-lg w-100">Posted</button>
+
+
+                        {onLoading ?
+                                            <div className='mt-3'>
+                                            <BounceLoader color="#36d7b7" loading={onLoading} size={40} />  </div>
+                                            :
+                                            <button type="button" onClick={createNewPost} className="btn btn-danger mt-5 btn-lg w-100">Posted</button>
+                                        }
+
+              
+             
                         </div>
                     </div>
                 </div>
