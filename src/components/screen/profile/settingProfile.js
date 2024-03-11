@@ -4,7 +4,7 @@ import BounceLoader from 'react-spinners/BounceLoader';
 import { Form } from 'react-bootstrap';
 import {getDataApiDetailUserLogin, updateUsrProfile} from "../../../common/callapi/user"
 import { getCookieToken } from '../../../common/functions';
-
+import "../../../css/setting_profile.css"
 // import PasswordModal from './PasswordModal';
 
 function SettingProfile() {;
@@ -144,7 +144,7 @@ function SettingProfile() {;
     }
     // useEffect(() => {
     //     if (checkShowMess) {
-    //         setTimeout(() => {
+    //         setTimeout(() => {bg-tab-setting-custom
     //             setCheckShowMess(false);
     //         }, 3000);
     //     }
@@ -153,18 +153,26 @@ function SettingProfile() {;
     return (
         <main className='container p-0'>
 
-            <div className='container-fluid p-0'>
+            <div className='container-fluid p-0 '>
                 {/* <!--icon bar--> */}
 
                 <div className='row mt-3'>
-                    <div className='col-md-2'></div>
-                    <div className='col-md-8'>
+                    <div className='col-md-3 bg-tab-left-setting-custom tab-content-left'>
+                        <div className='pt-3'>
+                            <button className='btn btn-custom btn-lg w-100'>Sửa đổi thông tin</button>
+                        </div>
+                        <hr/>
+                        <div className='pb-3'>
+                            <button className='btn btn-custom btn-lg w-100'>Thay đổi mật khẩu</button>
+                        </div>
+                    </div>
+                    <div className='col-md-9 '>
 
                         <div className='tab-pane' id='account'>
                             {/* <!--Phần setting tài khoàn public info--> */}
-                            <div className='card my-box-shadow bg-custom'>
+                            <div className='card my-box-shadow bg-tab-setting-custom p-2'>
                                 <div className='card-header d-flex justify-content-between'>
-                                    <h5 className='card-titl my-auto'>Thông tin cá nhân</h5>
+                                    <h2 className='card-title p-1'>Thông tin cá nhân</h2>
                                     {/* <div>
                                         <PasswordModal currUserInfo={currUserInfo} setMessage={setMessage} setCheckShowMess={setCheckShowMess} />
                                     </div> */}
@@ -172,41 +180,41 @@ function SettingProfile() {;
                                 <div className='card-body'>
                                     <Form onSubmit={handleSubmit}>
                                         <div className='row'>
-                                            <div className='col-md-8'>
-                                                <Form.Group>
-                                                    <Form.Label className='fw-bold'>Họ</Form.Label>
+                                            <div className='col-md-8 content-left p-2'>
+                                                <Form.Group className='bg-group-custom p-3'>
+                                                    <Form.Label className='fw-bold pt-2'>Họ</Form.Label>
                                                     <Form.Control type='text' value={familyName} onChange={onchangeFamalyName} />
                                                 </Form.Group>
-                                                <Form.Group>
-                                                    <Form.Label className='fw-bold'>Tên</Form.Label>
+                                                <Form.Group className='bg-group-custom p-3'>
+                                                    <Form.Label className='fw-bold pt-2'>Tên</Form.Label>
                                                     <Form.Control type='text' value={givenName} onChange={onchangeGivenName} />
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Email/ Tài khoản</Form.Label>
                                                     <Form.Control type='text' value={username} disabled />
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Lớp</Form.Label>
                                                     <Form.Control type='text' value={className} onChange={onchangeClassName} />
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Số điện thoại</Form.Label>
                                                     <Form.Control type='text' value={phone} onChange={onchangePhone} />
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Ngày sinh</Form.Label>
                                                     <Form.Control type='text' value={birthday} onChange={onchangeBirthday} />
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Giới tính</Form.Label>
-                                                    <select className='mt-1 ms-1' value={gender} onChange={onchangeGender}>
+                                                    <select className='mt-1 ms-1 w-100 rounded p-2' value={gender} onChange={onchangeGender}>
                                                         <option name='Nam'> Nam</option>
                                                         <option name='Nữ'>Nữ</option>
                                                     </select>
                                                 </Form.Group>
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Khoa </Form.Label>
-                                                    <select className='mt-1 ms-1' value={faculty} onChange={onchangeFaculty}>
+                                                    <select className='mt-1 ms-1 rounded p-2 w-100' value={faculty} onChange={onchangeFaculty}>
                                                         <option name='Công nghệ thông tin'>Công nghệ thông tin</option>
                                                         <option name='Lao động công đoàn'>Lao động công đoàn</option>
                                                         <option name='Luật'>Luật</option>
@@ -226,7 +234,7 @@ function SettingProfile() {;
                                                     </select>
                                                 </Form.Group>
 
-                                                <Form.Group>
+                                                <Form.Group className='bg-group-custom p-3'>
                                                     <Form.Label className='fw-bold'>Tiểu sử</Form.Label>
                                                     <Form.Control as='textarea' value={biography} rows={3} onChange={(e) => { setBiography(e.target.value) }} />
                                                 </Form.Group>
@@ -238,15 +246,20 @@ function SettingProfile() {;
                                                 
 
                                             </div>
-                                            <div className='col-md-4'>
+                                            <div className='col-md-4 bg-group-custom content-right p-2'>
                                                 <h4>Thay đổi ảnh đại diện </h4>
-                                                <div className='text-center'>
-                                                    <img alt='avatar' src={imageChoosen} width='128' height='128'></img>
+                                                <div className='text-center h-50'>
+                                                    <img alt='avatar' className='img-upload' src={imageChoosen}></img>
                                                     <div className='mt-2'>
                                                         {/* <!-- lồng 2 button thành 1 --> */}
                                                         {/* <!--<input type='button' className=' btn btn-primary' id='my-button' value='Upload image'>className='d-none'  --> */}
                                                         <div className='w-100'>
-                                                            <label htmlFor='input-avt' className='w-100'><div className='btn btn-success w-75'>Chọn hình ảnh</div></label>
+                                                            <label htmlFor='input-avt' className='w-100'>
+                                                                <div className='btn btn-success'> 
+                                                                    <span className='mr-1'>Chọn hình ảnh  </span>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+                                                                </div>
+                                                            </label>
                                                             <input hidden onChange={onchangePicture} id='input-avt' type='file' accept='image/*'></input>
                                                         </div>
                                                         {/* <input type='file' name='image' id='my-file' accept='.jpg, .jpeg, .png' onChange={onchangePicture} ></input> */}
@@ -254,13 +267,18 @@ function SettingProfile() {;
                                                 </div>
 
                                                 <h4>Thay đổi ảnh bìa</h4>
-                                                <div className='text-center'>
-                                                    <img alt='background' src={backgroundImageChoosen} width='160' height='80'></img>
+                                                <div className='text-center h-50'>
+                                                    <img alt='background' className='img-bg-upload' src={backgroundImageChoosen} width='160' height='80'></img>
                                                     <div className='mt-2'>
                                                         {/* <!-- lồng 2 button thành 1 --> */}
                                                         {/* <!--<input type='button' className=' btn btn-primary' id='my-button' value='Upload image'>className='d-none'  --> */}
                                                         <div className='w-100'>
-                                                            <label htmlFor='input-bg' className='w-100'><div className='btn btn-success w-75'>Chọn hình ảnh</div></label>
+                                                            <label htmlFor='input-bg' className='w-100'>
+                                                                <div className='btn btn-success'>
+                                                                    <span className='mr-1'>Chọn hình ảnh  </span>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+                                                                </div>
+                                                            </label>
                                                             <input hidden onChange={onchangeBackgroundPicture} id='input-bg' type='file' accept='image/*'></input>
                                                         </div>
                                                         {/* <input type='file' name='image' id='my-file' accept='.jpg, .jpeg, .png' onChange={onchangeBackgroundPicture}></input> */}
@@ -272,7 +290,7 @@ function SettingProfile() {;
                                             <div className='mt-3'>
                                             <BounceLoader color="#36d7b7" loading={loadingState} size={40} />  </div>
                                             :
-                                            <button type='Submit' className='btn btn-primary mt-2 px-3'>Cập nhật</button>
+                                            <button type='Submit' className='btn btn-danger btn-lg w-100 mt-4 px-3'>Cập nhật</button>
                                         }
                                     </Form>
 
@@ -284,7 +302,7 @@ function SettingProfile() {;
 
 
                     </div>
-                    <div className='col-md-2'></div>
+                    {/* <div className='col-md-2'></div> */}
                 </div>
 
             </div>
