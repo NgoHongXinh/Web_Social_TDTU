@@ -31,7 +31,7 @@ function PostInProfile(props) {
         // socket.emit('join_room', postInfo[i]?.post_code)
         listPost.push(
             <div className="container p-3">
-                <div className="card card-post mb-2">
+                <div className="card-post mb-2">
                     {<PostUser key={postInfo[i]?._id}
                         postInfoData={postInfo[i]}
                     />}
