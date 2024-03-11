@@ -29,6 +29,8 @@ function ChatPage() {
     const [onloadMore, setOnLoadMore] = useState(false)
     const [currentUserChatOrNameGroupChat, setcurrentUserChatOrNameGroupChat] = useState()
     const [changeName, setchangeName] = useState()
+    const [isGroup, setIsGroup] = useState()
+    const [groupBtn, setGroupBtn] = useState()
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
@@ -151,8 +153,11 @@ function ChatPage() {
 
     function getMessOfConverstation(e){
         try{
+
             var convercode = e.target.attributes.getNamedItem('convercode')?.value
             var nameconvert = e.target.attributes.getNamedItem('nameconvert')?.value
+            var isgroup = e.target.attributes.getNamedItem('isgroup')?.value
+            setIsGroup(isgroup)
             setcurrentUserChatOrNameGroupChat(nameconvert)
             if(convercode !== undefined){
                 setcurrentConversationCode(convercode)
@@ -177,7 +182,8 @@ function ChatPage() {
                    
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
                         if(result?.data.list_conversation_info[i].type === "1"){
-                            setcurrentUserChatOrNameGroupChat(result?.data.list_conversation_info[0].name)
+                            setcurrentUserChatOrNameGroupChat(`${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`)
+                
                         }
                         else{
                             if(result?.data.list_conversation_info[0].members_obj[0].user_code !== userLogin?.data.user_code){
@@ -193,11 +199,11 @@ function ChatPage() {
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
                                 <a className="list-group-item list-group-item-action p-2 ">
-                                    <div nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname} ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                    <div isgroup={"false"} nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname} ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
                                         {/* avatar friend chat */}
                                         <img src={result?.data.list_conversation_info[i].members_obj[0].picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
-                                        <div nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname}   onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                        <div isgroup={"false"} nameconvert = {result?.data.list_conversation_info[i].members_obj[0].fullname}   onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].fullname}
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
@@ -208,16 +214,17 @@ function ChatPage() {
                             )
                         }
                         else{
-                            var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data.list_conversation_info[i].members_obj[1].given_name} ...`
+
+                            var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
                                 <a className="list-group-item list-group-item-action p-2 ">
-                                    <div  ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
+                                    <div isgroup={"true"} nameconvert = {name_group}  ref={btnElement} onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="d-flex align-items-start list-group--padding">
                                         {/* avatar friend chat */}
                                         <img src={imageGroup} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
-                                        <div nameconvert = {name_group}  onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
+                                        <div isgroup={"true"} nameconvert = {name_group}  onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
                                             {result?.data.list_conversation_info[i].members_obj[0].given_name},  {result?.data.list_conversation_info[i].members_obj[1].given_name} ...
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
@@ -268,7 +275,6 @@ function ChatPage() {
     //getMessOfConverstation sẽ thiết lập sau khi đã vào trang chat bấm convert nào thì lấy message convert đó
     useEffect(()=>{
         if(reloadListMess===true){
-            console.log()
             if (currentConversationCode !== undefined){
                 callApigetListMess(currentConversationCode)
                 setIsScrollDownToBottom(true)
@@ -320,6 +326,28 @@ function ChatPage() {
         setMessage(list_mess)
     }, [messageInfo])
 
+    // thiết lập nút thêm người cho group, khi nào bấm vào group mới hiển thị lên 
+    useEffect(()=>{
+        if (isGroup === "true"){
+
+            setGroupBtn(             
+            <Popup modal
+                trigger={
+                    <div className='button-group-create'>
+                                    <button className="btn border btn-success">Thêm người</button>
+                    </div>
+                }
+            >
+            {close => <ModelCreateGroupChat conversationCode={currentConversationCode}  isUpdate={true} userLogin={userLogin} close={close}/>}
+
+            </Popup>)
+        }
+        else{
+            setGroupBtn("")
+        }
+
+
+    }, [isGroup])
     return (
         <div className='bg-light px-3'>
            <div className='h-100'>
@@ -353,7 +381,7 @@ function ChatPage() {
                                     </div>
                                 }
                             >
-                            {close => <ModelCreateGroupChat userLogin={userLogin} close={close}/>}
+                            {close => <ModelCreateGroupChat conversationCode={currentConversationCode} isUpdate={false} userLogin={userLogin} close={close}/>}
 
                             </Popup>
 
@@ -371,13 +399,15 @@ function ChatPage() {
                                 </div>
                                 <div className="flex-grow-1 pl-3">
                                     {changeName}
-                                    {/* <strong className='front_text_white'>{currentUserChatOrNameGroupChat}</strong> */}
                                 </div>
                                 {/* button header khung chat */}
                                 <div className='m-3'>
-                                    <button className="btn border btn-header-chat-custom">
+                                    {/* <button className="btn border btn-header-chat-custom">
                                         <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal feather-lg"><circle cx={12} cy={12} r={1} /><circle cx={19} cy={12} r={1} /><circle cx={5} cy={12} r={1} /></svg>
-                                    </button>
+                                    </button> */}
+
+                                    {groupBtn}
+                  
                                 </div>
                             </div>
                         </div>

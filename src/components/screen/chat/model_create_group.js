@@ -3,15 +3,17 @@ import "../../../css/chat.css";
 import {getAllFriendOfUser} from "../../../common/callapi/friend"
 import { getCookieToken } from '../../../common/functions';
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
-import {createGroupConversation} from "../../../common/callapi/chat"
+import {createGroupConversation, UpdateGroupConversation} from "../../../common/callapi/chat"
+import Alert from 'react-bootstrap/Alert';
 export default function ModelCreateGroupChat(props) {
-    const {close, userLogin} = props 
+    const {close, userLogin, isUpdate, conversationCode} = props 
     const token = getCookieToken()
     const [listFriend, setListFriend] = useState([])
     const [objectFriendInfo, setObjectFriendInfo] = useState(null)
     const [userChooseInfo, setUserChooseInfo] = useState(null) // lưu object user bao gồm
     const [userChoose, setUserChoose] = useState([]) // code html hieenr thij user được chọn
     const [listUserCode, setListUsercode] = useState([])
+    const [messE, setmessE] = useState("")
     // const listUserCodeForCreate = []
     var user_code__info_user = {}
     // const [userLogin, setUserLogin] = useState()
@@ -116,6 +118,26 @@ export default function ModelCreateGroupChat(props) {
         window.location.reload(true);
 
     }
+    const callApiUpdateGroup = async(data_user_code,name) =>{
+
+        try{
+            console.log("all user code", data_user_code)
+            var result = await UpdateGroupConversation(token, conversationCode, data_user_code, name)
+            if (result.hasOwnProperty('detail')){   
+                setmessE(result?.detail?.message)
+                
+            }
+            else{
+                window.location.reload(true);
+            }
+
+        }
+        catch(error){
+            console.log(error)
+        }
+
+
+    }
     
     // const dataProfileUser = async () => {
     //     try {
@@ -131,18 +153,39 @@ export default function ModelCreateGroupChat(props) {
 
     }, [])
     function creategroup(){
-        console.log("listUserCode", listUserCode)
         callApiCreateGroup(listUserCode, "")
     }
+    function updategroup(){
+        try{
+        callApiUpdateGroup(listUserCode, "")
+        }
+        catch(error){
+            
+            console.log("aaaaaaaaaaaa")
+        }
+
+    }
+
+    useEffect(()=>{
+        if(messE!==""){
+            setTimeout(() => {
+                setmessE("");
+            }, 3000);
+        }
+
+    }, [messE])
     return(
         <div>
+        {messE && <Alert key={'danger'} variant={'danger'}>
+            {messE}
+        </Alert>}
         {/* The Modal */}
         <div className="modal-post-container p-5 border bg-custom mt-1 h-100" >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className='modal-post-header-custom'>
                         <a className='btn btn-custom ' onClick={close}>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                         </a>
                     </div>
                     {/* Modal Header */}
@@ -183,7 +226,7 @@ export default function ModelCreateGroupChat(props) {
                         </form>
                         {/* Modal footer */}
                         <div className="modal-footer p-2 ">
-                            <button type="button" onClick={creategroup}  className="btn btn-success btn-lg m-1 w-100 align-item-center">Add</button>
+                            <button type="button" onClick={isUpdate? updategroup : creategroup}  className="btn btn-success btn-lg m-1 w-100 align-item-center">Add</button>
                         </div>
                     </div>
                 </div>

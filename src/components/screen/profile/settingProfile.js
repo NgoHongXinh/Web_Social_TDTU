@@ -22,6 +22,7 @@ function SettingProfile() {;
     const [faculty, setFaculty] = useState()
     const [biography, setBiography] = useState()
     const [backgroundPicture, setBackgroundPicture] = useState("")
+    const [password, setPassword] = useState("")
     const [birthday, setBirthday] = useState()
 
     const [imageChoosen, setImageChoosen] = useState()
@@ -62,7 +63,7 @@ function SettingProfile() {;
         setBirthday(currUserInfo?.data.birthday)
         setImageChoosen(currUserInfo?.data.picture)
         setBackgroundImageChoosen(currUserInfo?.data.background_picture)
-        // setId(currUserInfo?.data._id)
+
     },[currUserInfo])
 
 
@@ -85,6 +86,7 @@ function SettingProfile() {;
     const onchangeFaculty = (e) => {
         setFaculty(e.target.value)
     }
+
     const onchangePicture = (e) => {
         console.log("da vo roi ", e.target.files[0])
         setPicture(e.target.files[0])
@@ -133,7 +135,8 @@ function SettingProfile() {;
             formData.append('faculty', faculty)
         if(birthday)
             formData.append('birthday', birthday)
-        
+        if(password)
+            formData.append('password', password)
         setLoadingState(true)
         callApiUpdateProfile(formData)
 
@@ -227,6 +230,12 @@ function SettingProfile() {;
                                                     <Form.Label className='fw-bold'>Tiểu sử</Form.Label>
                                                     <Form.Control as='textarea' value={biography} rows={3} onChange={(e) => { setBiography(e.target.value) }} />
                                                 </Form.Group>
+                                                
+                                                <Form.Group>
+                                                    <Form.Label className='fw-bold'>Mật Khẩu</Form.Label>
+                                                    <Form.Control type='password' value={password} rows={3} onChange={(e) => { setPassword(e.target.value) }} />
+                                                </Form.Group>
+                                                
 
                                             </div>
                                             <div className='col-md-4'>

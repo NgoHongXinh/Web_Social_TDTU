@@ -139,4 +139,32 @@ async function createGroupConversation(token, listUsercode, name=""){
       throw error;
     }
   }
-export {getListConversation, createConversation, getListMess, createMess, createGroupConversation};
+
+
+async function UpdateGroupConversation(token, conversation_code, listUsercode, name=""){
+  try {
+      var data_user = {
+          "list_user_to_chat": listUsercode,
+          "name": name
+          }
+      var url = `${BASE_URL}group/conversation/${conversation_code}`
+      const response = await fetch(url, 
+          {
+              method: 'POST',
+              headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(data_user)
+          }
+      )
+
+      var  data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }
+export {getListConversation, createConversation, getListMess, createMess, createGroupConversation, UpdateGroupConversation};
