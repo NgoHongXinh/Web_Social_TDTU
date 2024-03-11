@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect, useRef, useContext} from 'react';
-import {getListConversation, getListMess, createMess} from "../../../common/callapi/chat"
+import {getListConversation, getListMess, createMess, DeleteUserFromGroup} from "../../../common/callapi/chat"
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import { SocketContext } from '../../../thirdparty/socket';
 import "../../../css/chat.css";
@@ -11,6 +11,7 @@ import ModelCreateGroupChat from '../chat/model_create_group';
 import InfiniteScroll from 'react-infinite-scroller';
 import { getCookieToken } from '../../../common/functions';
 import imageGroup from "../../../image/two-people.png";
+import Alert from 'react-bootstrap/Alert';
 function ChatPage() {
     const socket = useContext(SocketContext);
     const [lastConversationId, setLasConversationId] = useState()
@@ -31,6 +32,7 @@ function ChatPage() {
     const [changeName, setchangeName] = useState()
     const [isGroup, setIsGroup] = useState()
     const [groupBtn, setGroupBtn] = useState()
+    const [messE, setmessE] = useState("")
     const token = getCookieToken()
     const btnElement = useRef()
     const btncreate = useRef()
@@ -40,15 +42,21 @@ function ChatPage() {
     // này dùng để check nếu như scroll lên trên cùng của message sẽ thiết lập cho phép get data hay khong
     useEffect(() => {
         const handleScroll = (e) => {
-          const { scrollTop, scrollHeight, clientHeight } = parentRef.current;
-          // Check if the scroll position is at the top
-            if (scrollTop === 0) {
-                console.log('Scroll is at the top of the parent div');
-                setOnLoadMore(true)
-                // parentRef.current.scrollTop = 50;
-                
-                
-              }
+            try{
+                const { scrollTop, scrollHeight, clientHeight } = parentRef.current;
+                // Check if the scroll position is at the top
+                  if (scrollTop === 0) {
+                      console.log('Scroll is at the top of the parent div');
+                      setOnLoadMore(true)
+                      // parentRef.current.scrollTop = 50;
+                      
+                      
+                    }
+            }
+            catch(error){
+                console.error(error)
+            }
+     
         //   }
       
         };
@@ -170,6 +178,22 @@ function ChatPage() {
             console.error(error)
         }
  
+    }
+    const callApiDeleteUserFromGroup = async() =>{
+        try{
+            const result = await DeleteUserFromGroup(token, currentConversationCode, [userLogin.data.user_code])
+            if (result.hasOwnProperty('detail')){   
+                setmessE(result?.detail?.message)
+                
+            }
+            else{
+                window.location.reload(true);
+            }
+        }
+        catch(error){
+            console.log(error)
+        }
+
     }
     const callGetAllConversation = async () => {
         try {
@@ -330,17 +354,23 @@ function ChatPage() {
     useEffect(()=>{
         if (isGroup === "true"){
 
-            setGroupBtn(             
+            setGroupBtn(       
+                <>   
             <Popup modal
                 trigger={
                     <div className='button-group-create'>
-                                    <button className="btn border btn-success">Thêm người</button>
+                        <button className="btn border btn-success">Thêm người</button>
                     </div>
                 }
             >
             {close => <ModelCreateGroupChat conversationCode={currentConversationCode}  isUpdate={true} userLogin={userLogin} close={close}/>}
 
-            </Popup>)
+            </Popup>
+            <div className='button-group-create'>
+                     <button onClick={callApiDeleteUserFromGroup} className="btn border btn-danger">Rời nhóm</button>
+            </div>
+            </>   
+            )
         }
         else{
             setGroupBtn("")
@@ -348,8 +378,21 @@ function ChatPage() {
 
 
     }, [isGroup])
+
+    useEffect(()=>{
+        if(messE!==""){
+            setTimeout(() => {
+                setmessE("");
+            }, 3000);
+        }
+
+    }, [messE])
     return (
+        
         <div className='bg-light px-3'>
+                 {messE && <Alert key={'danger'} variant={'danger'}>
+            {messE}
+        </Alert>}
            <div className='h-100'>
            <div className="row  row-content">
                     <div className="col-3 col-lg-3 col-xl-3 conversation-content">
