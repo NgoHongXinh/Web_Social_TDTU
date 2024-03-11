@@ -42,7 +42,7 @@ function Notification(props) {
                 setLastNotiId(result?.data.last_noti_id)
                 result?.data.list_noti_info.forEach(noti => {
                     notis.push(
-                        <div className='d-flex mb-2' style={{ background: noti.is_checked ? "": "#E8EAF6" }} key={noti.notification_code} >
+                        <div className='d-flex mb-2' style={{ background: noti.is_checked ? "": "#fccb9078" , borderRadius:"10px"}} key={noti.notification_code} >
                             <div className='noti-user-avata'>
                                 <img alt='user avatar' src={noti.user_guest_info.picture} className='rounded-circle mr-1 p-1' width={70} height={70}></img>
                             </div>
@@ -117,7 +117,7 @@ function Notification(props) {
         <div 
       
             id='scrollableDiv'
-            className='menu-popup noti-popup' style={{ width: "350px", height: "300px", overflow: "auto" }}
+            className='menu-popup bg-custom' style={{ width: "350px", height: "300px", overflow: "auto" }}
         >
             {/*Put the scroll bar always on the bottom*/}
             <InfiniteScroll
