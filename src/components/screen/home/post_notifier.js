@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { getCookieToken } from '../../../common/functions'
+import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
 import Comment from './Comment';
 import { LikePost } from '../../../common/callapi/post';
 import { SocketContext } from '../../../thirdparty/socket';
@@ -135,7 +135,7 @@ function Post(props) {
                             <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                             <div className="media-header-info">
                                 <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
-                                <small className="text-muted">Today 7:51 pm</small>{/*time real dòng trạng thái*/}
+                                <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                             </div>
                         </div>
                         <div className="media-body">
@@ -148,10 +148,10 @@ function Post(props) {
                                     <div className="card-body h-100">
                                         <div className="media">
                                             <div className="media-header">
-                                                <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
+                                                <img src={postInfoData?.root_post_info?.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                                 <div className="media-header-info">
-                                                    <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
-                                                    <small className="text-muted">Today 7:51 pm</small>{/*time real dòng trạng thái*/}
+                                                    <p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p>
+                                                    <small className="text-muted">{TimeFromCreateToNow(postInfoData?.root_post_info?.created_time)}</small>{/*time real dòng trạng thái*/}
                                                 </div>
                                             </div>
                                             <div className="media-body">
@@ -246,7 +246,7 @@ function Post(props) {
                                 <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                 <div className="media-header-info">
                                     <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
-                                    <small className="text-muted">Today 7:51 pm</small>{/*time real dòng trạng thái*/}
+                                    <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                                 </div>
                             </div>
                             <div className="media-body">

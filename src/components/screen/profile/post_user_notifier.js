@@ -1,5 +1,5 @@
 import { getPostListUser } from "../../../common/callapi/post_service"
-import { getCookieToken } from '../../../common/functions'
+import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
 import Comment from '../home/Comment.js';
 import { LikePost } from '../../../common/callapi/post';
 
@@ -64,6 +64,7 @@ function PostUser(props) {
 
     useEffect(()=>{
         var images = []
+        var video = []
         if (postInfoData.images.length > 2) {
             postInfoData.images.forEach(image => {
                 images.push(
@@ -81,7 +82,13 @@ function PostUser(props) {
                 )
             })
         }
+        if (postInfoData !== "" && postInfoData?.videos !== "") {
+            video.push(
+                <video width="750" height="500" controls >
+                    <source src={postInfoData.videos} type="video/mp4" />
+                </video>)
 
+        }
 
         // hình ảnh của bài post được share
         if(postInfoData.root_post_info && postInfoData.root_post_info.images.length > 0){
@@ -115,7 +122,7 @@ function PostUser(props) {
                     </div>
                     <div className="media-header-info">
                         <p className="mb-2"><strong>{postInfoData?.created_by.fullname}</strong></p>
-                        <small className="text-muted">Today 7:51 pm</small>{/*time real dòng trạng thái*/}
+                        <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                     </div>
                 </div>
                 
@@ -125,14 +132,16 @@ function PostUser(props) {
 
                     {/* nội dung phần share */}
                     <div className="post-card-share">
+                        {postInfoData.root_post_info!==null ?
+                        // nếu hiển thị được vài viết gốc
                             <div className="card-body h-100">
                                 <div className="media-header">
                                     <div className="avatar-user-post">
-                                        <img src={postInfoData.root_post_info?.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
+                                        <img src={postInfoData?.root_post_info?.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                     </div>
                                     <div className="media-header-info">
-                                        <p className="mb-2"><strong>{postInfoData.root_post_info?.created_by.fullname}</strong></p>
-                                        <small className="text-muted">5m ago</small>
+                                        <p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p>
+                                        <small className="text-muted">{TimeFromCreateToNow(postInfoData?.root_post_info?.created_time)}</small>
                                     </div>
                                 </div>
                                 <div className="media">
@@ -144,13 +153,27 @@ function PostUser(props) {
                                         <div className="row no-gutters mt-1 mb-2">
 
                                             {listImage}
-
+                                            { 
+                                                        postInfoData?.root_post_info?.videos && 
+                                                        <video width="750" height="500" controls >
+                                                            <source src={postInfoData?.root_post_info?.videos} type="video/mp4" />
+                                                        </video>
+                                                        }
                                         </div>
                     
                                     </div>
                                 </div>
-                            </div>
+                            </div>:
+                        // nếu bài viết gốc đã bị xóa 
+                        <div className="card-body h-100">
+                            <div className="media">
+                                    <div className="media-body post-user">
+                                        <p className="text-content-post">Bài viết đã bị gỡ bởi chủ sở hữu</p>
+                                    </div>
+                                </div>
                         </div>
+                        }
+                    </div>
                     {/* hết nội dung phần share*/}
 
                     {/*nút like*/}
@@ -206,7 +229,7 @@ function PostUser(props) {
                     </div>
                     <div className="media-header-info">
                         <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
-                        <small className="text-muted">Today 7:51 pm</small>{/*time real dòng trạng thái*/}
+                        <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                     </div>
                 </div>
                 
