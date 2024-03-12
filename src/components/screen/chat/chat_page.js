@@ -8,6 +8,7 @@ import "../../../css/chat.css";
 import "../../../css/style.css";
 import Popup from 'reactjs-popup';
 import ModelCreateGroupChat from '../chat/model_create_group';
+import ModelListMember from './modelListMember';
 import InfiniteScroll from 'react-infinite-scroller';
 import { getCookieToken } from '../../../common/functions';
 import imageGroup from "../../../image/two-people.png";
@@ -289,7 +290,7 @@ function ChatPage() {
     function createNewMess(e){
         callApiCreateNewMess(currentConversationCode, newMess)
     }
-    
+
     useEffect(()=>{
         dataProfileUser()
         callGetAllConversation()
@@ -439,6 +440,18 @@ function ChatPage() {
                                 {/* avatar */}
                                 <div className="position-relative">
                                     <img src="https://cdn1.iconfinder.com/data/icons/animals-95/300/cat-circle-animal-pet-wild-domestic-256.png" className="rounded-circle m-2" alt="Sharon Lessman" width={50} height={50} />
+                                </div>
+                                <div className='m-3'>
+                                <Popup modal
+                                    trigger={
+                                        <div className='button-group-create'>
+                                        <button  className="btn border btn-info">Xem thành viên</button>
+                                    </div>  
+                                    }
+                                >
+                                {close => <ModelListMember conversationCode={currentConversationCode} close={close}/>}
+                                </Popup>
+                                      
                                 </div>
                                 <div className="flex-grow-1 pl-3">
                                     {changeName}

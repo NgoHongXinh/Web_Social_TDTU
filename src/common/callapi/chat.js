@@ -193,4 +193,30 @@ async function UpdateGroupConversation(token, conversation_code, listUsercode, n
         throw error;
       }
     }
-export {getListConversation, createConversation, getListMess, createMess, createGroupConversation, UpdateGroupConversation, DeleteUserFromGroup};
+
+
+async function GetConversationInfo(token, conversation_code){
+  try {
+      var url = `${BASE_URL}conversation/${conversation_code}`
+      const response = await fetch(url, 
+          {
+              method: 'GET',
+              headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          }
+      )
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      throw error;
+    }
+  }
+export {getListConversation, createConversation, getListMess, createMess, createGroupConversation, UpdateGroupConversation, DeleteUserFromGroup, GetConversationInfo};
