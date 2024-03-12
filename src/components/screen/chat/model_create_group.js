@@ -82,7 +82,6 @@ export default function ModelCreateGroupChat(props) {
         const result = await getAllFriendOfUser(token, usercode)
         if(result?.response_status.code){
             var friends = []
-            // console.log("fdddddddddddddddddddddddddddd", result?.data.)
             if(result?.data.list_friend_info.length > 0){
                
                 result?.data.list_friend_info.forEach(friend =>{
@@ -115,44 +114,44 @@ export default function ModelCreateGroupChat(props) {
         }
         
     }
-    const onloadMoreFriend = async() =>{
-        console.log(lastFriendId)
-        const result = await getAllFriendOfUser(token, userLogin?.data.user_code, lastFriendId)
-        if(result?.response_status.code){
-            var friends = []
-            if(result?.data.list_friend_info.length > 0){
-                console.log(result?.data.last_friend_id)
-                setLastFriendId(result?.data.last_friend_id)
-                result?.data.list_friend_info.forEach(friend =>{
-                    user_code__info_user[friend.user_code] = friend 
-                    console.log("ssssssssssssssssss", friend?.fullname)
-                    friends.push(       
-                    <div className="list-group-add-item  p-2">
-                        <div className="d-flex align-items-center list-group--padding">
-                            {/* avatar friend chat */}
-                            <img src={friend?.picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
+    // const onloadMoreFriend = async() =>{
+    //     console.log(lastFriendId)
+    //     const result = await getAllFriendOfUser(token, userLogin?.data.user_code, lastFriendId)
+    //     if(result?.response_status.code){
+    //         var friends = []
+    //         if(result?.data.list_friend_info.length > 0){
+    //             console.log(result?.data.last_friend_id)
+    //             setLastFriendId(result?.data.last_friend_id)
+    //             result?.data.list_friend_info.forEach(friend =>{
+    //                 user_code__info_user[friend.user_code] = friend 
+    //                 console.log("ssssssssssssssssss", friend?.fullname)
+    //                 friends.push(       
+    //                 <div className="list-group-add-item  p-2">
+    //                     <div className="d-flex align-items-center list-group--padding">
+    //                         {/* avatar friend chat */}
+    //                         <img src={friend?.picture} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                         
-                            <div className="m-2 text-algin-left">
-                                <span>{friend?.fullname}</span>
-                            </div>
+    //                         <div className="m-2 text-algin-left">
+    //                             <span>{friend?.fullname}</span>
+    //                         </div>
                             
 
-                        </div>
-                        {/* button chọn add vao nhóm */}
-                        <button onClick ={addUserToGroup} usercode = {friend?.user_code} type="button" className='btn btn-danger btn-sm'>
-                            <svg onClick ={addUserToGroup} usercode  = {friend?.user_code} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                <line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="12" y1="5" x2="12" y2="19"></line><line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                        </button>
-                    </div>)
+    //                     </div>
+    //                     {/* button chọn add vao nhóm */}
+    //                     <button onClick ={addUserToGroup} usercode = {friend?.user_code} type="button" className='btn btn-danger btn-sm'>
+    //                         <svg onClick ={addUserToGroup} usercode  = {friend?.user_code} xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    //                             <line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="12" y1="5" x2="12" y2="19"></line><line onClick ={addUserToGroup} usercode = {friend?.user_code} x1="5" y1="12" x2="19" y2="12"></line>
+    //                         </svg>
+    //                     </button>
+    //                 </div>)
              
-                })
+    //             })
              
-            }
-            setObjectFriendInfo(user_code__info_user)
-            setListFriend([ ...listFriend, ...friends])
-        }
-    }
+    //         }
+    //         setObjectFriendInfo(user_code__info_user)
+    //         setListFriend([ ...listFriend, ...friends])
+    //     }
+    // }
 
 
     const callApiCreateGroup = async(data_user_code,name) =>{
@@ -194,7 +193,13 @@ export default function ModelCreateGroupChat(props) {
 
     }, [])
     function creategroup(){
-        callApiCreateGroup(listUserCode, "")
+        try{
+            callApiCreateGroup(listUserCode, "")
+        }
+        catch(error){
+            console.log(error)
+        }
+
     }
     function updategroup(){
         try{
@@ -202,7 +207,7 @@ export default function ModelCreateGroupChat(props) {
         }
         catch(error){
             
-            console.log("aaaaaaaaaaaa")
+            console.log(error)
         }
 
     }
