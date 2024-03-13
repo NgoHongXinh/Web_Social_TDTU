@@ -49,23 +49,30 @@
 }
 
 .style-number-noti {
+    cursor: pointer;
     position: absolute;
-    right:0;
-    background-color: rgb(29, 161, 242);
-    font-size: 11px;
-    color: white;
-    display: inline;
-    padding: 3px 8px;
-    margin-left: 40px;
-    border-radius: 30px;
+    padding: 2px 4px;
+    right: 1px;
+    top: -15px;
+    border-radius: 1em;
+    width: fit-content;
+    background: rgba(24, 24, 16, .2);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    background-clip: padding-box;
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+}
+.bg-custom{
+    border-radius: 10px;
+    padding: 2px 4px;
+    background: rgba(24, 24, 16, .2);
+    box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
 }
 
 .noti_title{
     margin: 20px;
-}
-.noti-popup{
-    border-radius: 5px;
-    border: #e0e0e0 solid 1px;
 }
 
 /* .noti-user-avata img{
@@ -85,5 +92,5 @@
 }
 .menu-popup{
     z-index: 12;
-    padding: 10px;
+    padding: 20px;
 }

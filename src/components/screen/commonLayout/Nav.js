@@ -71,41 +71,35 @@ function NavBar() {
                     </form>
 
                     <div className='d-flex flex-row my-auto'>
-                    <Popup
-                        trigger={
-                            <div>
-                        <div className='noti-style m-2'>
-                           <div className='style-number-noti '>{numberNotiNotRead}</div> 
-                      
-                              <svg
-                                viewBox="0 0 24 24"
-                                className="r-hkyrab r-4qtqp9 r-yyyyoo r-lwhw9o r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"
-                                width='30px'
-                                fill="#122C34"
-                              >
-                                <g>
-                                  <path d="M21.697 16.468c-.02-.016-2.14-1.64-2.103-6.03.02-2.532-.812-4.782-2.347-6.335C15.872 2.71 14.01 1.94 12.005 1.93h-.013c-2.004.01-3.866.78-5.242 2.174-1.534 1.553-2.368 3.802-2.346 6.334.037 4.33-2.02 5.967-2.102 6.03-.26.193-.366.53-.265.838.102.308.39.515.712.515h4.92c.102 2.31 1.997 4.16 4.33 4.16s4.226-1.85 4.327-4.16h4.922c.322 0 .61-.206.71-.514.103-.307-.003-.645-.263-.838zM12 20.478c-1.505 0-2.73-1.177-2.828-2.658h5.656c-.1 1.48-1.323 2.66-2.828 2.66zM4.38 16.32c.74-1.132 1.548-3.028 1.524-5.896-.018-2.16.644-3.982 1.913-5.267C8.91 4.05 10.397 3.437 12 3.43c1.603.008 3.087.62 4.18 1.728 1.27 1.285 1.933 3.106 1.915 5.267-.024 2.868.785 4.765 1.525 5.896H4.38z" />
-                                </g>
-                              </svg>
+                        <NavLink to='/chat'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                        </NavLink>
+                        <Popup
+                            trigger={
+                                <div>
+                            <div className='noti-style m-2'>
+                            <div className='style-number-noti'>{numberNotiNotRead}</div> 
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+                                </div>
                             </div>
-                          </div>
-                        }
-            
-                        position='bottom right'
-                    >
-                       <div className='bg-light'>
-                       <Notification
-                        setNumberNotiNotRead= {setNumberNotiNotRead}
-                            // loadingNotiList={loadingNotiList}
-                            // setNotificationInfo={setNotificationInfo}
-                            // lenNotification={lenNotification}
-                            // noifiInfos={notificationInfos}
-                            // numberNotiNotChecked={numberNotiNotChecked}
-                            // setNumberNotiNotChecked={setNumberNotiNotChecked}
-                        />
-                       </div>
+                            }
+                
+                            position='bottom right'
+                        >
+                        <div className=''>
+                        <Notification
+                            setNumberNotiNotRead= {setNumberNotiNotRead}
+                                // loadingNotiList={loadingNotiList}
+                                // setNotificationInfo={setNotificationInfo}
+                                // lenNotification={lenNotification}
+                                // noifiInfos={notificationInfos}
+                                // numberNotiNotChecked={numberNotiNotChecked}
+                                // setNumberNotiNotChecked={setNumberNotiNotChecked}
+                            />
+                        </div>
 
-                    </Popup>
+                        </Popup>
                         <Popup
                             trigger={
                                 <div>
@@ -114,7 +108,7 @@ function NavBar() {
                             }
                             position='bottom center'
                         >
-                            <div className='menu-popup d-flex flex-column bg-light'>
+                            <div className='menu-popup d-flex flex-column bg-custom'>
                                 <button type='button' className='btn btn-primary mb-2'><Link className='btn-link-text' to={`/user/${userLogin?.data.user_code}/update-info`}>Edit profile</Link></button>
                                 <button type='button' className='btn btn-danger' onClick={logout}><span className='btn-link-text'>Log out</span></button>
                             </div>
