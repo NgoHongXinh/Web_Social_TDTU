@@ -10,11 +10,23 @@ import "../../../css/userProfile.css"
 function UserProfile() {
     const navigate = useNavigate();
     const {usercode} = useParams()
+    console.log("user", usercode)
     const [chooseMenu, setChooseMenu] = useState("post") // đang chọn tab menu nào post, user, fiend, mặc định là post
     const [inforUserInCurrentPage, setUserInfoCurrentPage] = useState() // thông tin của user ở trang cá nhân hiện tại theo usercode
     const token = getCookieToken()
     const [btnFriendStatus, setBtnFriendStatus] = useState() // dùng để gắn code html của nut bấm
-
+    useEffect(()=>{
+        const dataProfileUser = async () =>{
+            try {
+                const result = await getDataApiProfileUser(token, usercode);
+                console.log(result)
+                setUserInfoCurrentPage(result)
+              } catch (error) {
+                console.error(error)
+              }
+        }
+        dataProfileUser() 
+    }, [usercode])
     const callApiRequestNewFriend = async (usercode) =>{
         try {
             const result = await createNewFriendRequest(token, usercode);

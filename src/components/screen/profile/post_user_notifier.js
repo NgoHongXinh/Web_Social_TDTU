@@ -5,10 +5,9 @@ import { LikePost } from '../../../common/callapi/post';
 
 import { deletePost } from '../../../common/callapi/post_service.js';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 function PostUser(props) {
     const { postInfoData } = props
-    console.log(postInfoData)
     var token = getCookieToken()
     const [postState, setpostState] = useState([])
     const [listImage, setListImage] = useState([])
@@ -16,6 +15,7 @@ function PostUser(props) {
     const [postcodeState, setPostCode] = useState()
     const [dataLikePost, setDataLikePost] = useState()
     const [postContent, setpostContent] = useState("")
+    const btnElement = useRef()
     const calApiLikePost = async (postcode) => {
         try {
             const likePostInfo = await LikePost(token, postcode);
@@ -57,9 +57,22 @@ function PostUser(props) {
             console.error(error)
         }
     }
+    function clickBtn(){
+        // <FontAwesomeIcon className="btn" onClick={clickBtn} style={{ height: "35px" }} icon="fa-pencil-alt"/>
+        // <div className="btn" usercode={currentUser?.data.user_code} ref={btnElement} onClick={gotosettingPag}></div>
+        // khi bấm vào icon do icon ko lấy được attribute nên sẽ sử dụng useRef để thiết lập click btn ẩn, btn này có gắn user do đó sẽ lấy được user code để chuyển trang
+        console.log("vooooooooooooo")
+        btnElement.current.click()
+    }
     function handleDeletePost(e) {
-        var getPostcode = e.target.attributes.getNamedItem('postcode').value
-        callApiDeletePost(getPostcode)
+        try{
+            var getPostcode = e.target.attributes.getNamedItem('postcode')?.value
+            callApiDeletePost(getPostcode)
+        }
+        catch(e){
+            console.log(e)
+        }
+ 
     }
 
     useEffect(()=>{
@@ -111,8 +124,8 @@ function PostUser(props) {
         {postInfoData.root_post!=="" ?       
         <div className="post-card h-100">
             <div className="btn-delete-post-custom">
-                <div className="btn btn-delete-custom" postcode = {postInfoData.post_code} onClick={handleDeletePost}> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <div className="btn btn-delete-custom" ref={btnElement}  postcode = {postInfoData.post_code} onClick={handleDeletePost}> 
+                    <svg  onClick={clickBtn}  postcode = {postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line onClick={clickBtn} postcode = {postInfoData.post_code}  x1="18" y1="6" x2="6" y2="18"></line><line onClick={clickBtn} postcode = {postInfoData.post_code}  x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </div>
             </div>
             <div className="media">
@@ -240,7 +253,12 @@ function PostUser(props) {
                     <div className="row no-gutters mt-1">
 
                         {listImage}
-
+                        { 
+                        postInfoData?.videos && 
+                        <video width="750" height="500" controls >
+                            <source src={postInfoData?.videos} type="video/mp4" />
+                        </video>
+                        }
                     </div>
                     
 

@@ -162,9 +162,9 @@ function SettingProfile() {;
                             <button className='btn btn-custom btn-lg w-100'>Sửa đổi thông tin</button>
                         </div>
                         <hr/>
-                        <div className='pb-3'>
+                        {/* <div className='pb-3'>
                             <button className='btn btn-custom btn-lg w-100'>Thay đổi mật khẩu</button>
-                        </div>
+                        </div> */}
                     </div>
                     <div className='col-md-9 '>
 

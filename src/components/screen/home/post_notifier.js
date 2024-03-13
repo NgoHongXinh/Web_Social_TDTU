@@ -143,8 +143,9 @@ function Post(props) {
                                 {/*Content share post chinh la bai post duoc share*/}
 
 
-
+               
                                 <div className="card card-post mb-3">
+                                {postInfoData.root_post_info!==null &&
                                     <div className="card-body h-100">
                                         <div className="media">
                                             <div className="media-header">
@@ -176,9 +177,20 @@ function Post(props) {
                                         </div>
             
                                     </div>
+                                          }
+                                            {
+                                    postInfoData.root_post_info===null &&             <div className="card-body h-100">
+                                    <div className="media">
+                                            <div className="media-body post-user">
+                                                <p className="text-content-post">Bài viết đã bị gỡ bởi chủ sở hữu</p>
+                                            </div>
+                                        </div>
                                 </div>
-                                
+                                }
 
+                                </div>
+                          
+                              
 
                                  {/* hết nội dung của bài viết được share  */}
 
