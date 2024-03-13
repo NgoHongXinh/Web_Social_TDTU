@@ -207,8 +207,15 @@ function ChatPage() {
                    
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
                         if(result?.data.list_conversation_info[i].type === "1"){
+                            if(result?.data.list_conversation_info[i].members_obj.length >1){
+
+                       
                             setcurrentUserChatOrNameGroupChat(`${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`)
-                
+                            }
+                            else{
+                                setcurrentUserChatOrNameGroupChat(`${result?.data.list_conversation_info[i].members_obj[0].given_name}`)
+
+                            }
                         }
                         else{
                             if(result?.data.list_conversation_info[0].members_obj[0].user_code !== userLogin?.data.user_code){

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
+import { Link } from 'react-router-dom';
 import Comment from './Comment';
 import { LikePost } from '../../../common/callapi/post';
 import { SocketContext } from '../../../thirdparty/socket';
@@ -134,7 +135,7 @@ function Post(props) {
                         <div className="media-header">
                             <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                             <div className="media-header-info">
-                                <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
+                               <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData.created_by.user_code}/post/`} state={{ "usercode": postInfoData.created_by.user_code }}><p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p></Link>
                                 <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                             </div>
                         </div>
@@ -143,14 +144,15 @@ function Post(props) {
                                 {/*Content share post chinh la bai post duoc share*/}
 
 
-
+               
                                 <div className="card card-post mb-3">
+                                {postInfoData.root_post_info!==null &&
                                     <div className="card-body h-100">
                                         <div className="media">
                                             <div className="media-header">
                                                 <img src={postInfoData?.root_post_info?.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                                 <div className="media-header-info">
-                                                    <p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p>
+                                                <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData?.root_post_info?.created_by.user_code}/post/`} state={{ "usercode": postInfoData?.root_post_info?.created_by.user_code }}><p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p></Link>
                                                     <small className="text-muted">{TimeFromCreateToNow(postInfoData?.root_post_info?.created_time)}</small>{/*time real dòng trạng thái*/}
                                                 </div>
                                             </div>
@@ -176,9 +178,20 @@ function Post(props) {
                                         </div>
             
                                     </div>
+                                          }
+                                            {
+                                    postInfoData.root_post_info===null &&             <div className="card-body h-100">
+                                    <div className="media">
+                                            <div className="media-body post-user">
+                                                <p className="text-content-post">Bài viết đã bị gỡ bởi chủ sở hữu</p>
+                                            </div>
+                                        </div>
                                 </div>
-                                
+                                }
 
+                                </div>
+                          
+                              
 
                                  {/* hết nội dung của bài viết được share  */}
 
@@ -245,7 +258,7 @@ function Post(props) {
                             <div className="media-header">
                                 <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                 <div className="media-header-info">
-                                    <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
+                                <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData.created_by.user_code}/post/`} state={{ "usercode": postInfoData.created_by.user_code }}><p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p></Link>
                                     <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                                 </div>
                             </div>

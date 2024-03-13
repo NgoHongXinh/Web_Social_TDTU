@@ -11,9 +11,14 @@ function ListFriend(props) {
     const { usercode } = props
     const token = getCookieToken()
     const [elementFriend, setElementFriend] = useState()
-
+    const navigate = useNavigate()
+    function goToFriendPage(e){
+        var usercode = e.target.attributes.getNamedItem('usercode').value
+        navigate(`/profile/${usercode}/post/`, { replace: true, state: { 'usercode': usercode } });
+    }
     const callGetAllFriendOfUser = async () => {
         var cardRow = []
+   
         try {
             const result = await getAllFriendOfUser(token, usercode);
             if (result.data.list_friend_info.length > 0) {
@@ -26,7 +31,9 @@ function ListFriend(props) {
                                     <div className="media card-friend-profile">
                                         <img src={result.data.list_friend_info[i].picture} width={56} height={56} className="rounded-circle mr-2" alt="avatar" />
                                         <div className="media-body">
-                                        <Link className='card-title text-decoration-none mb-0' to={`/personal/${result.data.list_friend_info[i].user_code}/post`} state={{ 'usercode': result.data.list_friend_info[i].user_code }}> {result.data.list_friend_info[i].fullname}</Link>
+
+
+                                        <div onClick={goToFriendPage} usercode = {result.data.list_friend_info[i].user_code } className='card-title text-decoration-none mb-0' > {result.data.list_friend_info[i].fullname}</div>
                                             {/* <div className='card-btn-home'>
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Unfriend</a>
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
