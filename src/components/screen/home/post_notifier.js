@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
+import { Link } from 'react-router-dom';
 import Comment from './Comment';
 import { LikePost } from '../../../common/callapi/post';
 import { SocketContext } from '../../../thirdparty/socket';
@@ -134,7 +135,7 @@ function Post(props) {
                         <div className="media-header">
                             <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                             <div className="media-header-info">
-                                <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
+                               <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData.created_by.user_code}/post/`} state={{ "usercode": postInfoData.created_by.user_code }}><p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p></Link>
                                 <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                             </div>
                         </div>
@@ -151,7 +152,7 @@ function Post(props) {
                                             <div className="media-header">
                                                 <img src={postInfoData?.root_post_info?.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                                 <div className="media-header-info">
-                                                    <p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p>
+                                                <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData?.root_post_info?.created_by.user_code}/post/`} state={{ "usercode": postInfoData?.root_post_info?.created_by.user_code }}><p className="mb-2"><strong>{postInfoData?.root_post_info?.created_by.fullname}</strong></p></Link>
                                                     <small className="text-muted">{TimeFromCreateToNow(postInfoData?.root_post_info?.created_time)}</small>{/*time real dòng trạng thái*/}
                                                 </div>
                                             </div>
@@ -257,7 +258,7 @@ function Post(props) {
                             <div className="media-header">
                                 <img src={postInfoData.created_by.picture} width={56} height={56} className="rounded-circle mr-3" alt="Ashley Briggs" />
                                 <div className="media-header-info">
-                                    <p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p>
+                                <Link className="text-dark fw-bold text-decoration-none" to={`/profile/${postInfoData.created_by.user_code}/post/`} state={{ "usercode": postInfoData.created_by.user_code }}><p className="mb-2"><strong>{postInfoData.created_by.fullname}</strong></p></Link>
                                     <small className="text-muted">{TimeFromCreateToNow(postInfoData?.created_time)}</small>{/*time real dòng trạng thái*/}
                                 </div>
                             </div>
