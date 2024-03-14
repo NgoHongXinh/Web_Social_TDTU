@@ -330,7 +330,7 @@ function ChatPage() {
                     <div className="chat-message-right p-4">
                     <div>
                         <img src={userLogin['picture']}  className="rounded-circle mr-1" alt="Chris Wood" width={40} height={40} />
-                        <div className="text-muted small text-nowrap mt-2">2:33 am</div>
+                        {/* <div className="text-muted small text-nowrap mt-2">2:33 am</div> */}
                     </div>
                     <div className="flex-shrink-1 bg-custom text-white rounded py-2 px-3 mr-3 mess-text-content">
                         <span>
@@ -345,7 +345,7 @@ function ChatPage() {
                     <div className="chat-message-left pb-4">
                     <div>
                         <img src={mess?.sender_info?.picture}  className="rounded-circle mr-1" alt="Sharon Lessman" width={40} height={40} />
-                        <div className="text-muted small text-nowrap mt-2">2:36 am</div>
+                        {/* <div className="text-muted small text-nowrap mt-2">2:36 am</div> */}
                     </div>
                     <div className="flex-shrink-1 bg-custom rounded py-2 px-3 ml-3 mess-text-content">
                         {mess.text}

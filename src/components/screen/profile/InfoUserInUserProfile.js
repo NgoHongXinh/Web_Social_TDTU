@@ -2,25 +2,30 @@ import React, { useState, useEffect,useRef } from "react"
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getCookieToken } from '../../../common/functions'
-import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
+import {getDataApiDetailUserLogin, getDataApiProfileUser} from "../../../common/callapi/user"
 import Card from 'react-bootstrap/Card';
 import "../../../css/post_profile.css";
-function InfoUserInUserProfile() {
+function InfoUserInUserProfile(props) {
+    const {usercode} = props
     const token = getCookieToken()
     const [currentUser, setcurrentUser] = useState()
     const btnElement = useRef()
     const navigate = useNavigate();
+    const dataProfileUser = async () =>{
+        try {
+            const userInfo = await getDataApiProfileUser(token, usercode);
+            
+            setcurrentUser(userInfo)
+ 
+          } catch (error) {
+            console.error(error)
+          }
+    }
     useEffect(()=>{
-        const dataProfileUser = async () =>{
-            try {
-                const userInfo = await getDataApiDetailUserLogin(token);
-
-                setcurrentUser(userInfo)
-     
-              } catch (error) {
-                console.error(error)
-              }
-        }
+        dataProfileUser()
+    }, [usercode])
+    useEffect(()=>{ 
+   
         dataProfileUser() 
     }, [])
     function clickBtn(){

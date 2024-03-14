@@ -195,7 +195,7 @@ function UserProfile() {
                                     { /* 
                                     */}
                                     <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
-                                    <Route path='/infomation' element={<InfoUserInUserProfile />}></Route>
+                                    <Route path='/infomation' element={<InfoUserInUserProfile usercode={usercode} />}></Route>
                                 </Routes>
                             </div>
 
