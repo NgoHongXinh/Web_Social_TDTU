@@ -7,7 +7,7 @@ import PostUser from "./post_user_notifier.js";
 import { getPostListUser } from "../../../common/callapi/post_service"
 
 function PostInProfile(props) {
-    const { usercode } = props;
+    const { usercode, userLogin } = props;
 
     const [showComment, setShowComment] = useState(false)
     const [postcodeState, setPostCode] = useState()
@@ -34,6 +34,8 @@ function PostInProfile(props) {
                 <div className="card-post mb-2">
                     {<PostUser key={postInfo[i]?._id}
                         postInfoData={postInfo[i]}
+                        usercode = {usercode}
+                        userLogin = {userLogin}
                     />}
                 </div>
             </div>

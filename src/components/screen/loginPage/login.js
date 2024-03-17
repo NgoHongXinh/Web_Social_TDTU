@@ -156,7 +156,7 @@ function LoginPage() {
                                         Remember me
                                     </label>
                                 </div>
-                                <Link to='/forgot' className='text-body'>Quên mật khẩu?</Link>
+                                {/* <Link to='/forgot' className='text-body'>Quên mật khẩu?</Link> */}
                             </div>
                             <Divider>Or</Divider>
                             <div className='form-group mt-4 w-100'>

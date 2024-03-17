@@ -64,7 +64,7 @@ export default function ModelCreateGroupChat(props) {
                 <a className='btn btn-header-chat-custom p-2 m-1 align-item-center'>
                 {userChooseInfo?.given_name}
                 {/* icon xoas */}
-                <svg onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="18" y1="6" x2="6" y2="18"></line><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="6" y1="6" x2="18" y2="18"></line></svg>
+                {/* <svg onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="18" y1="6" x2="6" y2="18"></line><line onClick = {removeFromcurrentChooseGroup} usercode = {userChooseInfo.user_code} x1="6" y1="6" x2="18" y2="18"></line></svg> */}
                 </a>]])
         }
 

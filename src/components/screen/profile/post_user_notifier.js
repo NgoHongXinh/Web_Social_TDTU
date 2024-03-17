@@ -2,12 +2,12 @@ import { getPostListUser } from "../../../common/callapi/post_service"
 import { getCookieToken, TimeFromCreateToNow } from '../../../common/functions'
 import Comment from '../home/Comment.js';
 import { LikePost } from '../../../common/callapi/post';
-
+import Popup from 'reactjs-popup';
 import { deletePost } from '../../../common/callapi/post_service.js';
-
+import ModelSharePost from "../home/model_share_post";
 import { useEffect, useState, useRef } from "react";
 function PostUser(props) {
-    const { postInfoData } = props
+    const { postInfoData,userLogin ,usercode} = props
     var token = getCookieToken()
     const [postState, setpostState] = useState([])
     const [listImage, setListImage] = useState([])
@@ -123,11 +123,13 @@ function PostUser(props) {
         {/* chỗ này là 2 bài post nếu được share là ngay sau dấu ? còn nếu tự tạo sẽ ngay phía sau dấu :  */}
         {postInfoData.root_post!=="" ?       
         <div className="post-card h-100">
+            {userLogin?.data.user_code === usercode &&
             <div className="btn-delete-post-custom">
                 <div className="btn btn-delete-custom" ref={btnElement}  postcode = {postInfoData.post_code} onClick={handleDeletePost}> 
                     <svg  onClick={clickBtn}  postcode = {postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line onClick={clickBtn} postcode = {postInfoData.post_code}  x1="18" y1="6" x2="6" y2="18"></line><line onClick={clickBtn} postcode = {postInfoData.post_code}  x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </div>
             </div>
+            }
             <div className="media">
                 <div className="media-header">
                     <div className="avatar-user-post">
@@ -212,11 +214,23 @@ function PostUser(props) {
                         </svg>
                         </a>
                         {/* nút share */}
-                        <a postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1">
+                        {/* <a postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1">
                             <svg  postcode={postInfoData.post_code}  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" className="bi bi-share" viewBox="0 0 16 16">
                                 <path postcode={postInfoData.post_code} d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
                             </svg>
-                        </a>
+                        </a> */}
+                        <Popup modal
+                            trigger={
+                                <div postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1 icon-color-custom">
+                                    <svg postcode={postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                        <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                                    </svg>
+                                </div>
+                            }
+                        >
+                        {close => <ModelSharePost postInfoData={postInfoData} close={close}/>}
+
+                        </Popup>
                     </div>
 
         
@@ -230,11 +244,14 @@ function PostUser(props) {
         </div> :         
         <div className="post-card h-100">
             {/* bài post tự tạo*/}
-            <div className="btn-delete-post-custom">
-                <div className="btn btn-delete-custom" postcode = {postInfoData.post_code} onClick={handleDeletePost}> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                 </div>
-            </div>
+            {/* Nếu đang ở trang cá nhân cuar mình thì mới hiển thị nút xóa bài viết*/}
+            {userLogin?.data.user_code === usercode &&
+                <div className="btn-delete-post-custom">
+                    <div className="btn btn-delete-custom" postcode = {postInfoData.post_code} onClick={handleDeletePost}> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </div>
+                </div>
+            }
             <div className="media">
                 <div className="media-header">
                     <div className="avatar-user-post">
@@ -287,11 +304,18 @@ function PostUser(props) {
                         </svg>
                         </a>
                         {/* nút share */}
-                        <a postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1">
-                            <svg  postcode={postInfoData.post_code}  xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" className="bi bi-share" viewBox="0 0 16 16">
-                                <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
-                            </svg>
-                        </a>
+                        <Popup modal
+                            trigger={
+                                <div postcode={postInfoData.post_code} className="btn btn-sm btn-primary mt-1 m-1 icon-color-custom">
+                                    <svg postcode={postInfoData.post_code} xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                        <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                                    </svg>
+                                </div>
+                            }
+                        >
+                        {close => <ModelSharePost postInfoData={postInfoData} close={close}/>}
+
+                        </Popup>
                     </div>
                     {/*dòng bình luận*/}
                     {showComment && <Comment postcode={postInfoData.post_code} />}
