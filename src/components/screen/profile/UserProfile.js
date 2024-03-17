@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom';
-import {getDataApiProfileUser} from "../../../common/callapi/user"
+import {getDataApiProfileUser, getDataApiDetailUserLogin} from "../../../common/callapi/user"
 import {acceptFriendRequest, createNewFriendRequest, denyFriendRequest} from "../../../common/callapi/friend"
 import InfoUserInUserProfile from "./InfoUserInUserProfile"
 import PostInProfile from "./PostInProfile"
@@ -11,10 +11,22 @@ function UserProfile() {
     const navigate = useNavigate();
     const {usercode} = useParams()
     console.log("user", usercode)
+    const [userLogin, setUserLogin] = useState()
     const [chooseMenu, setChooseMenu] = useState("post") // đang chọn tab menu nào post, user, fiend, mặc định là post
     const [inforUserInCurrentPage, setUserInfoCurrentPage] = useState() // thông tin của user ở trang cá nhân hiện tại theo usercode
     const token = getCookieToken()
     const [btnFriendStatus, setBtnFriendStatus] = useState() // dùng để gắn code html của nut bấm
+    const dataCurentUserLogin = async () =>{
+        try {
+            const result = await getDataApiDetailUserLogin(token);
+            console.log(result)
+            setUserLogin(result)
+          } catch (error) {
+            console.error(error)
+          }
+    }
+
+    
     useEffect(()=>{
         const dataProfileUser = async () =>{
             try {
@@ -26,6 +38,7 @@ function UserProfile() {
               }
         }
         dataProfileUser() 
+        dataCurentUserLogin()
     }, [usercode])
     const callApiRequestNewFriend = async (usercode) =>{
         try {
@@ -189,13 +202,13 @@ function UserProfile() {
                             </div>
                             <div className='container-tab-body '>
                                 <Routes>
-                                    <Route path='/post' element={<PostInProfile usercode={usercode}/>}></Route>
+                                    <Route path='/post' element={<PostInProfile userLogin = {userLogin} usercode={usercode}/>}></Route>
 
                                     {/* <Route path='/post'     component={() =><PostCard id={idUser} />}></Route> */}
                                     { /* 
                                     */}
-                                    <Route path='/friend' element={<ListFriend usercode={usercode}/>}></Route>
-                                    <Route path='/infomation' element={<InfoUserInUserProfile usercode={usercode} />}></Route>
+                                    <Route path='/friend' element={<ListFriend userLogin = {userLogin} usercode={usercode}/>}></Route>
+                                    <Route path='/infomation' element={<InfoUserInUserProfile userLogin = {userLogin} usercode={usercode} />}></Route>
                                 </Routes>
                             </div>
 

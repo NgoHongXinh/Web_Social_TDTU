@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef, useContext} from 'react';
 import {getListConversation, getListMess, createMess, DeleteUserFromGroup} from "../../../common/callapi/chat"
 import {getDataApiDetailUserLogin} from "../../../common/callapi/user"
@@ -206,10 +204,9 @@ function ChatPage() {
                     setcurrentConversationCode(result?.data.list_conversation_info[0].conversation_code)
                    
                     for(var i =0 ; i< result?.data.list_conversation_info?.length; i++){
+                        console.log(result?.data.list_conversation_info)
                         if(result?.data.list_conversation_info[i].type === "1"){
                             if(result?.data.list_conversation_info[i].members_obj.length >1){
-
-                       
                             setcurrentUserChatOrNameGroupChat(`${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`)
                             }
                             else{
@@ -226,7 +223,7 @@ function ChatPage() {
                             }
                         
                         }
-                        if(result?.data.list_conversation_info[i].members_obj?.length === 1){
+                        if(result?.data.list_conversation_info[i].type === "0"){
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
@@ -246,8 +243,12 @@ function ChatPage() {
                             )
                         }
                         else{
-
-                            var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`
+                            if(result?.data.list_conversation_info[i].members_obj.length >1){
+                                var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ${result?.data?.list_conversation_info[i]?.members_obj[1].given_name} ...`
+                            }
+                            else{
+                                var name_group = `${result?.data.list_conversation_info[i].members_obj[0].given_name}, ...`
+                            }
                             listConversation.push(
                                 // đổi thẻ a thành thẻ div chỗ này thì mới chạy được 
                                 // <a className="list-group-item list-group-item-action p-2 list-group-item--select"  >
@@ -257,7 +258,7 @@ function ChatPage() {
                                         <img src={imageGroup} className="rounded-circle mr-1  mt-2" alt="Avatar" width={50} height={50} />
                                     
                                         <div isgroup={"true"} nameconvert = {name_group}  onClick={getMessOfConverstation} convercode = {result?.data.list_conversation_info[i].conversation_code} className="pr-4 text-algin-left item-conversation">
-                                            {result?.data.list_conversation_info[i].members_obj[0].given_name},  {result?.data.list_conversation_info[i].members_obj[1].given_name} ...
+                                            {result?.data.list_conversation_info[i].members_obj.length > 1 ? `${result?.data.list_conversation_info[i].members_obj[0]?.given_name},  ${result?.data.list_conversation_info[i].members_obj[1].given_name} ...` : `${result?.data.list_conversation_info[i].members_obj[0]?.given_name}...`}
 
                                             {result.data.list_conversation_info[i].online ? <div className="small text-primary chat-online"><span> online</span></div> : <div className="small text-secondary chat-offline">Offline<span/> </div>}
                                         </div>

@@ -6,7 +6,7 @@ import {getDataApiDetailUserLogin, getDataApiProfileUser} from "../../../common/
 import Card from 'react-bootstrap/Card';
 import "../../../css/post_profile.css";
 function InfoUserInUserProfile(props) {
-    const {usercode} = props
+    const {usercode, userLogin} = props
     const token = getCookieToken()
     const [currentUser, setcurrentUser] = useState()
     const btnElement = useRef()
@@ -62,10 +62,12 @@ function InfoUserInUserProfile(props) {
                                 </ul>
                             </Card.Body>
                         </div>
-                        <div className="col-3 md-3 d-flex align-items-center justify-content-center">
-                            <FontAwesomeIcon className="btn" onClick={clickBtn} style={{ height: "35px" }} icon="fa-pencil-alt"/>
-                            <div className="btn" hidden usercode={currentUser?.data.user_code} ref={btnElement} onClick={gotosettingPag}></div>
-                        </div>
+                        {userLogin?.data.user_code === usercode &&
+                            <div className="col-3 md-3 d-flex align-items-center justify-content-center">
+                                <FontAwesomeIcon className="btn" onClick={clickBtn} style={{ height: "35px" }} icon="fa-pencil-alt"/>
+                                <div className="btn" hidden usercode={currentUser?.data.user_code} ref={btnElement} onClick={gotosettingPag}></div>
+                            </div>
+                        }
                     </div>
                 </Card>
             </div>

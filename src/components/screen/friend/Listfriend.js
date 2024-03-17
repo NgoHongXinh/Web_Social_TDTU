@@ -8,7 +8,7 @@ import { getCookieToken } from '../../../common/functions';
 import "../../../css/listfriend.css";
 import "../../../css/style.css";
 function ListFriend(props) {
-    const { usercode } = props
+    const { usercode, userLogin } = props
     const token = getCookieToken()
     const [elementFriend, setElementFriend] = useState()
     const navigate = useNavigate()
@@ -39,6 +39,8 @@ function ListFriend(props) {
                                                 <a className="btn btn-sm btn-outline-primary m-1" href="#">Chat</a>
                                             </div> */}
                                         </div>
+                                        {/* nếu đang ở trang cá nhân của mình thì mới hiển thị nút xóa bạn bè*/}
+                                        {userLogin?.data.user_code === usercode &&
                                         <div className='col-2 md-2'>
                                             <div>
                                                 <Popup
@@ -57,6 +59,7 @@ function ListFriend(props) {
                                                 </Popup>
                                             </div>
                                         </div>
+                                         }
                                     </div>
                                 </div>
                             </div>
