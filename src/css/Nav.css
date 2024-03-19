@@ -42,6 +42,11 @@
         width: 600px;
     }
 }
+@media screen and (max-width: 480px) {
+    .navbar .search-bar {
+        width: 20%;
+    }
+}
 .noti-style{
     position: relative;
     display: inline;
