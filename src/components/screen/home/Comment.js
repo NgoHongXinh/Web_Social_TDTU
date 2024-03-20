@@ -141,6 +141,7 @@ function Comment(props) {
                            </div>
                         </div>
                         <div className='mt-1 p-2'>
+                            {currentUser?.data.user_code === comment?.created_by?.user_code &&
                             <Popup
                                 trigger={
                                     <div className='three-dot-icon '>
@@ -159,6 +160,7 @@ function Comment(props) {
                                     <a className="btn btn-danger" commentcode={comment.comment_code} onClick={handleDeleteComment}>delete</a>
                                 </div>
                             </Popup>
+            }
                         </div>
                     </div>
 
