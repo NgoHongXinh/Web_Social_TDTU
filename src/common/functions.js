@@ -69,26 +69,20 @@ export const removeLocalUsername = () => {
 
 export const TimeFromCreateToNow = (created_time) =>{
     var timestamp = created_time
-    const current = new Date().getTime();
-    var created_time = new Date(timestamp).getTime();
-    const timeDBetween2datetime = current - created_time;
-    // Extract hours, minutes, and seconds from the Date object
-    
-    const oneDayMs = 24 * 60 * 60 * 1000; // Số milliseconds trong một ngày
-    const numberOfDays = Math.floor(timeDBetween2datetime / oneDayMs);
-    
-    const seconds = Math.floor(timeDBetween2datetime / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    if(numberOfDays >=1 && numberOfDays <=3){
-        return `${numberOfDays} ngày trước`
+    // const current = new Date().getTime();
+    // console.log( new Date(timestamp))
+    var created_time = new Date(timestamp);
+    const day = created_time.getDate();
+    var monthIndex
+    try{
+        monthIndex = created_time.getMonth() + 1;
     }
-    else if (hours >= 1 && hours <= 24){
-        return ` ${hours} giờ trước`
+    catch{
+         monthIndex = created_time.getMonth();
     }
-    else if((minutes % 60) >=1 && (minutes % 60)<=60){
-        return `${minutes % 60} phút trước`
-    }
+    const year = created_time.getFullYear();
+
+    return `${day}/${monthIndex}/${year}`
 }
 
 
